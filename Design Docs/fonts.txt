@@ -1,0 +1,4 @@
+FONTS LIST:
+Franklin Gothic URW (Headings/Titles)
+Arial (Default font) with narrow property
+Futura PT Cond Book (numbers)
