@@ -1,0 +1,88 @@
+Trackable Stats:
+-Generic:
+	Level
+	Lootbox probability
+	Total XP
+	Gamemode stats:
+		Best Score
+		Games Played
+		Losses
+		Playtime
+		Wins
+		WL
+	Assists
+	Barricades deployed
+	Blind Kills
+	Bullets Fired
+	Bullets Hit
+	DBNOs
+	Deaths
+	Gadgets Destroyed
+	Games played
+	Headshots
+	KD
+	Losses
+	Melee kills
+	penetration kills
+	Playtime
+	Rappel Breaches
+	Reinforcements deployed
+	Revives
+	Suicides
+	Wins
+	WL
+	Ranked/Casual/Other stats:
+		Deaths
+		Draws
+		Games played
+		KD
+		Kills
+		Losses
+		Playtime
+		Wins
+		WL
+
+-Operator Stats:
+	Ability Specific parameters
+	DBNOs
+	Deaths
+	XP
+	Headshots
+	KD
+	Kills
+	Losses
+	Melee Kills
+	Playtime
+	Wins
+	WL
+
+-Seasonal Stats:
+	Abandons
+	Deaths
+	Kills
+	Last match MMR change
+	Losses
+	Max mmr
+	max rank
+	mmr
+	next rank mmr
+	prev rank mmr
+	rank
+	skill mean
+	skill standard deviation
+
+-Weapon categories
+	Deaths
+	Headshot percentage
+	Headshots
+	KD
+	Kills
+	Times Chosen
+
+-Weapons
+	Deaths
+	Headshot percentage
+	Headshots
+	KD
+	Kills
+	Times Chosen
