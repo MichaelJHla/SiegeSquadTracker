@@ -21,14 +21,15 @@
         </div>
         <div id="options">
             <h3>Squad's Ban Priority List:</h3>
-            <button id="edit-bans">Edit your bans</button>
+            <button id="edit-bans" onclick="startVoting()">Edit your bans</button>
             <button id="squad-bans">View the squad's bans</buttuon>
         </div>
         <div id="ban-list">
             <!--This will display all the bans that are currently being requested to be seen-->
         </div>
         <div id="map-compare">
-            <!--This will display two buttons which let the user pick which map they would rather play-->
+            <button class="vote-button" id="map1" onclick="vote(1)"></button>
+            <button class="vote-button" id="map2" onclick="vote(2)"></button>
         </div>
     </div>
 
@@ -46,10 +47,15 @@
     <script>
         //This will assign the proper squad name to the proper header
         var squadName = "Goop Gang";
-        $("#squad-name").text(squadName);
+        $('#squad-name').text(squadName);
     </script>
 
     <script>
+        var sortedMaps = [];
+        var maps = [];
+        var m1;
+        var m2;
+
         //Fisher-Yates shuffle algorithm
         function shuffle(a) {
             var j, x, i;
@@ -61,5 +67,57 @@
             }
             return a;
         }
+
+        function startVoting() {
+            sortedMaps = []; //Clear the sorted maps array
+
+            //Refresh the list of maps
+            maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+               "consulate", "kafe", "kanal", "oregon", "outback",
+               "park", "villa"];
+            maps = shuffle(maps);//Shuffle the list of maps
+            
+            m1 = maps.pop();
+            m2 = maps.pop();
+
+            $('#map1').text(m1);
+            $('#map2').text(m2);
+        }
+
+        function vote(a) {
+            if (sortedMaps.length == 0) { //Handles the first vote
+                if (a == 1) {
+                    sortedMaps.push(m1);
+                    sortedMaps.push(m2);
+                } else {
+                    sortedMaps.push(m2);
+                    sortedMaps.push(m1);
+                }
+                m1 = maps.pop();
+                m2 = sortedMaps[0];
+            } else {
+                if (a == 1) {
+                    sortedMaps.splice(sortedMaps.indexOf(m2), 0, m1);
+                    m1 = maps.pop();
+                    m2 = sortedMaps[0];
+                } else {
+                    m2 = sortedMaps[sortedMaps.indexOf(m2) + 1];
+                    if (m2 == undefined) {
+                        sortedMaps.push(m1);
+                        m1 = sortedMaps.pop();
+                        m2 = sortedMaps[0];
+                    }
+                }
+            }
+
+            if (m1 == undefined) {
+                //View the just created ban list
+            } else {
+                //Updates the text of the voting buttons
+                $('#map1').text(m1);
+                $('#map2').text(m2);
+            }
+        }
     </script>
 </body>
+</html>
