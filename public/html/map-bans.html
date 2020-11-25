@@ -157,16 +157,13 @@
 
                 var i;
                 var j;
-                console.log(snapshot.val()["map-bans"][members[0]]);
-                console.log(snapshot.val()["map-bans"][members[1]]);
-                console.log(snapshot.val()["map-bans"][members[2]]);
                 for (i = 0; i < members.length; i++) {//Iterates through each map for each member
                     for (j = 0; j < maps.length; j++) {
                         squadBanArray[maps[j]] += snapshot.val()["map-bans"][members[i]][maps[j]];
                     }
                 }
 
-                var entries = Object.entries(squadBanArray);
+                var entries = Object.entries(squadBanArray);//Turn the squad bans into a iterable array
                 entries = insertionSort2D(entries);
                 for (i = 0; i < entries.length; i++) {
                     database.ref("squads/" + squadName + "/map-bans/squad-bans/" + entries[i][0]).set(i);
