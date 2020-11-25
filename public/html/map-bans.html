@@ -74,8 +74,8 @@
 
             //Refresh the list of maps
             maps = ["bank", "border", "chalet", "clubhouse", "coastline",
-               "consulate", "kafe", "kanal", "oregon", "outback",
-               "park", "villa"];
+                "consulate", "kafe", "kanal", "oregon", "outback",
+                "park", "villa"];
             maps = shuffle(maps);//Shuffle the list of maps
             
             m1 = maps.pop();
@@ -126,11 +126,84 @@
         }
 
         function viewBanList() {
-            $('#map-compare').hide();
+            $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
 
+            updateSquadBans();
             database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
                 console.log(snapshot.val());
             });
+        }
+
+        function updateSquadBans() {
+            database.ref("squads/" + squadName).once('value').then(function(snapshot) {
+                var members = snapshot.val()["members"];//Gets the list of members in the squad
+                var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+                    "consulate", "kafe", "kanal", "oregon", "outback",
+                    "park", "villa"];
+                var squadBanArray = { //This array tracks the total popularity of each map
+                    bank: 0,
+                    border: 0,
+                    chalet: 0,
+                    clubhouse: 0,
+                    coastline: 0,
+                    consulate: 0,
+                    kafe: 0,
+                    kanal: 0,
+                    oregon: 0,
+                    outback: 0,
+                    park: 0,
+                    villa: 0
+                };
+
+                var i;
+                var j;
+                console.log(snapshot.val()["map-bans"][members[0]]);
+                console.log(snapshot.val()["map-bans"][members[1]]);
+                console.log(snapshot.val()["map-bans"][members[2]]);
+                for (i = 0; i < members.length; i++) {//Iterates through each map for each member
+                    for (j = 0; j < maps.length; j++) {
+                        squadBanArray[maps[j]] += snapshot.val()["map-bans"][members[i]][maps[j]];
+                    }
+                }
+
+                var entries = Object.entries(squadBanArray);
+                entries = insertionSort2D(entries);
+                for (i = 0; i < entries.length; i++) {
+                    database.ref("squads/" + squadName + "/map-bans/squad-bans/" + entries[i][0]).set(i);
+                }
+            });
+        }
+
+        //Swap helper function
+        function swap (arr, index1, index2){
+            let temp = arr[index1];
+            arr[index1] = arr[index2];
+            arr[index2] = temp;
+        }
+
+        function insertionSort2D(arr){
+            let beginningIndex = 0;
+            let currentIndex = 1;
+            //while the start of the unsorted portion doesnt not start at the after the end of the array
+            while(currentIndex < arr.length){
+                //while the currentIndex does not reach the end of the sorted section or the array (index of -1)
+                while(currentIndex > 0){
+                    //get currentValue(value to be sorted)
+                    currentVal = arr[currentIndex][1];
+                    //if it is lesser than the last value, swap the two values, otherwise, break out of the loop
+                    if(currentVal > arr[currentIndex - 1][1]){
+                        swap(arr, currentIndex, currentIndex - 1);
+                        currentIndex--;
+                    } else{
+                        break;
+                    }
+                }
+                //add 1 to beginningIndex to account for newly sorted section
+                beginningIndex++;
+                //start sorting from index after beginning
+                currentIndex = beginningIndex + 1;
+            }
+            return arr;
         }
     </script>
 </body>
