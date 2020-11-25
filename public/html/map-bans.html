@@ -47,6 +47,7 @@
     <script>
         //This will assign the proper squad name to the proper header
         var squadName = "Goop Gang";
+        var userName = "DJ XB0XER";
         $('#squad-name').text(squadName);
     </script>
 
@@ -104,19 +105,32 @@
                     m2 = sortedMaps[sortedMaps.indexOf(m2) + 1];
                     if (m2 == undefined) {
                         sortedMaps.push(m1);
-                        m1 = sortedMaps.pop();
+                        m1 = maps.pop();
                         m2 = sortedMaps[0];
                     }
                 }
             }
 
             if (m1 == undefined) {
-                //View the just created ban list
+                var i;
+                for (i = 0; i < sortedMaps.length; i++) {
+                    database.ref("users/" + userName + "/map-bans/" + sortedMaps[i]).set(i);
+                    database.ref("squads/" + squadName + "/map-bans/" + userName + "/" + sortedMaps[i]).set(i);
+                }
+                viewBanList();
             } else {
                 //Updates the text of the voting buttons
                 $('#map1').text(m1);
                 $('#map2').text(m2);
             }
+        }
+
+        function viewBanList() {
+            $('#map-compare').hide();
+
+            database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
+                console.log(snapshot.val());
+            });
         }
     </script>
 </body>
