@@ -18,7 +18,7 @@
     <div id="body">
         <div id="map-selection">
             <label for="map-list">Operator bans for:</label>
-            <select id="map-list">
+            <select id="map-list" onchange="loadBan()">
                 <option disabled selected value> -- select a map -- </option>
                 <option value="bank">Bank</option>
                 <option value="border">Border</option>
@@ -106,7 +106,7 @@
                 <option value="warden">Warden</option>
             </select>
 
-            <button id="submit-bans">Submit bans</button>
+            <button id="submit-bans" onclick="submitBan()">Submit bans</button>
         </div>
     </div>
 
@@ -117,8 +117,32 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
     <!--Configuration information for firebase-->
     <script src="../scripts/firebaseConfig.js"></script>
-    
+
     <!--jQuery import-->
     <script src="../scripts/jquery.js"></script>
+
+    <script>
+        //This will assign the proper squad name to the proper header
+        var squadName = "Goop Gang";
+        var userName = "DJ XB0XER";
+        $('#squad-name').text(squadName);
+    </script>
+
+    <script>
+        function loadBan() {
+            //Add the implementation to load the operator when the map is changed
+        }
+
+        function submitBan() {
+            var map = $('#map-list').val();
+            var dOp = $('#defense-operators').val();
+            var aOp = $('#attack-operators').val();
+
+            var reference = "squads/" + squadName + "/operator-bans/" + map + "/";
+
+            database.ref(reference + "attacker").set(aOp);
+            database.ref(reference + "defender").set(dOp);
+        }
+    </script>
 </body>
 </html>
