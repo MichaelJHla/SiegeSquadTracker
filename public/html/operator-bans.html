@@ -35,9 +35,6 @@
             </select>
             <button id="edit-bans">Edit bans</button>
         </div>
-        <div id="operator-display">
-            <!--This will show the two operators selected to be banned on this map-->
-        </div>
         <div id="edit-operators">
             <select id="attack-operators">
                 <option disabled selected value="NA"> -- select an attack op -- </option>
@@ -108,6 +105,11 @@
 
             <button id="submit-bans" onclick="submitBan()">Submit bans</button>
         </div>
+        <div id="operator-display">
+            <!--This will show the two operators selected to be banned on this map-->
+            <h3 id="attack-operator"></h3>
+            <h3 id="defense-operator"></h3>
+        </div>
     </div>
 
     <!--All scripts below here-->
@@ -129,10 +131,16 @@
     </script>
 
     <script>
+        //This function is used to load and display the operator ban for the map
         function loadBan() {
-            //Add the implementation to load the operator when the map is changed
+            database.ref("squads/" + squadName + "/operator-bans/" + $('#map-list').val()).once('value').then(function(snapshot) {
+                //Load and display the data regarding operator bans
+                $('#attack-operator').text(snapshot.val().attacker);
+                $('#defense-operator').text(snapshot.val().defender);
+            });
         }
 
+        //This function is used to submit the new ban information to the database
         function submitBan() {
             var map = $('#map-list').val();
             var dOp = $('#defense-operators').val();
@@ -142,6 +150,8 @@
 
             database.ref(reference + "attacker").set(aOp);
             database.ref(reference + "defender").set(dOp);
+
+            loadBan();
         }
     </script>
 </body>
