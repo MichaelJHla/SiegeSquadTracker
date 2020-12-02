@@ -72,12 +72,12 @@ if (m1 == undefined) {
 }
 
 function viewBanList() {
-$('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
+    $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
 
-updateSquadBans();
-database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
-    console.log(snapshot.val());
-});
+    updateSquadBans();
+    database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
+        console.log(snapshot.val());
+    });
 }
 
 function updateSquadBans() {
