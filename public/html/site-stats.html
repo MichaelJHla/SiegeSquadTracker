@@ -18,7 +18,7 @@
     <div id="body">
         <div id="options">
             <label for="map-selection">Choose a map:</label>
-            <select id="map-selection">
+            <select id="map-selection" onchange="loadSites()">
                 <option value="default" disabled selected value> -- select a map -- </option>
                 <option value="bank">Bank</option>
                 <option value="border">Border</option>
@@ -34,8 +34,8 @@
                 <option value="villa">Villa</option>
             </select>
 
-            <label for="site-selection" onchange="loadSite()">Choose a site:</label>
-            <select id="sites">
+            <label for="site-selection">Choose a site:</label>
+            <select id="site-selection">
                 <option value="default" disabled selected value> -- select a site -- </option>
                 <option value="0" id="site0"></option>
                 <option value="1" id="site1"></option>
@@ -113,8 +113,17 @@
             ["villa", ["Aviator Room and Games Room", "Trophy Room and Statuary Room", "Living Room and Library", "Dining Room and Kitchen"]]
         ]);
 
-        function loadSites() {
+        var map;
 
+        function loadSites() {
+            map = $('#map-selection').val();
+
+            $('#site-selection').val('default');
+
+            $('#site0').text(allSites.get(map)[0]);
+            $('#site1').text(allSites.get(map)[1]);
+            $('#site2').text(allSites.get(map)[2]);
+            $('#site3').text(allSites.get(map)[3]);
         }
     </script>
 </body>
