@@ -35,7 +35,7 @@
             </select>
 
             <label for="site-selection">Choose a site:</label>
-            <select id="site-selection">
+            <select id="site-selection" onchange="loadSiteData()">
                 <option value="default" disabled selected value> -- select a site -- </option>
                 <option value="0" id="site0"></option>
                 <option value="1" id="site1"></option>
@@ -135,18 +135,35 @@
 
         function submitSiteData() {
             var site = $('#site-selection').val();
+            database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
+                var role = document.querySelector('input[name="role"]:checked').value;
+                var winStatus = document.querySelector('input[name="success"]:checked').value;
+                var plantStatus = document.querySelector('input[name="planted"]:checked').value;
+
+                var roundStatus = role + winStatus;
+                database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site + "/" + roundStatus).set(snapshot.val()[roundStatus] + 1);
+
+                if (plantStatus == "yes") {
+                    database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site + "/p" + roundStatus).set(snapshot.val()["p" + roundStatus] + 1);
+                }
+            });
+        }
+
+        function loadSiteData() {
+            var site = $('#site-selection').val();
             if (site != "default") {
                 database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
-                    var role = document.querySelector('input[name="role"]:checked').value;
-                    var winStatus = document.querySelector('input[name="success"]:checked').value;
-                    var plantStatus = document.querySelector('input[name="planted"]:checked').value;
+                    $('#attacking-wins').text("Attacking wins: " + snapshot.val().awin);
+                    $('#attacking-losses').text("Attacking losses: " + snapshot.val().aloss);
 
-                    var roundStatus = role + winStatus;
-                    database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site + "/" + roundStatus).set(snapshot.val()[roundStatus] + 1);
+                    $('#successful-plants').text("Successful defuser plants: " + snapshot.val().pawin);
+                    $('#failed-plants').text("Failed defuser plants: " + snapshot.val().paloss);
 
-                    if (plantStatus == "yes") {
-                        database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site + "/p" + roundStatus).set(snapshot.val()["p" + roundStatus] + 1);
-                    }
+                    $('#defending-wins').text("Defending wins: " + snapshot.val().dwin);
+                    $('#defending-losses').text("Defending losses: " + snapshot.val().dloss);
+
+                    $('#successful-disables').text("Defusers disabled: " + snapshot.val().pdwin);
+                    $('#failed-disables').text("Defusers not disabled: " + snapshot.val().pdloss);
                 });
             }
         }
