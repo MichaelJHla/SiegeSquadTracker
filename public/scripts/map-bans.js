@@ -20,7 +20,7 @@ sortedMaps = []; //Clear the sorted maps array
 
 //Refresh the list of maps
 maps = ["bank", "border", "chalet", "clubhouse", "coastline",
-    "consulate", "kafe", "kanal", "oregon", "outback",
+    "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
     "park", "villa"];
 maps = shuffle(maps);//Shuffle the list of maps
 
@@ -84,7 +84,7 @@ function updateSquadBans() {
 database.ref("squads/" + squadName).once('value').then(function(snapshot) {
     var members = snapshot.val()["members"];//Gets the list of members in the squad
     var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
-        "consulate", "kafe", "kanal", "oregon", "outback",
+        "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
         "park", "villa"];
     var squadBanArray = { //This array tracks the total popularity of each map
         bank: 0,
@@ -97,6 +97,7 @@ database.ref("squads/" + squadName).once('value').then(function(snapshot) {
         kanal: 0,
         oregon: 0,
         outback: 0,
+        skyscraper: 0,
         park: 0,
         villa: 0
     };
