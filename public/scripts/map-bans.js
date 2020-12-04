@@ -27,8 +27,8 @@ function startVoting() {
     m1 = maps.pop();
     m2 = maps.pop();
 
-    $('#map1').text(m1);
-    $('#map2').text(m2);
+    $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
+    $('#map2').css({"background-image": "url('../images/maps/" + m2 + ".PNG')"});
 }
 
 function vote(a) {
@@ -65,9 +65,9 @@ function vote(a) {
         }
         viewBanList();
     } else {
-        //Updates the text of the voting buttons
-        $('#map1').text(m1);
-        $('#map2').text(m2);
+        //Updates the images of the voting buttons
+        $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
+        $('#map2').css({"background-image": "url('../images/maps/" + m2 + ".PNG')"});
     }
 }
 
