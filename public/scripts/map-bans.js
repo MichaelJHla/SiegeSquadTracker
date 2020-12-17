@@ -29,6 +29,8 @@ function startVoting() {
 
     $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
     $('#map2').css({"background-image": "url('../images/maps/" + m2 + ".PNG')"});
+
+    $('#map-compare').show();
 }
 
 function vote(a) {
@@ -63,7 +65,7 @@ function vote(a) {
             database.ref("users/" + userName + "/map-bans/" + sortedMaps[i]).set(i);
             database.ref("squads/" + squadName + "/map-bans/" + userName + "/" + sortedMaps[i]).set(i);
         }
-        viewBanList();
+        viewPlayerBanList();
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
@@ -71,7 +73,7 @@ function vote(a) {
     }
 }
 
-function viewBanList() {
+function viewPlayerBanList() {
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
 
     updateSquadBans();
@@ -149,3 +151,5 @@ function insertionSort2D(arr){
     }
     return arr;
 }
+
+viewPlayerBanList();
