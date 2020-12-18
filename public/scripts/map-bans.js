@@ -97,6 +97,19 @@ function viewSquadBanList() {
 
     database.ref("squads/" + squadName + "/map-bans/squad-bans").once('value').then(function(snapshot) {
         console.log(snapshot.val());
+        var entries = Object.entries(snapshot.val());
+        var i;
+        //This for loop sorts the entries from the database
+        for (i = 0; i < entries.length; i++) {
+            sortedMaps[entries[i][1]] = entries[i][0];
+        }
+
+        //Adds the images needed to the main area of the page
+        for (i = sortedMaps.length - 1; i >= 0; i--) {
+            var img = $('<img>');
+            img.attr('src', '../images/maps/' + sortedMaps[i] + '.PNG');
+            $('#ban-list').append(img);
+        }
     });
 }
 
@@ -155,7 +168,7 @@ function insertionSort2D(arr){
             //get currentValue(value to be sorted)
             currentVal = arr[currentIndex][1];
             //if it is lesser than the last value, swap the two values, otherwise, break out of the loop
-            if(currentVal > arr[currentIndex - 1][1]){
+            if(currentVal < arr[currentIndex - 1][1]){
                 swap(arr, currentIndex, currentIndex - 1);
                 currentIndex--;
             } else{
