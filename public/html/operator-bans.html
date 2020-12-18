@@ -40,7 +40,7 @@
             <button id="edit-bans">Edit bans</button>
         </div>
         <div id="edit-operators">
-            <select id="attack-operators">
+            <select id="attack-operators" class="operator-list">
                 <option disabled selected value="NA"> -- select an attack op -- </option>
                 <option value="none">No Ban</option>
                 <option value="ace">Ace</option>
@@ -74,7 +74,7 @@
                 <option value="zofia">Zofia</option>
             </select>
 
-            <select id="defense-operators">
+            <select id="defense-operators" class="operator-list">
                 <option disabled selected value="NA"> -- select a defense op -- </option>
                 <option value="none">No Ban</option>
                 <option value="alibi">Alibi</option>
@@ -108,7 +108,7 @@
                 <option value="warden">Warden</option>
             </select>
 
-            <button id="submit-bans" onclick="submitBan()">Submit bans</button>
+            <button id="submit-bans" onclick="submitBan()">Submit changes</button>
         </div>
         <div id="operator-display">
             <!--This will show the two operators selected to be banned on this map-->
