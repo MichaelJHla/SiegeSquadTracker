@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/operator-bans.css">
+    <link rel="stylesheet" href="https://use.typekit.net/huf3guc.css">
     <title>Siege Squad Tracker - Operator Bans</title>
 </head>
 
@@ -114,6 +117,11 @@
         </div>
     </div>
 
+    <div id="footer-div">
+        <footer><!--This will tell the user who they are signed in as--></footer>
+        <a href="../index.html">Change User</a>
+    </div>
+    
     <!--All scripts below here-->
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
@@ -121,21 +129,16 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
     <!--Configuration information for firebase-->
     <script src="../scripts/firebaseConfig.js"></script>
-
     <!--jQuery import-->
     <script src="../scripts/jquery.js"></script>
 
-    <script>
-        //This will assign the proper squad name to the proper header
-        var squadName = "Goop Gang";
-        var userName = "DJ XB0XER";
-        $('#squad-name').text(squadName);
-    </script>
+    <!--Global script for setting up data between multiple pages-->
+    <script src="../scripts/global.js"></script>
 
     <script>
         //This function is used to load and display the operator ban for the map
         function loadBan() {
-            database.ref("squads/" + squadName + "/operator-bans/" + $('#map-list').val()).once('value').then(function(snapshot) {
+            database.ref("squads/" + localStorage.getItem("squadName") + "/operator-bans/" + $('#map-list').val()).once('value').then(function(snapshot) {
                 //Load and display the data regarding operator bans
                 $('#attack-operator').text(snapshot.val().attacker);
                 $('#defense-operator').text(snapshot.val().defender);
@@ -148,7 +151,7 @@
             var dOp = $('#defense-operators').val();
             var aOp = $('#attack-operators').val();
 
-            var reference = "squads/" + squadName + "/operator-bans/" + map + "/";
+            var reference = "squads/" + localStorage.getItem("squadName") + "/operator-bans/" + map + "/";
 
             database.ref(reference + "attacker").set(aOp);
             database.ref(reference + "defender").set(dOp);
