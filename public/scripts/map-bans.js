@@ -80,11 +80,11 @@ function vote(a) {
 
     if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
         var i;
-        for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper username
-            database.ref("users/" + userName + "/map-bans/" + sortedMaps[i]).set(i);
-            database.ref("squads/" + squadName + "/map-bans/" + userName + "/" + sortedMaps[i]).set(i);
+        for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper userName
+            database.ref("users/" + localStorage.getItem("userName") + "/map-bans/" + sortedMaps[i]).set(i);
+            database.ref("squads/" + squadName + "/map-bans/" + localStorage.getItem("userName") + "/" + sortedMaps[i]).set(i);
         }
-        viewPlayerBanList(userName);//View the list of maps that was just created
+        viewPlayerBanList(localStorage.getItem("userName"));//View the list of maps that was just created
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
