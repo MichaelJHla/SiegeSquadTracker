@@ -93,6 +93,12 @@ h3 {
     border: none;
 }
 
+#map-compare {
+    display: none;
+    width: fit-content;
+    margin: 0 auto;
+}
+
 #ban-list {
     width: 80%;
     margin-left: 10%;

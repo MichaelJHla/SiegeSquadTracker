@@ -16,6 +16,17 @@ function shuffle(a) {
     return a;
 }
 
+function loadSquadMembers() {
+    database.ref("squads/" + squadName + "/members").once('value').then(function(snapshot) {
+        for (var key in snapshot.val()) {
+            var member = $('<button>' + snapshot.val()[key] + '</button>'); //Create new h4 element that represents a member
+            member.val(snapshot.val()[key]);
+            member.attr('onClick', 'viewPlayerBanList(this.value)');
+            $('#squad-members').append(member);
+        }
+    });
+}
+
 //This function is used to initiate the voting process by setting everything up for the vote process to take place
 function startVoting() {
     $('#squad-bans').show();//Show the button which lets the user view the squad bans
@@ -73,7 +84,7 @@ function vote(a) {
             database.ref("users/" + userName + "/map-bans/" + sortedMaps[i]).set(i);
             database.ref("squads/" + squadName + "/map-bans/" + userName + "/" + sortedMaps[i]).set(i);
         }
-        viewPlayerBanList();//View the list of maps that was just created
+        viewPlayerBanList(userName);//View the list of maps that was just created
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
@@ -81,16 +92,17 @@ function vote(a) {
     }
 }
 
-function viewPlayerBanList() {
+function viewPlayerBanList(player) {
     $('#ban-list').empty();//Clears all the content out of the ban list
 
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
     $('#squad-bans').show();//Shows the button which lets the user pull up the squad ban list
     $('#edit-bans').show();//Shows the button which lets the user edit their own bans
-    $('#status').text(userName + "'s ban list:");
+    $('#status').text(player + "'s ban list:");
 
     updateSquadBans();
-    database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
+    database.ref("users/" + player + "/map-bans").once('value').then(function(snapshot) {
+        console.log(snapshot.val());
         var entries = Object.entries(snapshot.val());
         var i;
         //This for loop sorts the entries from the database
@@ -207,3 +219,4 @@ function insertionSort2D(arr){
 }
 
 viewSquadBanList();
+loadSquadMembers();
