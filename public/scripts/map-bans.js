@@ -17,7 +17,7 @@ function shuffle(a) {
 }
 
 function loadSquadMembers() {
-    database.ref("squads/" + squadName + "/members").once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadName") + "/members").once('value').then(function(snapshot) {
         for (var key in snapshot.val()) {
             var member = $('<button>' + snapshot.val()[key] + '</button>'); //Create new h4 element that represents a member
             member.val(snapshot.val()[key]);
@@ -82,7 +82,7 @@ function vote(a) {
         var i;
         for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper userName
             database.ref("users/" + localStorage.getItem("userName") + "/map-bans/" + sortedMaps[i]).set(i);
-            database.ref("squads/" + squadName + "/map-bans/" + localStorage.getItem("userName") + "/" + sortedMaps[i]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/" + localStorage.getItem("userName") + "/" + sortedMaps[i]).set(i);
         }
         viewPlayerBanList(localStorage.getItem("userName"));//View the list of maps that was just created
     } else {
@@ -127,9 +127,9 @@ function viewSquadBanList() {
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
     $('#squad-bans').hide();//Hides the view squad bans button since this is already displayed
     $('#edit-bans').show();//Show the button that lets the user edit their ban list
-    $('#status').text(squadName + "'s ban list:");
+    $('#status').text(localStorage.getItem("squadName") + "'s ban list:");
 
-    database.ref("squads/" + squadName + "/map-bans/squad-bans").once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/squad-bans").once('value').then(function(snapshot) {
         var entries = Object.entries(snapshot.val());
         var i;
         //This for loop sorts the entries from the database
@@ -149,7 +149,7 @@ function viewSquadBanList() {
 }
 
 function updateSquadBans() {
-    database.ref("squads/" + squadName).once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadName")).once('value').then(function(snapshot) {
         var members = snapshot.val()["members"];//Gets the list of members in the squad
         var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
             "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
@@ -181,7 +181,7 @@ function updateSquadBans() {
         var entries = Object.entries(squadBanArray);//Turn the squad bans into a iterable array
         entries = insertionSort2D(entries);
         for (i = 0; i < entries.length; i++) {
-            database.ref("squads/" + squadName + "/map-bans/squad-bans/" + entries[i][0]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/squad-bans/" + entries[i][0]).set(i);
         }
     });
 }
