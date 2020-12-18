@@ -27,6 +27,8 @@
     font-size: 20px;
     color: white;
 
+    display: none;
+
     /*The design of the button*/
     background-color: #3D99FF;
     height: 40px;
@@ -40,6 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    display: none;
 }
 
 .operator-list {
@@ -63,4 +66,14 @@
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 99px;
+}
+
+#operator-display {
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    height: 200px;
+    width: auto;
 }
