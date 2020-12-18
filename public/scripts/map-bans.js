@@ -18,6 +18,7 @@ function shuffle(a) {
 function startVoting() {
     $('#squad-bans').show();//Show the button which lets the user view the squad bans
     $('#edit-bans').hide();//Hide the button which starts the voting process for the user
+    $('#status').text("Choose the map which you would rather play:");
 
     sortedMaps = []; //Clear the sorted maps array
 
@@ -80,6 +81,7 @@ function viewPlayerBanList() {
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
     $('#squad-bans').show();//Shows the button which lets the user pull up the squad ban list
     $('#edit-bans').show();//Shows the button which lets the user edit their own bans
+    $('#status').text(userName + "'s ban list:");
 
     updateSquadBans();
     database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
@@ -91,6 +93,7 @@ function viewSquadBanList() {
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
     $('#squad-bans').hide();//Hides the view squad bans button since this is already displayed
     $('#edit-bans').show();//Show the button that lets the user edit their ban list
+    $('#status').text(squadName + "'s ban list:");
 
     database.ref("squads/" + squadName + "/map-bans/squad-bans").once('value').then(function(snapshot) {
         console.log(snapshot.val());
