@@ -92,3 +92,12 @@ h3 {
     border-radius: 200px;
     border: none;
 }
+
+#ban-list {
+    width: 80%;
+    margin-left: 10%;
+}
+
+img {
+    width: 20%;
+}
