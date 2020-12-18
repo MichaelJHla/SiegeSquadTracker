@@ -1,3 +1,4 @@
+//Some variables used by the whole script
 var sortedMaps = [];
 var maps = [];
 var m1;
@@ -15,10 +16,11 @@ function shuffle(a) {
     return a;
 }
 
+//This function is used to initiate the voting process by setting everything up for the vote process to take place
 function startVoting() {
     $('#squad-bans').show();//Show the button which lets the user view the squad bans
     $('#edit-bans').hide();//Hide the button which starts the voting process for the user
-    $('#ban-list').hide();
+    $('#ban-list').hide();//Hides the ban list area so that screen clutter is reduced
     $('#status').text("Choose the map which you would rather play:");
 
     sortedMaps = []; //Clear the sorted maps array
@@ -38,39 +40,40 @@ function startVoting() {
     $('#map-compare').show();
 }
 
+//This function is used to handle each vote as they are cast
 function vote(a) {
     if (sortedMaps.length == 0) { //Handles the first vote
-        if (a == 1) {
-            sortedMaps.push(m1);
+        if (a == 1) {//If the player prefers the first map listed
+            sortedMaps.push(m1);//Pushed the first map on then the second map
             sortedMaps.push(m2);
         } else {
-            sortedMaps.push(m2);
+            sortedMaps.push(m2);//Pushes the second map on then the first map
             sortedMaps.push(m1);
         }
-        m1 = maps.pop();
-        m2 = sortedMaps[0];
+        m1 = maps.pop();//Pops the next map to be evaluated off the list of maps
+        m2 = sortedMaps[0];//Gets the top map on the players list of maps
     } else {
-        if (a == 1) {
-            sortedMaps.splice(sortedMaps.indexOf(m2), 0, m1);
-            m1 = maps.pop();
-            m2 = sortedMaps[0];
-        } else {
-            m2 = sortedMaps[sortedMaps.indexOf(m2) + 1];
-            if (m2 == undefined) {
-                sortedMaps.push(m1);
-                m1 = maps.pop();
-                m2 = sortedMaps[0];
+        if (a == 1) {//If the most recently evaluated map is preferred
+            sortedMaps.splice(sortedMaps.indexOf(m2), 0, m1);//Splice the map into the list of sorted maps
+            m1 = maps.pop();//Get the next map to be evaluated from the remaining maps
+            m2 = sortedMaps[0];//Gets the top map of the players list of maps
+        } else {//A previously sorted map is selected as the preferred map
+            m2 = sortedMaps[sortedMaps.indexOf(m2) + 1];//Make the next map to be evaluated, the next map in the sorted list
+            if (m2 == undefined) {//If there is no next map 
+                sortedMaps.push(m1);//Put the map being evaluated to the end of the array of sorted maps
+                m1 = maps.pop();//Get the next map to be evaluated from the remaining maps
+                m2 = sortedMaps[0];//Gets the top map of the players list of maps
             }
         }
     }
 
-    if (m1 == undefined) {
+    if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
         var i;
-        for (i = 0; i < sortedMaps.length; i++) {
+        for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper username
             database.ref("users/" + userName + "/map-bans/" + sortedMaps[i]).set(i);
             database.ref("squads/" + squadName + "/map-bans/" + userName + "/" + sortedMaps[i]).set(i);
         }
-        viewPlayerBanList();
+        viewPlayerBanList();//View the list of maps that was just created
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
@@ -88,7 +91,19 @@ function viewPlayerBanList() {
 
     updateSquadBans();
     database.ref("users/" + userName + "/map-bans").once('value').then(function(snapshot) {
-        console.log(snapshot.val());
+        var entries = Object.entries(snapshot.val());
+        var i;
+        //This for loop sorts the entries from the database
+        for (i = 0; i < entries.length; i++) {
+            sortedMaps[entries[i][1]] = entries[i][0];
+        }
+
+        //Adds the images needed to the main area of the page
+        for (i = sortedMaps.length - 1; i >= 0; i--) {
+            var img = $('<img>');
+            img.attr('src', '../images/maps/' + sortedMaps[i] + '.PNG');
+            $('#ban-list').append(img);
+        }
     });
 
     $('#ban-list').show();
@@ -103,7 +118,6 @@ function viewSquadBanList() {
     $('#status').text(squadName + "'s ban list:");
 
     database.ref("squads/" + squadName + "/map-bans/squad-bans").once('value').then(function(snapshot) {
-        console.log(snapshot.val());
         var entries = Object.entries(snapshot.val());
         var i;
         //This for loop sorts the entries from the database
