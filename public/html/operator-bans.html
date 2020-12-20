@@ -40,7 +40,7 @@
         </div>
         <div class="wrapper">
             <div id="edit-operators">
-                <select id="attack-operators" class="operator-list">
+                <select id="attack-operators" class="operator-list" onchange="changeOpImg('attack')">
                     <option disabled selected value="NA"> -- select an attack op -- </option>
                     <option value="none">No Ban</option>
                     <option value="ace">Ace</option>
@@ -74,7 +74,7 @@
                     <option value="zofia">Zofia</option>
                 </select>
 
-                <select id="defense-operators" class="operator-list">
+                <select id="defense-operators" class="operator-list" onchange="changeOpImg('defense')">
                     <option disabled selected value="NA"> -- select a defense op -- </option>
                     <option value="none">No Ban</option>
                     <option value="alibi">Alibi</option>
@@ -156,6 +156,11 @@
             });
         }
 
+        //This function is used to change the image of the operators while the user is editing the bans for a map
+        function changeOpImg(role) {
+            $('#' + role + '-operator').attr("src", '../images/operators/' + $('#' + role + '-operators').val() + ".svg");
+        }
+
         //This function is used to submit the new ban information to the database
         function submitBan() {
 
@@ -165,8 +170,10 @@
 
             var reference = "squads/" + localStorage.getItem("squadName") + "/operator-bans/" + map + "/";
 
-            database.ref(reference + "attacker").set(aOp);
-            database.ref(reference + "defender").set(dOp);
+            //Only update the ban if the dropdown menu has been changed, otherwise leave the operator the same
+            if (aOp != null){ database.ref(reference + "attacker").set(aOp); }
+            if (dOp != null){ database.ref(reference + "defender").set(dOp); }
+            
 
             loadBan();
         }
