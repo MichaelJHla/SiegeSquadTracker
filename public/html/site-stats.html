@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/global.css">
     <title>Siege Squad Tracker - Site Stats</title>
 </head>
 
@@ -47,42 +48,48 @@
 
         <div id="all-site-info">
             <div id="view-data">
-                <h3 id="attacking-wins">Attacking wins:</h3>
-                <h3 id="attacking-losses">Attacking losses:</h3>
+                <div id="attacking-div">
+                    <h3 id="attacking-wins">Attacking wins:</h3>
+                    <h3 id="attacking-losses">Attacking losses:</h3>
 
-                <h3 id="successful-plants">Successful defuser plants:</h3>
-                <h3 id="failed-plants">Failed defuser plants:</h3>
+                    <h3 id="successful-plants">Successful defuser plants:</h3>
+                    <h3 id="failed-plants">Failed defuser plants:</h3>
+                </div>
 
-                <h3 id="defending-wins">Defending wins:</h3>
-                <h3 id="defending-losses">Defending losses:</h3>
+                <div id="defending-div">
+                    <h3 id="defending-wins">Defending wins:</h3>
+                    <h3 id="defending-losses">Defending losses:</h3>
 
-                <h3 id="successful-disables">Defusers disabled:</h3>
-                <h3 id="failed-disables">Defusers not disabled:</h3>
+                    <h3 id="successful-disables">Defusers disabled:</h3>
+                    <h3 id="failed-disables">Defusers not disabled:</h3>
+                </div>
             </div>
 
             <div id="add-data">
-                <input type="radio" value="a" name="role" checked>
-                <label for="attack">Attacking</label>
-                <input type="radio" value="d" name="role">
-                <label for="defend">Defending</label>
+                <div id="role-div" class="radio-section">
+                    <input type="radio" value="a" name="role" checked>
+                    <label for="attack">Attacking</label>
+                    <input type="radio" value="d" name="role">
+                    <label for="defend">Defending</label>
+                </div>
 
-                <br>
+                <div id="win-loss-div" class="radio-section">
+                    <input type="radio" value="win" name="success" checked>
+                    <label for="win">Won</label>
+                    <input type="radio" value="loss" name="success">
+                    <label for="loss">Lost</label>
+                </div>
 
-                <input type="radio" value="win" name="success" checked>
-                <label for="win">Won</label>
-                <input type="radio" value="loss" name="success">
-                <label for="loss">Lost</label>
+                <div id="planted-div" class="radio-section">
+                    <input type="radio" value="no" name="planted" checked>
+                    <label for="no">Not planted</label>
+                    <input type="radio" value="yes" name="planted">
+                    <label for="yes">Planted</label>
+                </div>
 
-                <br>
-
-                <input type="radio" value="no" name="planted" checked>
-                <label for="no">Not planted</label>
-                <input type="radio" value="yes" name="planted">
-                <label for="yes">Planted</label>
-                
-                <br>
-
-                <button id="submit" onclick="submitSiteData()">Submit</button>
+                <div id="submit-div">
+                    <button id="submit" onclick="submitSiteData()">Submit</button>
+                </div>
             </div>
     </div>
 
