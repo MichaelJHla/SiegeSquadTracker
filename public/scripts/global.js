@@ -6,5 +6,6 @@ function changeUser() {
     localStorage.setItem("userName", $('#user-name').val());
     database.ref("users/" + localStorage.getItem("userName") + "/squad").once('value').then(function(snapshot) {
         localStorage.setItem("squadName", snapshot.val());
+        window.alert("Username set");
     });
 }
