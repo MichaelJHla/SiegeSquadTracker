@@ -1,0 +1,102 @@
+#options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#options label {
+    color: white;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+#site-selection-div {
+    display: none;
+}
+
+.dropdown {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    color: white;
+    margin-right: 10px;
+    background-color: #707070;
+}
+
+#all-site-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.data-section {
+    display: flex;
+    justify-content: center;
+}
+
+.data-subsection {
+    background-color: #333740;
+    border-radius: 40px;
+    padding: 10px;
+    margin: 10px;
+}
+
+h3 {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 24px;
+    color: white;
+}
+
+input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.radio-section, #submit-div {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+#role-div {
+    margin-top: 20px;
+}
+
+input[type=radio]+label {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 24px;
+    color: white;
+    background-color: #707070;
+    padding: 10px;
+    border-radius: 99px;
+}
+
+input[type=radio]:checked+label {
+    background-color: #3D99FF;
+}
+
+input[type=radio]:focus + label {
+    outline: rgba(77, 97, 171, 0.5) auto 3px;
+}
+
+button {
+    /*The text within the button*/
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: white;
+
+    /*The design of the button*/
+    background-color: #3D99FF;
+    height: 40px;
+    border: 2px solid #707070;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 99px;
+}
+
+#submit {
+    display: none;
+}

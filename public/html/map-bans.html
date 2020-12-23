@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/map-ban.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="https://use.typekit.net/huf3guc.css">
+    <title>Siege Squad Tracker - Map Bans</title>
+</head>
+
+<body>
+    <div id="header">
+        <h1 id="squad-name"><a href="squad.html">Squad Name</a></h1>
+        <div id="nav-elements">
+            <h2><a href="#">Map Ban Helper</a></h2>
+            <h2><a href="operator-bans.html">Operator Bans</a></h2>
+            <h2><a href="site-stats.html">Site Stat Tracker</a></h2>
+        </div>
+    </div>
+
+    <div id="body">
+        <div id="squad-members">
+            <!--This will display the names of all members of the squad using button tags-->
+        </div>
+        <div id="options">
+            <h3 id="status">Squad's Ban Priority List:</h3>
+            <button id="edit-bans" onclick="startVoting()">Edit your bans</button>
+            <button id="squad-bans" onclick="viewSquadBanList()">View the squad's bans</buttuon>
+        </div>
+        <div id="ban-list">
+            <!--This will display all the bans that are currently being requested to be seen-->
+        </div>
+        <div id="map-compare">
+            <button class="vote-button" id="map1" onclick="vote(1)"></button>
+            <button class="vote-button" id="map2" onclick="vote(2)"></button>
+        </div>
+    </div>
+
+    <div id="footer-div">
+        <footer><!--This will tell the user who they are signed in as--></footer>
+        <a href="../index.html">Change User</a>
+    </div>
+
+    <!--All scripts below here-->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Database CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <!--Configuration information for firebase-->
+    <script src="../scripts/firebaseConfig.js"></script>
+    <!--jQuery import-->
+    <script src="../scripts/jquery.js"></script>
+
+    <!--Global script for setting up data between multiple pages-->
+    <script src="../scripts/global.js"></script>
+
+    <script src="../scripts/map-bans.js"></script>
+</body>
+</html>

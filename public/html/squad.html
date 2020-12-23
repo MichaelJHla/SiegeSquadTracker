@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Siege Squad Tracker</title>
+</head>
+
+<body>
+    <div id="header">
+        <h1 id="squad-name"><a href="#">Squad Name</a></h1>
+        <div id="nav-elements">
+            <h2><a href="map-bans.html">Map Ban Helper</a></h2>
+            <h2><a href="operator-bans.html">Operator Bans</a></h2>
+            <h2><a href="site-stats.html">Site Stat Tracker</a></h2>
+        </div>
+    </div>
+
+    <div id="body">
+        <div id="all-stats">
+            <div id="ranked-kd" class="stat-section">
+                <h3>Best Ranked K/D</h3>
+            </div>
+            <div id="ranked-wl" class="stat-section">
+                <h3>Best Ranked W/L</h3>
+            </div>
+            <div id="most-accurate" class="stat-section">
+                <h3>Most Accurate</h3>
+            </div>
+            <div id="most-assists" class="stat-section">
+                <h3>Most Assists</h3>
+            </div>
+            <div id="team-player" class="stat-section">
+                <h3>Team Player</h3>
+                <h5>Reinforcements per game</h5>
+            </div>
+            <div id="unluckiest" class="stat-section">
+                <h3>Unluckiest</h3>
+                <h5>Most suicides</h5>
+            </div>
+        </div>
+    </div>
+
+    <!--All scripts below here-->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Database CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <!--Configuration information for firebase-->
+    <script src="../scripts/firebaseConfig.js"></script>
+
+    <!--jQuery import-->
+    <script src="../scripts/jquery.js"></script>
+
+    <script>
+        //This will assign the proper squad name to the proper header
+        var squadName = "Goop Gang";
+        $("#squad-name").text(squadName);
+    </script>
+
+</body>
+</html>
