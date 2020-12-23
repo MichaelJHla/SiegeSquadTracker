@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/site-stats.css">
     <title>Siege Squad Tracker - Site Stats</title>
 </head>
 
@@ -18,77 +19,89 @@
 
     <div id="body">
         <div id="options">
-            <label for="map-selection">Choose a map:</label>
-            <select id="map-selection" onchange="loadSites()">
-                <option value="default" disabled selected value> -- select a map -- </option>
-                <option value="bank">Bank</option>
-                <option value="border">Border</option>
-                <option value="chalet">Chalet</option>
-                <option value="clubhouse">Clubhouse</option>
-                <option value="coastline">Coastline</option>
-                <option value="consulate">Consulate</option>
-                <option value="kafe">Kafe</option>
-                <option value="kanal">Kanal</option>
-                <option value="oregon">Oregon</option>
-                <option value="outback">Outback</option>
-                <option value="skyscraper">Skyscraper</option>
-                <option value="park">Theme Park</option>
-                <option value="villa">Villa</option>
-            </select>
+            <div id="map-selection-div">
+                <label for="map-selection">Choose a map:</label>
+                <select id="map-selection" class="dropdown" onchange="loadSites()">
+                    <option value="default" disabled selected value> -- select a map -- </option>
+                    <option value="bank">Bank</option>
+                    <option value="border">Border</option>
+                    <option value="chalet">Chalet</option>
+                    <option value="clubhouse">Clubhouse</option>
+                    <option value="coastline">Coastline</option>
+                    <option value="consulate">Consulate</option>
+                    <option value="kafe">Kafe</option>
+                    <option value="kanal">Kanal</option>
+                    <option value="oregon">Oregon</option>
+                    <option value="outback">Outback</option>
+                    <option value="skyscraper">Skyscraper</option>
+                    <option value="park">Theme Park</option>
+                    <option value="villa">Villa</option>
+                </select>
+            </div>
 
-            <label for="site-selection">Choose a site:</label>
-            <select id="site-selection" onchange="loadSiteData()">
-                <option value="default" disabled selected value> -- select a site -- </option>
-                <option value="0" id="site0"></option>
-                <option value="1" id="site1"></option>
-                <option value="2" id="site2"></option>
-                <option value="3" id="site3"></option>
-            </select>
+            <div id="site-selection-div">
+                <label for="site-selection">Choose a site:</label>
+                <select id="site-selection" class="dropdown" onchange="loadSiteData()">
+                    <option value="default" disabled selected value> -- select a site -- </option>
+                    <option value="0" id="site0"></option>
+                    <option value="1" id="site1"></option>
+                    <option value="2" id="site2"></option>
+                    <option value="3" id="site3"></option>
+                </select>
+            </div>
         </div>
 
         <div id="all-site-info">
-            <div id="view-data">
-                <div id="attacking-div">
-                    <h3 id="attacking-wins">Attacking wins:</h3>
-                    <h3 id="attacking-losses">Attacking losses:</h3>
-
-                    <h3 id="successful-plants">Successful defuser plants:</h3>
-                    <h3 id="failed-plants">Failed defuser plants:</h3>
-                </div>
-
-                <div id="defending-div">
-                    <h3 id="defending-wins">Defending wins:</h3>
-                    <h3 id="defending-losses">Defending losses:</h3>
-
-                    <h3 id="successful-disables">Defusers disabled:</h3>
-                    <h3 id="failed-disables">Defusers not disabled:</h3>
-                </div>
-            </div>
-
             <div id="add-data">
                 <div id="role-div" class="radio-section">
-                    <input type="radio" value="a" name="role" checked>
+                    <input id="attack" type="radio" value="a" name="role">
                     <label for="attack">Attacking</label>
-                    <input type="radio" value="d" name="role">
+                    <input id="defend" type="radio" value="d" name="role">
                     <label for="defend">Defending</label>
                 </div>
 
                 <div id="win-loss-div" class="radio-section">
-                    <input type="radio" value="win" name="success" checked>
+                    <input id="win" type="radio" value="win" name="success">
                     <label for="win">Won</label>
-                    <input type="radio" value="loss" name="success">
+                    <input id="loss" type="radio" value="loss" name="success">
                     <label for="loss">Lost</label>
                 </div>
 
                 <div id="planted-div" class="radio-section">
-                    <input type="radio" value="no" name="planted" checked>
-                    <label for="no">Not planted</label>
-                    <input type="radio" value="yes" name="planted">
+                    <input id="yes" type="radio" value="yes" name="planted">
                     <label for="yes">Planted</label>
+                    <input id="no" type="radio" value="no" name="planted">
+                    <label for="no">Not planted</label>
                 </div>
 
                 <div id="submit-div">
                     <button id="submit" onclick="submitSiteData()">Submit</button>
+                </div>
+            </div>
+
+            <div id="view-data">
+                <div id="attacking-div" class="data-section">
+                    <div id="attacking-wl" class="data-subsection">
+                        <h3 id="attacking-wins">Attacking wins:</h3>
+                        <h3 id="attacking-losses">Attacking losses:</h3>
+                    </div>
+
+                    <div id="attacking-planting" class="data-subsection">
+                        <h3 id="successful-plants">Successful defuser plants:</h3>
+                        <h3 id="failed-plants">Failed defuser plants:</h3>
+                    </div>
+                </div>
+
+                <div id="defending-div" class="data-section">
+                    <div id="defending-wl" class="data-subsection">
+                        <h3 id="defending-wins">Defending wins:</h3>
+                        <h3 id="defending-losses">Defending losses:</h3>
+                    </div>
+
+                    <div id="defending-planting" class="data-subsection">
+                        <h3 id="successful-disables">Defusers disabled:</h3>
+                        <h3 id="failed-disables">Defusers not disabled:</h3>
+                    </div>
                 </div>
             </div>
     </div>
@@ -140,6 +153,8 @@
             $('#site1').text(allSites.get(map)[1]);
             $('#site2').text(allSites.get(map)[2]);
             $('#site3').text(allSites.get(map)[3]);
+
+            $('#site-selection-div').show();
         }
 
         function submitSiteData() {
