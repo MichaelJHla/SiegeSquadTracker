@@ -7,6 +7,8 @@ function loadBan() {
 
     $('#edit-bans').show();
     $('.wrapper').hide();
+    $('#unsaved-changes').hide();
+
     database.ref("squads/" + localStorage.getItem("squadName") + "/operator-bans/" + $('#map-list').val()).once('value').then(function(snapshot) {
         //Load and display the data regarding operator bans
         $('#attack-operator').attr("src", "../images/operators/" + snapshot.val().attacker + ".svg");
@@ -17,6 +19,7 @@ function loadBan() {
 //This function is used to change the image of the operators while the user is editing the bans for a map
 function changeOpImg(role) {
     $('#' + role + '-operator').attr("src", '../images/operators/' + $('#' + role + '-operators').val() + ".svg");
+    $('#unsaved-changes').show();
 }
 
 //This function is used to submit the new ban information to the database
@@ -31,7 +34,6 @@ function submitBan() {
     //Only update the ban if the dropdown menu has been changed, otherwise leave the operator the same
     if (aOp != null){ database.ref(reference + "attacker").set(aOp); }
     if (dOp != null){ database.ref(reference + "defender").set(dOp); }
-    
 
     loadBan();
 }
