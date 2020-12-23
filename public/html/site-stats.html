@@ -52,33 +52,6 @@
         </div>
 
         <div id="all-site-info">
-            <div id="add-data">
-                <div id="role-div" class="radio-section">
-                    <input id="attack" type="radio" value="a" name="role">
-                    <label for="attack">Attacking</label>
-                    <input id="defend" type="radio" value="d" name="role">
-                    <label for="defend">Defending</label>
-                </div>
-
-                <div id="win-loss-div" class="radio-section">
-                    <input id="win" type="radio" value="win" name="success">
-                    <label for="win">Won</label>
-                    <input id="loss" type="radio" value="loss" name="success">
-                    <label for="loss">Lost</label>
-                </div>
-
-                <div id="planted-div" class="radio-section">
-                    <input id="yes" type="radio" value="yes" name="planted">
-                    <label for="yes">Planted</label>
-                    <input id="no" type="radio" value="no" name="planted">
-                    <label for="no">Not planted</label>
-                </div>
-
-                <div id="submit-div">
-                    <button id="submit" onclick="submitSiteData()">Submit</button>
-                </div>
-            </div>
-
             <div id="view-data">
                 <div id="attacking-div" class="data-section">
                     <div id="attacking-wl" class="data-subsection">
@@ -104,6 +77,33 @@
                     </div>
                 </div>
             </div>
+            <div id="add-data">
+                <div id="role-div" class="radio-section">
+                    <input id="attack" type="radio" value="a" name="role" onclick="checkAllRadio()">
+                    <label for="attack">Attacking</label>
+                    <input id="defend" type="radio" value="d" name="role" onclick="checkAllRadio()">
+                    <label for="defend">Defending</label>
+                </div>
+
+                <div id="win-loss-div" class="radio-section">
+                    <input id="win" type="radio" value="win" name="success" onclick="checkAllRadio()">
+                    <label for="win">Won</label>
+                    <input id="loss" type="radio" value="loss" name="success" onclick="checkAllRadio()">
+                    <label for="loss">Lost</label>
+                </div>
+
+                <div id="planted-div" class="radio-section">
+                    <input id="yes" type="radio" value="yes" name="planted" onclick="checkAllRadio()">
+                    <label for="yes">Planted</label>
+                    <input id="no" type="radio" value="no" name="planted" onclick="checkAllRadio()">
+                    <label for="no">Not planted</label>
+                </div>
+
+                <div id="submit-div">
+                    <button id="submit" onclick="submitSiteData()">Submit</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--All scripts below here-->
@@ -144,7 +144,11 @@
 
         var map;
 
+        $('#all-site-info').hide();
+
         function loadSites() {
+            $('#all-site-info').hide();
+
             map = $('#map-selection').val();
 
             $('#site-selection').val('default');
@@ -158,6 +162,8 @@
         }
 
         function submitSiteData() {
+            $('#submit').hide();
+            
             var site = $('#site-selection').val();
             database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
                 var role = document.querySelector('input[name="role"]:checked').value;
@@ -170,10 +176,28 @@
                 if (plantStatus == "yes") {
                     database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site + "/p" + roundStatus).set(snapshot.val()["p" + roundStatus] + 1);
                 }
+
+                $('#attack').prop('checked', false);
+                $('#defend').prop('checked', false);
+                $('#win').prop('checked', false);
+                $('#loss').prop('checked', false);
+                $('#yes').prop('checked', false);
+                $('#no').prop('checked', false);
+
+                loadSiteData();
             });
         }
 
         function loadSiteData() {
+            $('#all-site-info').show();
+            $('#attack').prop('checked', false);
+            $('#defend').prop('checked', false);
+            $('#win').prop('checked', false);
+            $('#loss').prop('checked', false);
+            $('#yes').prop('checked', false);
+            $('#no').prop('checked', false);
+            $('#submit').hide();
+            
             var site = $('#site-selection').val();
             if (site != "default") {
                 database.ref("squads/" + squadName + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
@@ -189,6 +213,12 @@
                     $('#successful-disables').text("Defusers disabled: " + snapshot.val().pdwin);
                     $('#failed-disables').text("Defusers not disabled: " + snapshot.val().pdloss);
                 });
+            }
+        }
+
+        function checkAllRadio() {
+            if (document.querySelector('input[name="role"]:checked') != null && document.querySelector('input[name="success"]:checked') != null && document.querySelector('input[name="planted"]:checked') != null) {
+                $('#submit').show();
             }
         }
     </script>

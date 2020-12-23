@@ -40,7 +40,7 @@
     background-color: #333740;
     border-radius: 40px;
     padding: 10px;
-    margin: 20px;
+    margin: 10px;
 }
 
 h3 {
@@ -78,6 +78,10 @@ input[type=radio]:checked+label {
     background-color: #3D99FF;
 }
 
+input[type=radio]:focus + label {
+    outline: rgba(77, 97, 171, 0.5) auto 3px;
+}
+
 button {
     /*The text within the button*/
     font-family: Arial, Helvetica, sans-serif;
@@ -91,4 +95,8 @@ button {
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 99px;
+}
+
+#submit {
+    display: none;
 }
