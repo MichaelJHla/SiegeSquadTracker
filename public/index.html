@@ -26,17 +26,28 @@
         <label for="platform-username">Platform name</label>
         <input id="platform-username">
 
-        <label for="email">Email</label>
-        <input id="email">
+        <label for="signup-email">Email</label>
+        <input id="signup-email">
 
-        <label for="password">Password</label>
-        <input type="password" id="password">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password">
 
-        <button id="sign-up-button" onclick="newUser()">Sign Up</button>
+        <button id="signup-button" onclick="newUser()">Sign Up</button>
     </div>
 
     <div id="sign-in">
+        <h2>Sign In</h2>
+        <label for="login-email">Email</label>
+        <input id="login-email">
 
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password">
+
+        <button id="login-button" onclick="logIn()">Log In</button>
+    </div>
+
+    <div id="sign-out">
+        <button id="sign-out-button" onclick="signOut()">Sign Out</button>
     </div>
 
     <!--All scripts below here-->
@@ -44,6 +55,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <!-- Database CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <!-- Authentication CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <!--Configuration information for firebase-->
     <script src="scripts/firebaseConfig.js"></script>
     <!--jQuery import-->
@@ -52,11 +65,29 @@
     <script src="scripts/global.js"></script>
 
     <script>
+        console.log(auth);
+
         function newUser() {
-            var email = $('#email').val();
-            var password = $('#password').val();
+            var email = $('#signup-email').val();
+            var password = $('#signup-password').val();
             var platform = document.querySelector('input[name="platform"]:checked').value;
             var username = $('#platform-username').val();
+
+            //Sign up the new user
+            auth.createUserWithEmailAndPassword(email, password).then(cred => {
+                console.log(cred);
+            });
+        }
+
+        function logIn() {
+            var email = $('#login-email').val();
+            var password = $('#login-password').val();
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                console.log("User signed out");
+            });
         }
     </script>
 </body>

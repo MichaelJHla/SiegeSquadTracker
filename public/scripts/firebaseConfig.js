@@ -15,3 +15,6 @@ firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the database service
 var database = firebase.database();
+
+// Get a reference to the authentication service
+var auth = firebase.auth();
