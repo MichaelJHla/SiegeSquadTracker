@@ -6,10 +6,38 @@
 </head>
 
 <body>
-    <label for="platform-name">Platform username:</label>
-    <input type="text" id="user-name">
-    <button onclick="changeUser()">Change User</button>
-    <a href="html/map-bans.html">Go to the site</a>
+    <div id="welcome">
+
+    </div>
+
+    <div id="new-user">
+        <h2>New User Sign Up</h2>
+        <input type="radio" id="xbox" value="xbox" name="platform">
+        <label for="xbox">Xbox</label>
+
+        <input type="radio" id="playstation" value="playstation" name="platform">
+        <label for="playstation">PlayStation</label>
+        
+        <input type="radio" id="pc" value="pc" name="platform">
+        <label for="pc">PC</label>
+
+        <br />
+
+        <label for="platform-username">Platform name</label>
+        <input id="platform-username">
+
+        <label for="email">Email</label>
+        <input id="email">
+
+        <label for="password">Password</label>
+        <input type="password" id="password">
+
+        <button id="sign-up-button" onclick="newUser()">Sign Up</button>
+    </div>
+
+    <div id="sign-in">
+
+    </div>
 
     <!--All scripts below here-->
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -22,5 +50,14 @@
     <script src="scripts/jquery.js"></script>
 
     <script src="scripts/global.js"></script>
+
+    <script>
+        function newUser() {
+            var email = $('#email').val();
+            var password = $('#password').val();
+            var platform = document.querySelector('input[name="platform"]:checked').value;
+            var username = $('#platform-username').val();
+        }
+    </script>
 </body>
 </html>
