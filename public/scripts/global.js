@@ -1,11 +1,17 @@
-//This will tell the user who they are signed in as
-$('footer').text("Signed in as " + localStorage.getItem("userName"));
-$('#squad-name').text(localStorage.getItem("squadName"));
+$('footer').text("Signed in as " + localStorage.getItem("username"));
+$('#squad-name').text(localStorage.getItem("squadname"));
 
-function changeUser() {
-    localStorage.setItem("userName", $('#user-name').val());
-    database.ref("users/" + localStorage.getItem("userName") + "/squad").once('value').then(function(snapshot) {
-        localStorage.setItem("squadName", snapshot.val());
-        window.alert("Username set");
+//Get the current status of the user's login
+auth.onAuthStateChanged(user => {
+    console.log(user);
+    if (!user) { //If a user is not logged in
+        window.location.replace("../index.html");
+    }
+});
+
+function signOut() {
+    auth.signOut().then(() => {
+        localStorage.removeItem("squadname");
+        localStorage.removeItem("username");
     });
 }

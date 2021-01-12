@@ -17,7 +17,7 @@ function shuffle(a) {
 }
 
 function loadSquadMembers() {
-    database.ref("squads/" + localStorage.getItem("squadName") + "/members").once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadname") + "/members").once('value').then(function(snapshot) {
         for (var key in snapshot.val()) {
             var member = $('<button>' + snapshot.val()[key] + '</button>'); //Create new h4 element that represents a member
             member.val(snapshot.val()[key]);
@@ -80,11 +80,11 @@ function vote(a) {
 
     if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
         var i;
-        for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper userName
-            database.ref("users/" + localStorage.getItem("userName") + "/map-bans/" + sortedMaps[i]).set(i);
-            database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/" + localStorage.getItem("userName") + "/" + sortedMaps[i]).set(i);
+        for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper username
+            database.ref("users/" + localStorage.getItem("username") + "/map-bans/" + sortedMaps[i]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + localStorage.getItem("username") + "/" + sortedMaps[i]).set(i);
         }
-        viewPlayerBanList(localStorage.getItem("userName"));//View the list of maps that was just created
+        viewPlayerBanList(localStorage.getItem("username"));//View the list of maps that was just created
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
@@ -127,9 +127,9 @@ function viewSquadBanList() {
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
     $('#squad-bans').hide();//Hides the view squad bans button since this is already displayed
     $('#edit-bans').show();//Show the button that lets the user edit their ban list
-    $('#status').text(localStorage.getItem("squadName") + "'s ban list:");
+    $('#status').text(localStorage.getItem("squadname") + "'s ban list:");
 
-    database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/squad-bans").once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/squad-bans").once('value').then(function(snapshot) {
         var entries = Object.entries(snapshot.val());
         var i;
         //This for loop sorts the entries from the database
@@ -149,7 +149,7 @@ function viewSquadBanList() {
 }
 
 function updateSquadBans() {
-    database.ref("squads/" + localStorage.getItem("squadName")).once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadname")).once('value').then(function(snapshot) {
         var members = snapshot.val()["members"];//Gets the list of members in the squad
         var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
             "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
@@ -181,7 +181,7 @@ function updateSquadBans() {
         var entries = Object.entries(squadBanArray);//Turn the squad bans into a iterable array
         entries = insertionSort2D(entries);
         for (i = 0; i < entries.length; i++) {
-            database.ref("squads/" + localStorage.getItem("squadName") + "/map-bans/squad-bans/" + entries[i][0]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/squad-bans/" + entries[i][0]).set(i);
         }
     });
 }
