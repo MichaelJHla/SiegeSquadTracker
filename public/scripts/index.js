@@ -11,16 +11,35 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-//This function is used to create a new user
-function newUser() {
-    var email = $('#signup-email').val();
-    var password = $('#signup-password').val();
+//This event listener is used to log in a user
+var signInForm = document.querySelector('#sign-in-form');
+signInForm.addEventListener('submit', (e) => {
+    e.preventDefault();//Overrides the default behavior to not refresh the page
+
+    var email = $('#login-email').val();//Records the provided email
+    var password = $('#login-password').val();//records the provided password
+
+    //Uses the email and password to sign up a new user
+    auth.signInWithEmailAndPassword(email, password).then(cred => {
+        
+    });
+});
+
+//This event listener is used to sign up a new user
+var newUserForm = document.querySelector('#new-user-form');
+newUserForm.addEventListener('submit', (e) => {
+    e.preventDefault();//Overrides the default behavior to not refresh the page
+
+    var email = $('#signup-email').val();//Records the provided email
+    var password = $('#signup-password').val();//Records the provided password
+    //Uses a query selector to get the value of the radio buttons
     var platform = document.querySelector('input[name="platform"]:checked').value;
-    var username = $('#platform-username').val();
-    var squad = $('#squad-name').val();
+    var username = $('#platform-username').val();//Records the platform username
+    var squad = $('#squad-name').val();//Records the squad name
 
     //Sign up the new user
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        //Sets all the provided data into the database
         database.ref("users/" + cred.user.uid + "/platform").set(platform);
         database.ref("users/" + cred.user.uid + "/squad").set(squad);
         database.ref("users/" + cred.user.uid + "/username").set(username);
@@ -34,16 +53,7 @@ function newUser() {
             database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
         }
 
+        //Records the username of the new user into the data of the squad they joined
         database.ref("squads/" + squad + "/members/" + cred.user.uid).set(username);
     });
-}
-
-//This function is used to sign in a previously made user
-function logIn() {
-    var email = $('#login-email').val();
-    var password = $('#login-password').val();
-
-    auth.signInWithEmailAndPassword(email, password).then(cred => {
-        
-    });
-}
+})

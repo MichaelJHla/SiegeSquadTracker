@@ -11,42 +11,46 @@
     </div>
 
     <div id="new-user">
-        <h2>New User Sign Up</h2>
-        <input type="radio" id="xbox" value="xbox" name="platform">
-        <label for="xbox">Xbox</label>
+        <form id="new-user-form">
+            <h2>New User Sign Up</h2>
+            <input type="radio" id="xbox" value="xbox" name="platform" required>
+            <label for="xbox">Xbox</label>
 
-        <input type="radio" id="playstation" value="playstation" name="platform">
-        <label for="playstation">PlayStation</label>
-        
-        <input type="radio" id="pc" value="pc" name="platform">
-        <label for="pc">PC</label>
+            <input type="radio" id="playstation" value="playstation" name="platform" required>
+            <label for="playstation">PlayStation</label>
+            
+            <input type="radio" id="pc" value="pc" name="platform" required>
+            <label for="pc">PC</label>
 
-        <br />
+            <br />
 
-        <label for="platform-username">Platform name</label>
-        <input id="platform-username">
+            <label for="platform-username">Platform name</label>
+            <input id="platform-username" required>
 
-        <label for="squad-name">Squad name</label>
-        <input id="squad-name">
+            <label for="squad-name">Squad name</label>
+            <input id="squad-name" required>
 
-        <label for="signup-email">Email</label>
-        <input id="signup-email">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" required>
 
-        <label for="signup-password">Password</label>
-        <input type="password" id="signup-password">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" required>
 
-        <button id="signup-button" onclick="newUser()">Sign Up</button>
+            <button id="signup-button" onclick="newUser()">Sign Up</button>
+        </form>
     </div>
 
     <div id="sign-in">
-        <h2>Sign In</h2>
-        <label for="login-email">Email</label>
-        <input id="login-email">
+        <form id="sign-in-form">
+            <h2>Sign In</h2>
+            <label for="login-email">Email</label>
+            <input id="login-email" required>
 
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required>
 
-        <button id="login-button" onclick="logIn()">Log In</button>
+            <input type="submit" value="Log in" id="login-button">
+        </form>
     </div>
 
     <!--All scripts below here-->
