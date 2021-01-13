@@ -20,7 +20,7 @@ function loadSquadMembers() {
     database.ref("squads/" + localStorage.getItem("squadname") + "/members").once('value').then(function(snapshot) {
         for (var key in snapshot.val()) {
             var member = $('<button>' + snapshot.val()[key] + '</button>'); //Create new h4 element that represents a member
-            member.val(snapshot.val()[key]);
+            member.val(key);
             member.attr('onClick', 'viewPlayerBanList(this.value)');
             $('#squad-members').append(member);
         }
@@ -81,10 +81,10 @@ function vote(a) {
     if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
         var i;
         for (i = 0; i < sortedMaps.length; i++) {//Set the maps in the database under the proper username
-            database.ref("users/" + localStorage.getItem("username") + "/map-bans/" + sortedMaps[i]).set(i);
-            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + localStorage.getItem("username") + "/" + sortedMaps[i]).set(i);
+            database.ref("users/" + localStorage.getItem("userid") + "/map-bans/" + sortedMaps[i]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + localStorage.getItem("userid") + "/" + sortedMaps[i]).set(i);
         }
-        viewPlayerBanList(localStorage.getItem("username"));//View the list of maps that was just created
+        viewPlayerBanList(localStorage.getItem("userid"));//View the list of maps that was just created
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('../images/maps/" + m1 + ".PNG')"});
@@ -93,17 +93,18 @@ function vote(a) {
 }
 
 function viewPlayerBanList(player) {
-    $('#ban-list').empty();//Clears all the content out of the ban list
+    console.log(player);
+    database.ref("users/" + player).once('value').then(function(snapshot) {
+        $('#ban-list').empty();//Clears all the content out of the ban list
 
-    $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
-    $('#squad-bans').show();//Shows the button which lets the user pull up the squad ban list
-    $('#edit-bans').show();//Shows the button which lets the user edit their own bans
-    $('#status').text(player + "'s ban list:");
+        $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
+        $('#squad-bans').show();//Shows the button which lets the user pull up the squad ban list
+        $('#edit-bans').show();//Shows the button which lets the user edit their own bans
+        $('#status').text(snapshot.val().username + "'s ban list:");
 
-    updateSquadBans();
-    database.ref("users/" + player + "/map-bans").once('value').then(function(snapshot) {
-        console.log(snapshot.val());
-        var entries = Object.entries(snapshot.val());
+        updateSquadBans();
+        console.log(snapshot.val()["map-bans"]);
+        var entries = Object.entries(snapshot.val()["map-bans"]);
         var i;
         //This for loop sorts the entries from the database
         for (i = 0; i < entries.length; i++) {
@@ -117,6 +118,8 @@ function viewPlayerBanList(player) {
             $('#ban-list').append(img);
         }
     });
+    
+    
 
     $('#ban-list').show();
 }

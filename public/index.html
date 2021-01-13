@@ -98,7 +98,7 @@
                     database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
                 }
 
-                database.ref("squads/" + squad + "/members").push(cred.user.uid);
+                database.ref("squads/" + squad + "/members/" + cred.user.uid).set(username);
             });
         }
 
