@@ -1,3 +1,15 @@
+//This function displays all the needed information which allows a user to log in
+function logInPage() {
+    $('#sign-in').show();
+    $('#welcome').hide();
+}
+
+//This function displays all the needed information which allows a user to sign up
+function signUpPage() {
+    $('#new-user').show();
+    $('#welcome').hide();
+}
+
 //Get the current status of the user's login
 auth.onAuthStateChanged(user => {
     if (user) {
