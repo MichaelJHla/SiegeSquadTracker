@@ -38,16 +38,16 @@ function submitSiteData() {
     $('#submit').hide();
     
     var site = $('#site-selection').val();
-    database.ref("squads/" + localStorage.getItem("squadName") + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
+    database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
         var role = document.querySelector('input[name="role"]:checked').value;
         var winStatus = document.querySelector('input[name="success"]:checked').value;
         var plantStatus = document.querySelector('input[name="planted"]:checked').value;
 
         var roundStatus = role + winStatus;
-        database.ref("squads/" + localStorage.getItem("squadName") + "/site-data/" + map + "/site" + site + "/" + roundStatus).set(snapshot.val()[roundStatus] + 1);
+        database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + map + "/site" + site + "/" + roundStatus).set(snapshot.val()[roundStatus] + 1);
 
         if (plantStatus == "yes") {
-            database.ref("squads/" + localStorage.getItem("squadName") + "/site-data/" + map + "/site" + site + "/p" + roundStatus).set(snapshot.val()["p" + roundStatus] + 1);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + map + "/site" + site + "/p" + roundStatus).set(snapshot.val()["p" + roundStatus] + 1);
         }
 
         $('#attack').prop('checked', false);
@@ -73,7 +73,7 @@ function loadSiteData() {
     
     var site = $('#site-selection').val();
     if (site != "default") {
-        database.ref("squads/" + localStorage.getItem("squadName") + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
+        database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + map + "/site" + site).once('value').then(function(snapshot) {
             $('#attacking-wins').text("Attacking wins: " + snapshot.val().awin);
             $('#attacking-losses').text("Attacking losses: " + snapshot.val().aloss);
 
