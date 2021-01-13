@@ -1,4 +1,3 @@
-var username;
 console.log(localStorage.getItem("userid"));
 database.ref("users/" + localStorage.getItem("userid") + "/username").once('value').then(function(snapshot) {
     $('footer').text("Signed in as " + snapshot.val());

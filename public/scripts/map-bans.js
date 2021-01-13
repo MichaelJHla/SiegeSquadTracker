@@ -93,7 +93,7 @@ function vote(a) {
 }
 
 function viewPlayerBanList(player) {
-    console.log(player);
+    updateSquadBans();
     database.ref("users/" + player).once('value').then(function(snapshot) {
         $('#ban-list').empty();//Clears all the content out of the ban list
 
@@ -102,7 +102,6 @@ function viewPlayerBanList(player) {
         $('#edit-bans').show();//Shows the button which lets the user edit their own bans
         $('#status').text(snapshot.val().username + "'s ban list:");
 
-        updateSquadBans();
         console.log(snapshot.val()["map-bans"]);
         var entries = Object.entries(snapshot.val()["map-bans"]);
         var i;
@@ -118,13 +117,12 @@ function viewPlayerBanList(player) {
             $('#ban-list').append(img);
         }
     });
-    
-    
 
     $('#ban-list').show();
 }
 
 function viewSquadBanList() {
+    console.log("Testing");
     $('#ban-list').empty();//Clears all the content out of the ban list
 
     $('#map-compare').hide();//Hiding the buttons after voting is finished prevents undefined errors
@@ -153,7 +151,8 @@ function viewSquadBanList() {
 
 function updateSquadBans() {
     database.ref("squads/" + localStorage.getItem("squadname")).once('value').then(function(snapshot) {
-        var members = snapshot.val()["members"];//Gets the list of members in the squad
+        var members = Object.keys(snapshot.val()["members"]);//Gets the list of members in the squad
+        console.log(members);
         var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
             "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
             "park", "villa"];
