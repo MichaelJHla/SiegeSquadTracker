@@ -65,10 +65,10 @@
         //Get the current status of the user's login
         auth.onAuthStateChanged(user => {
             if (user) {
+                localStorage.setItem("userid", user.uid);
                 database.ref("users/" + user.uid).once('value').then(function(snapshot) {
                     //Save the user information to local storage for quick access on other web pages
                     localStorage.setItem("squadname", snapshot.val().squad);
-                    localStorage.setItem("username", snapshot.val().username);
 
                     window.location.replace("html/map-bans.html"); //Redirect to the map bans page of the site
                 });
@@ -85,8 +85,6 @@
 
             //Sign up the new user
             auth.createUserWithEmailAndPassword(email, password).then(cred => {
-                console.log(cred.user.uid);
-
                 database.ref("users/" + cred.user.uid + "/platform").set(platform);
                 database.ref("users/" + cred.user.uid + "/squad").set(squad);
                 database.ref("users/" + cred.user.uid + "/username").set(username);

@@ -1,4 +1,9 @@
-$('footer').text("Signed in as " + localStorage.getItem("username"));
+var username;
+console.log(localStorage.getItem("userid"));
+database.ref("users/" + localStorage.getItem("userid") + "/username").once('value').then(function(snapshot) {
+    $('footer').text("Signed in as " + snapshot.val());
+});
+
 $('#squad-name').text(localStorage.getItem("squadname"));
 
 //Get the current status of the user's login
@@ -12,6 +17,6 @@ auth.onAuthStateChanged(user => {
 function signOut() {
     auth.signOut().then(() => {
         localStorage.removeItem("squadname");
-        localStorage.removeItem("username");
+        localStorage.removeItem("userid");
     });
 }
