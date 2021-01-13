@@ -26,6 +26,9 @@
         <label for="platform-username">Platform name</label>
         <input id="platform-username">
 
+        <label for="squad-name">Squad name</label>
+        <input id="squad-name">
+
         <label for="signup-email">Email</label>
         <input id="signup-email">
 
@@ -72,16 +75,32 @@
             }
         });
 
-        //This function is sued to create a new user
+        //This function is used to create a new user
         function newUser() {
             var email = $('#signup-email').val();
             var password = $('#signup-password').val();
             var platform = document.querySelector('input[name="platform"]:checked').value;
             var username = $('#platform-username').val();
+            var squad = $('#squad-name').val();
 
             //Sign up the new user
             auth.createUserWithEmailAndPassword(email, password).then(cred => {
-                
+                console.log(cred.user.uid);
+
+                database.ref("users/" + cred.user.uid + "/platform").set(platform);
+                database.ref("users/" + cred.user.uid + "/squad").set(squad);
+                database.ref("users/" + cred.user.uid + "/username").set(username);
+
+                var i;
+                maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+                        "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
+                        "park", "villa"];
+                //Initializes each map in alphabetical order on the map bans page
+                for (i = 0; i < maps.length; i++) {
+                    database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
+                }
+
+                database.ref("squads/" + squad + "/members").push(cred.user.uid);
             });
         }
 
