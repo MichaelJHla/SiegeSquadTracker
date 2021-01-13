@@ -22,6 +22,8 @@ signInForm.addEventListener('submit', (e) => {
     //Uses the email and password to sign up a new user
     auth.signInWithEmailAndPassword(email, password).then(cred => {
         
+    }).catch(function(e) {
+        window.alert(e.message);
     });
 });
 
@@ -55,5 +57,7 @@ newUserForm.addEventListener('submit', (e) => {
 
         //Records the username of the new user into the data of the squad they joined
         database.ref("squads/" + squad + "/members/" + cred.user.uid).set(username);
+    }).catch(function(e) {
+        window.alert(e.message);
     });
 });
