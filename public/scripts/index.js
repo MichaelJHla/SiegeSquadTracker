@@ -56,4 +56,4 @@ newUserForm.addEventListener('submit', (e) => {
         //Records the username of the new user into the data of the squad they joined
         database.ref("squads/" + squad + "/members/" + cred.user.uid).set(username);
     });
-})
+});
