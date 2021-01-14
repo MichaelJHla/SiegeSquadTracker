@@ -33,15 +33,20 @@ function signOut() {
     });
 }
 
-database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
-    $('footer').text("Signed in as " + snapshot.val().username);
-    var squad = snapshot.val().squad;
-    if (squad) { //If the user is part of a squad
-        console.log("Squad found: " + squad);
-    } else { //If the user is not part of a squad
-        console.log("No squad found");
-    }
-});
+function checkSquadStatus() {
+    database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
+        $('footer').text("Signed in as " + snapshot.val().username);
+        var squad = snapshot.val().squad;
+        if (squad) { //If the user is part of a squad
+            $('#header-wrapper').show();
+            $('#squad-data').show();
+            $('#squad-name').text(localStorage.getItem("squadname"));
+            $('#no-squad').hide();
+        } else { //If the user is not part of a squad
+            $('#no-squad').show();
+        }
+    });
+}
 
 var joinSquadForm = document.querySelector("#join-squad-form");
 joinSquadForm.addEventListener('submit', (e) => {
@@ -76,6 +81,7 @@ joinSquadForm.addEventListener('submit', (e) => {
                 window.alert("New squad not created");
             }
         }
+        checkSquadStatus();
     });
 });
 
@@ -115,6 +121,7 @@ function createNewSquad(squad, password) {
         database.ref("squads/" + squad + "/map-bans/" + localStorage.getItem("userid")).set(snapshot.val());
         updateSquadBans();
     });
+    checkSquadStatus();
 }
 
 function updateSquadBans() {
@@ -186,3 +193,5 @@ function swap (arr, index1, index2){
     arr[index1] = arr[index2];
     arr[index2] = temp;
 }
+
+checkSquadStatus();
