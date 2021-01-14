@@ -9,7 +9,7 @@
 
 <body>
     <div id="header">
-        <h1 id="squad-name">Squad Name</h1>
+        <h1 id="squad-name">No Squad</h1>
         <div id="nav-elements">
             <h2><a href="map-bans.html">Map Ban Helper</a></h2>
             <h2><a href="operator-bans.html">Operator Bans</a></h2>
@@ -49,4 +49,31 @@
     <script src="../scripts/firebaseConfig.js"></script>
     <!--jQuery import-->
     <script src="../scripts/jquery.js"></script>
+
+    <script>
+        //Get the current status of the user's login
+        auth.onAuthStateChanged(user => {
+            console.log(user);
+            if (!user) { //If a user is not logged in
+                window.location.replace("../index.html");
+            }
+        });
+
+        function signOut() {
+            auth.signOut().then(() => {
+                localStorage.removeItem("squadname");
+                localStorage.removeItem("userid");
+            });
+        }
+        
+        database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
+            $('footer').text("Signed in as " + snapshot.val().username);
+            var squad = snapshot.val().squad;
+            if (squad) { //If the user is part of a squad
+                console.log("Squad found: " + squad);
+            } else { //If the user is not part of a squad
+                console.log("No squad found");
+            }
+        });
+    </script>
 </body>
