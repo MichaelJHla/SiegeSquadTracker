@@ -10,7 +10,7 @@
 
 <body>
     <div id="header">
-        <h1 id="squad-name"><a href="squad.html">Squad Name</a></h1>
+        <h1 id="squad-name">Squad Name</h1>
         <div id="nav-elements">
             <h2><a href="#">Map Ban Helper</a></h2>
             <h2><a href="operator-bans.html">Operator Bans</a></h2>
@@ -38,7 +38,7 @@
 
     <div id="footer-div">
         <footer><!--This will tell the user who they are signed in as--></footer>
-        <a href="../index.html">Change User</a>
+        <button id="sign-out-button" onclick="signOut()">Sign Out</button>
     </div>
 
     <!--All scripts below here-->
@@ -46,6 +46,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <!-- Database CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <!-- Authentication CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <!--Configuration information for firebase-->
     <script src="../scripts/firebaseConfig.js"></script>
     <!--jQuery import-->

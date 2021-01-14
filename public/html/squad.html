@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="https://use.typekit.net/huf3guc.css">
     <title>Siege Squad Tracker</title>
 </head>
 
 <body>
     <div id="header">
-        <h1 id="squad-name"><a href="#">Squad Name</a></h1>
+        <h1 id="squad-name">Squad Name</h1>
         <div id="nav-elements">
             <h2><a href="map-bans.html">Map Ban Helper</a></h2>
             <h2><a href="operator-bans.html">Operator Bans</a></h2>
@@ -15,29 +17,25 @@
         </div>
     </div>
 
-    <div id="body">
-        <div id="all-stats">
-            <div id="ranked-kd" class="stat-section">
-                <h3>Best Ranked K/D</h3>
-            </div>
-            <div id="ranked-wl" class="stat-section">
-                <h3>Best Ranked W/L</h3>
-            </div>
-            <div id="most-accurate" class="stat-section">
-                <h3>Most Accurate</h3>
-            </div>
-            <div id="most-assists" class="stat-section">
-                <h3>Most Assists</h3>
-            </div>
-            <div id="team-player" class="stat-section">
-                <h3>Team Player</h3>
-                <h5>Reinforcements per game</h5>
-            </div>
-            <div id="unluckiest" class="stat-section">
-                <h3>Unluckiest</h3>
-                <h5>Most suicides</h5>
-            </div>
-        </div>
+    <div id="no-squad">
+        <form id="join-squad-form">
+            <h3>Create or join a squad</h1>
+
+            <label for="squad">Squad name</label>
+            <input id="squad">
+
+            <label for="squad-password">Squad password</label>
+            <input type="password" id="squad-password">
+        </form>
+    </div>
+
+    <div id="squad-data">
+        
+    </div>
+
+    <div id="footer-div">
+        <footer><!--This will tell the user who they are signed in as--></footer>
+        <button id="sign-out-button" onclick="signOut()">Sign Out</button>
     </div>
 
     <!--All scripts below here-->
@@ -45,17 +43,12 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <!-- Database CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <!-- Authentication CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <!--Configuration information for firebase-->
     <script src="../scripts/firebaseConfig.js"></script>
-
     <!--jQuery import-->
     <script src="../scripts/jquery.js"></script>
-
-    <script>
-        //This will assign the proper squad name to the proper header
-        var squadName = "Goop Gang";
-        $("#squad-name").text(squadName);
-    </script>
-
+    <!--Global script for setting up data between multiple pages-->
+    <script src="../scripts/global.js"></script>
 </body>
-</html>
