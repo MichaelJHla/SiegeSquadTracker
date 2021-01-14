@@ -55,7 +55,6 @@
     <script>
         //Get the current status of the user's login
         auth.onAuthStateChanged(user => {
-            console.log(user);
             if (!user) { //If a user is not logged in
                 window.location.replace("../index.html");
             }
@@ -84,10 +83,21 @@
 
             database.ref("squads").once('value').then(function(snapshot) {
                 var squad = $('#squad').val();
+                var squadPassword = $('#squad-password').val();
                 var squadList = Object.keys(snapshot.val());
                 console.log(squadList);
                 if (squadList.includes(squad)) {//If this squad exists
-                    console.log("This squad exists");
+                    if (squadPassword == snapshot.val()[squad].password) { //If the password is correct
+                        if (window.confirm("Would you like to join the squad " + squad + "?")) { //If the user confirms to join the squad
+                            database.ref("users/" + localStorage.getItem("userid") + "/squad").set(squad);
+                            database.ref("users/" + localStorage.getItem("userid") + "/username").once('value').then(function(snapshot) {
+                                database.ref("squads/" + squad + "/members/" + localStorage.getItem("userid")).set(snapshot.val());
+                            });
+                            localStorage.setItem("squadname", squad);
+                        }
+                    } else { //If the password is not correct
+
+                    }
                 } else {//If this squad does not exist
                     console.log("This squad does not exist");
                 }

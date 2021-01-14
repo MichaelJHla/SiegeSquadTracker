@@ -15,6 +15,7 @@ auth.onAuthStateChanged(user => {
     if (user) {
         localStorage.setItem("userid", user.uid);
         database.ref("users/" + user.uid).once('value').then(function(snapshot) {
+            localStorage.setItem("squadname", snapshot.val().squad);
             //Redirect to the next page of the site once the new user has been added to the database
             window.location.replace("html/squad.html"); 
         });
