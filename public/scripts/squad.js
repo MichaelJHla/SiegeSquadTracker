@@ -42,6 +42,12 @@ function checkSquadStatus() {
             $('#squad-data').show();
             $('#squad-name').text(localStorage.getItem("squadname"));
             $('#no-squad').hide();
+            $('#squad-members-div').append("<h3>You are a member of " + squad + "</h3>");
+            database.ref("squads/" + squad + "/members").once('value').then(function(snapshot) {
+                Object.keys(snapshot.val()).forEach(function(key) {
+                    $('#squad-members-div').append("<h4>" + snapshot.val()[key] + "</h4>");
+                });
+            });
         } else { //If the user is not part of a squad
             $('#no-squad').show();
         }
