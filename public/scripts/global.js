@@ -16,5 +16,6 @@ function signOut() {
     auth.signOut().then(() => {
         localStorage.removeItem("squadname");
         localStorage.removeItem("userid");
+        localStorage.removeItem("username");
     });
 }

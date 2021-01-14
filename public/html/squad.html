@@ -116,7 +116,9 @@
                     }
                 } else {//If this squad does not exist
                     if (window.confirm("The squad " + squad + " does not exist. Would you like to create a new squad with this name and password?")) {
-                        createNewSquad(squad);
+                        createNewSquad(squad, squadPassword);
+                        localStorage.setItem("squadname", squad);
+                        database.ref("users/" + localStorage.getItem("userid") + "/squad").set(squad);
                     } else {
                         window.alert("New squad not created");
                     }
@@ -124,8 +126,23 @@
             });
         });
 
-        function createNewSquad(squad) {
+        function createNewSquad(squad, password) {
+            //Sets the squad password to the proper value
+            database.ref("squads/" + squad + "/password").set(password);
+
+            //sets the admin to the creator of the squad
+            database.ref("squads/" + squad + "/admin").set(localStorage.getItem("userid"));
+
+            //Add the first member to the squad
+            database.ref("users/" + localStorage.getItem("userid") + "/username").once('value').then(function(snapshot) {
+                database.ref("squads/" + squad + "/members/" + localStorage.getItem("userid")).set(snapshot.val());
+            });
+
+            //This creates all the site data and sets it to 0, and sets all maps to have no ban listed for their operator bans
             Object.keys(allSites).forEach(function(key) {
+                database.ref("squads/" + squad + "/operator-bans/" + key + "/attacker").set("none");
+                database.ref("squads/" + squad + "/operator-bans/" + key + "/defender").set("none");
+
                 var i;
                 for (i = 0; i < 4; i++) {
                     database.ref("squads/" + squad + "/site-data/" + key + "/site" + i + "/name").set(allSites[key][i]);
