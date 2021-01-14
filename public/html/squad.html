@@ -26,6 +26,8 @@
 
             <label for="squad-password">Squad password</label>
             <input type="password" id="squad-password">
+
+            <input type="submit" id="join-squad-button">
         </form>
     </div>
 
@@ -65,7 +67,7 @@
                 localStorage.removeItem("userid");
             });
         }
-        
+
         database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
             $('footer').text("Signed in as " + snapshot.val().username);
             var squad = snapshot.val().squad;
@@ -74,6 +76,22 @@
             } else { //If the user is not part of a squad
                 console.log("No squad found");
             }
+        });
+
+        var joinSquadForm = document.querySelector("#join-squad-form");
+        joinSquadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            database.ref("squads").once('value').then(function(snapshot) {
+                var squad = $('#squad').val();
+                var squadList = Object.keys(snapshot.val());
+                console.log(squadList);
+                if (squadList.includes(squad)) {//If this squad exists
+                    console.log("This squad exists");
+                } else {//If this squad does not exist
+                    console.log("This squad does not exist");
+                }
+            });
         });
     </script>
 </body>
