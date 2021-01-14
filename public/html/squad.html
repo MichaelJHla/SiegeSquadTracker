@@ -22,10 +22,10 @@
             <h3>Create or join a squad</h1>
 
             <label for="squad">Squad name</label>
-            <input id="squad">
+            <input id="squad" required>
 
             <label for="squad-password">Squad password</label>
-            <input type="password" id="squad-password">
+            <input type="password" id="squad-password" required>
 
             <input type="submit" id="join-squad-button">
         </form>
@@ -96,7 +96,7 @@
                             localStorage.setItem("squadname", squad);
                         }
                     } else { //If the password is not correct
-
+                        window.alert("This squad already exists and the password is incorrect");
                     }
                 } else {//If this squad does not exist
                     console.log("This squad does not exist");
