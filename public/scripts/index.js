@@ -15,10 +15,8 @@ auth.onAuthStateChanged(user => {
     if (user) {
         localStorage.setItem("userid", user.uid);
         database.ref("users/" + user.uid).once('value').then(function(snapshot) {
-            //Save the user information to local storage for quick access on other web pages
-            localStorage.setItem("squadname", snapshot.val().squad);
-
-            window.location.replace("html/map-bans.html"); //Redirect to the map bans page of the site
+            //Redirect to the next page of the site once the new user has been added to the database
+            window.location.replace("html/map-bans.html"); 
         });
     }
 });
@@ -55,7 +53,6 @@ newUserForm.addEventListener('submit', (e) => {
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
         //Sets all the provided data into the database
         database.ref("users/" + cred.user.uid + "/platform").set(platform);
-        database.ref("users/" + cred.user.uid + "/squad").set(squad);
         database.ref("users/" + cred.user.uid + "/username").set(username);
 
         var i;
@@ -68,7 +65,6 @@ newUserForm.addEventListener('submit', (e) => {
         }
 
         //Records the username of the new user into the data of the squad they joined
-        database.ref("squads/" + squad + "/members/" + cred.user.uid).set(username);
     }).catch(function(e) {
         window.alert(e.message);
     });
