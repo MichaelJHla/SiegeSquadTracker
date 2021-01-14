@@ -16,7 +16,7 @@ auth.onAuthStateChanged(user => {
         localStorage.setItem("userid", user.uid);
         database.ref("users/" + user.uid).once('value').then(function(snapshot) {
             //Redirect to the next page of the site once the new user has been added to the database
-            window.location.replace("html/map-bans.html"); 
+            window.location.replace("html/squad.html"); 
         });
     }
 });
@@ -47,7 +47,6 @@ newUserForm.addEventListener('submit', (e) => {
     //Uses a query selector to get the value of the radio buttons
     var platform = document.querySelector('input[name="platform"]:checked').value;
     var username = $('#platform-username').val();//Records the platform username
-    var squad = $('#squad-name').val();//Records the squad name
 
     //Sign up the new user
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
