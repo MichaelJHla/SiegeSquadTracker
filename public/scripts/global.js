@@ -7,6 +7,9 @@ $('#squad-name').text(localStorage.getItem("squadname"));
 //Get the current status of the user's login
 auth.onAuthStateChanged(user => {
     if (!user) { //If a user is not logged in
+        localStorage.removeItem("squadname");
+        localStorage.removeItem("userid");
+        localStorage.removeItem("username");
         window.location.replace("../index.html");
     }
 });
