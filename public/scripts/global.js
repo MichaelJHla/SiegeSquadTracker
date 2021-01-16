@@ -11,6 +11,12 @@ auth.onAuthStateChanged(user => {
         localStorage.removeItem("userid");
         localStorage.removeItem("username");
         window.location.replace("../index.html");
+    } else {
+        database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
+            if (!snapshot.val().squad) {
+                window.location.replace("squad.html");
+            }
+        })
     }
 });
 
