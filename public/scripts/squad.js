@@ -130,6 +130,15 @@ function createNewSquad(squad, password) {
     checkSquadStatus();
 }
 
+
+//This function will be passed a player and they will be fully removed from the squad they are currently a part of
+function removeFromSquad(player, squad) {
+    database.ref("users/" + player + "/squad").remove();
+    database.ref("squads/" + squad + "/members/" + player).remove();
+    database.ref("squads/" + squad + "/map-bans/" + player).remove();
+    updateSquadBans();
+}
+
 function updateSquadBans() {
     database.ref("squads/" + localStorage.getItem("squadname")).once('value').then(function(snapshot) {
         var members = Object.keys(snapshot.val()["members"]);//Gets the list of members in the squad
