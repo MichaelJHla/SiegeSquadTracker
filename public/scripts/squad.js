@@ -43,24 +43,27 @@ function checkSquadStatus() {
             $('#squad-name').text(localStorage.getItem("squadname"));
             $('#no-squad').hide();
             $('#squad-members-div').append("<h3>You are a member of " + squad + "</h3>");
-            database.ref("squads/" + squad + "/members").once('value').then(function(snapshot) {
-                Object.keys(snapshot.val()).forEach(function(key) {
-                    $('#squad-members-div').append("<h4>" + snapshot.val()[key] + "</h4>");
-                    var removeButton = $('<button></button>');
-                    removeButton.css({"background-image": "url('../images/icons/minus-square.svg')"});
-                    removeButton.click(function() { //This function will verify the removal of a user from a squad
-                        if (window.confirm("Would you like to remove " + snapshot.val()[key] + " from the squad?")) {
-                            removeFromSquad(key, squad);
-                            $('#squad-members-div').empty();
-                            checkSquadStatus();
-                        }
-                    });
-                    removeButton.addClass("remove-button");
-                    $('#squad-members-div').append(removeButton);
+            database.ref("squads/" + squad).once('value').then(function(snapshot) {
+                Object.keys(snapshot.val().members).forEach(function(key) {
+                    $('#squad-members-div').append("<h4>" + snapshot.val().members[key] + "</h4>");
+                    if (localStorage.getItem("userid") == snapshot.val().admin) {
+                        var removeButton = $('<button></button>');
+                        removeButton.css({"background-image": "url('../images/icons/minus-square.svg')"});
+                        removeButton.click(function() { //This function will verify the removal of a user from a squad
+                            if (window.confirm("Would you like to remove " + snapshot.val().members[key] + " from the squad?")) {
+                                removeFromSquad(key, squad);
+                                $('#squad-members-div').empty();
+                                checkSquadStatus();
+                            }
+                        });
+                        removeButton.addClass("remove-button");
+                        $('#squad-members-div').append(removeButton);
+                    }
                 });
             });
         } else { //If the user is not part of a squad
             $('#no-squad').show();
+            $('#header-wrapper').hide();
         }
     });
 }

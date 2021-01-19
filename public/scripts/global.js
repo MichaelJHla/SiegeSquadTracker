@@ -17,6 +17,7 @@ auth.onAuthStateChanged(user => {
         //Checks if the user is part of a squad, if they are not then return them to the squad page
         database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
             if (!snapshot.val().squad) {
+                localStorage.removeItem("squadname");
                 window.location.replace("squad.html");
             }
         });
