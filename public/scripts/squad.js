@@ -46,6 +46,17 @@ function checkSquadStatus() {
             database.ref("squads/" + squad + "/members").once('value').then(function(snapshot) {
                 Object.keys(snapshot.val()).forEach(function(key) {
                     $('#squad-members-div').append("<h4>" + snapshot.val()[key] + "</h4>");
+                    var removeButton = $('<button></button>');
+                    removeButton.css({"background-image": "url('../images/icons/minus-square.svg')"});
+                    removeButton.click(function() { //This function will verify the removal of a user from a squad
+                        if (window.confirm("Would you like to remove " + snapshot.val()[key] + " from the squad?")) {
+                            removeFromSquad(key, squad);
+                            $('#squad-members-div').empty();
+                            checkSquadStatus();
+                        }
+                    });
+                    removeButton.addClass("remove-button");
+                    $('#squad-members-div').append(removeButton);
                 });
             });
         } else { //If the user is not part of a squad
