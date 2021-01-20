@@ -61,6 +61,17 @@ function checkSquadStatus() {
                     }
                 });
             });
+            var leaveSquadButton = $('<button></button');
+            leaveSquadButton.html("Leave the Squad");
+            leaveSquadButton.addClass("leave-squad-button");
+            leaveSquadButton.click(function() {
+                if (window.confirm("Would you like to leave " + squad + "?")) {
+                    removeFromSquad(localStorage.getItem("userid"), squad);
+                    $('#squad-members-div').empty();
+                    checkSquadStatus();
+                }
+            });
+            $('#squad-members-div').append(leaveSquadButton);
         } else { //If the user is not part of a squad
             $('#no-squad').show();
             $('#header-wrapper').hide();
