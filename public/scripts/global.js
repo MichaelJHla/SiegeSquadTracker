@@ -4,7 +4,7 @@ database.ref("users/" + localStorage.getItem("userid") + "/username").once('valu
 });
 
 //Sets the squad name text at the top of the page
-$('#squad-name').text(localStorage.getItem("squadname"));
+$('#squad-name').html("<a href='squad.html'>" + localStorage.getItem("squadname") + "</a>");
 
 //Get the current status of the user's login
 auth.onAuthStateChanged(user => {
