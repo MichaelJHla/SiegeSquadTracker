@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/squad.css">
     <link rel="stylesheet" href="https://use.typekit.net/huf3guc.css">
     <title>Siege Squad Tracker</title>
 </head>
 
 <body>
-    <div id="header">
-        <h1 id="squad-name">Squad Name</h1>
-        <div id="nav-elements">
-            <h2><a href="map-bans.html">Map Ban Helper</a></h2>
-            <h2><a href="operator-bans.html">Operator Bans</a></h2>
-            <h2><a href="site-stats.html">Site Stat Tracker</a></h2>
+    <div id="header-wrapper">
+        <div id="header">
+            <h1 id="squad-name">No Squad</h1>
+            <div id="nav-elements">
+                <h2><a href="map-bans.html">Map Ban Helper</a></h2>
+                <h2><a href="operator-bans.html">Operator Bans</a></h2>
+                <h2><a href="site-stats.html">Site Stat Tracker</a></h2>
+            </div>
         </div>
     </div>
 
@@ -22,15 +25,22 @@
             <h3>Create or join a squad</h1>
 
             <label for="squad">Squad name</label>
-            <input id="squad">
+            <input id="squad" required>
 
             <label for="squad-password">Squad password</label>
-            <input type="password" id="squad-password">
+            <input type="password" id="squad-password" required>
+
+            <input type="submit" id="join-squad-button">
         </form>
     </div>
 
     <div id="squad-data">
-        
+        <div id="squad-members-div"></div>
+        <div id="squad-password-div">
+            <h3>Squad password:</h3>
+            <h4 id="view-password"></h4>
+            <button onclick="viewSquadPassword(this)">Show password</button>
+        </div>
     </div>
 
     <div id="footer-div">
@@ -49,6 +59,6 @@
     <script src="../scripts/firebaseConfig.js"></script>
     <!--jQuery import-->
     <script src="../scripts/jquery.js"></script>
-    <!--Global script for setting up data between multiple pages-->
-    <script src="../scripts/global.js"></script>
+
+    <script src="../scripts/squad.js"></script>
 </body>

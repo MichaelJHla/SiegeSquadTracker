@@ -1,0 +1,20 @@
+#header-wrapper {
+    display: none;
+}
+
+#squad-data {
+    display: none;
+}
+
+#no-squad {
+    display: none;
+}
+
+.remove-button {
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    /* put the height and width of your image here */
+    width: 40px;
+    height: 40px;
+    border: none;
+}
