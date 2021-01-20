@@ -54,10 +54,21 @@ function checkSquadStatus() {
             $('#squad-data').show();
             $('#squad-name').text(localStorage.getItem("squadname"));
             $('#no-squad').hide();
+            //Displays to the user what squad they are a part of
             $('#squad-members-div').append("<h3>You are a member of " + squad + "</h3>");
+
+            //Pulls data from the squad
             database.ref("squads/" + squad).once('value').then(function(snapshot) {
+                //This block of code adds a piece of text stating to the user who the squad admin is
+                var squadLeader = $("<h3></h3>");
+                squadLeader.html("Squad admin: " + snapshot.val().members[snapshot.val().admin]);
+                $('#squad-members-div').append(squadLeader);
+
+                //This for each loop displays each squad member
                 Object.keys(snapshot.val().members).forEach(function(key) {
                     $('#squad-members-div').append("<h4>" + snapshot.val().members[key] + "</h4>");
+
+                    //If the current user is the admin, then display all admin controls
                     if (localStorage.getItem("userid") == snapshot.val().admin) {
                         var removeButton = $('<button></button>');
                         removeButton.css({"background-image": "url('../images/icons/minus-square.svg')"});
@@ -73,10 +84,12 @@ function checkSquadStatus() {
                     }
                 });
             });
+
+            //Adds a button which allows the user to leave the squad they are currently a part of
             var leaveSquadButton = $('<button></button');
             leaveSquadButton.html("Leave the Squad");
             leaveSquadButton.addClass("leave-squad-button");
-            leaveSquadButton.click(function() {
+            leaveSquadButton.click(function() {//Confirms with the user that they are sure they want to leave the squad
                 if (window.confirm("Would you like to leave " + squad + "?")) {
                     removeFromSquad(localStorage.getItem("userid"), squad);
                     $('#squad-members-div').empty();
