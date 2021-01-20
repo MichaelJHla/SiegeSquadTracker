@@ -33,6 +33,18 @@ function signOut() {
     });
 }
 
+function viewSquadPassword(e) {
+    if ($(e).html() == "Show password") {
+        database.ref("squads/" + localStorage.getItem("squadname") + "/password").once('value').then(function(snapshot) {
+            $('#view-password').html(snapshot.val());
+            $(e).html("Hide password");
+        });
+    } else {
+        $('#view-password').html("");
+        $(e).html("Show password");
+    }
+}
+
 function checkSquadStatus() {
     database.ref("users/" + localStorage.getItem("userid")).once('value').then(function(snapshot) {
         $('footer').text("Signed in as " + snapshot.val().username);
@@ -75,6 +87,7 @@ function checkSquadStatus() {
         } else { //If the user is not part of a squad
             $('#no-squad').show();
             $('#header-wrapper').hide();
+            $('#squad-data').hide();
         }
     });
 }
