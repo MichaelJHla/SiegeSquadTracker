@@ -174,6 +174,11 @@ function removeFromSquad(player, squad) {
     database.ref("users/" + player + "/squad").remove();
     database.ref("squads/" + squad + "/members/" + player).remove();
     database.ref("squads/" + squad + "/map-bans/" + player).remove();
+    database.ref("squads/" + squad).once('value').then(function(snapshot) {
+        if (player == snapshot.val().admin) {
+            database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
+        }
+    });
     updateSquadBans();
 }
 
