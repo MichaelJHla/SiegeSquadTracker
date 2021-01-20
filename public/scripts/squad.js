@@ -81,6 +81,18 @@ function checkSquadStatus() {
                         });
                         removeButton.addClass("remove-button");
                         $('#squad-members-div').append(removeButton);
+
+                        var makeAdminButton = $('<button></button>');
+                        makeAdminButton.html("Make admin");
+                        makeAdminButton.click(function() {
+                            if (window.confirm("Would you like to make " + snapshot.val().members[key] + " the new admin?\nDoing so will remove your own admin capabilities.")) {
+                                database.ref("squads/" + squad + "/admin").set(key);
+                                $('#squad-members-div').empty();
+                                checkSquadStatus();
+                            }
+                        });
+                        makeAdminButton.addClass("make-admin-button");
+                        $('#squad-members-div').append(makeAdminButton);
                     }
                 });
             });
