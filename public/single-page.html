@@ -45,13 +45,30 @@
                 <h2>Sign In</h2>
                 <h3>New user? <span id="create-account-link">Sign up for free</span></h3>
                 <form>
-                    <input type="text" id="sign-in-email" placeholder="Email">
-                    <input type="text" id="sign-in-password" placeholder="Password">
+                    <input type="text" id="sign-in-email" placeholder="Email" class="sign-in-text-input" required>
+                    <input type="password" id="sign-in-password" placeholder="Password" class="sign-in-text-input" required>
                     <input type="submit" id="sign-in-submit" value="Login">
                 </form>
             </div>
             <div id="create-account">
+                <h2>Create an Account</h2>
+                <h3>Already have an account? <span id="sign-in-link">Sign in here</span></h3>
+                <form>
+                    <div id="platform-div">
+                        <input type="radio" id="xbox" value="xbox" name="platform" class="platform-radio" required>
+                        <label for="xbox" class="platform-radio-label"><i class="fab fa-xbox"></i></label>
 
+                        <input type="radio" id="playstation" value="playstation" name="platform" class="platform-radio" required>
+                        <label for="playstation" class="platform-radio-label"><i class="fab fa-playstation"></i></label>
+
+                        <input type="radio" id="pc" value="pc" name="platform" class="platform-radio" required>
+                        <label for="pc" class="platform-radio-label"><i class="fas fa-desktop"></i></label>
+                    </div>
+                    <input type="text" id="create-account-username" placeholder="Platform username" class="sign-in-text-input" required>
+                    <input type="text" id="create-account-email" placeholder="Email" class="sign-in-text-input" required>
+                    <input type="password" id="create-account-password" placeholder="Password" class="sign-in-text-input" required>
+                    <input type="submit" id="create-account-submit" value="Create account">
+                </form>
             </div>
         </div>
         <div id="map-bans-main">
