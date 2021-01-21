@@ -111,10 +111,111 @@
             </div>
         </div>
         <div id="operator-bans-main">
+            <h2>Operator Bans</h2>
+            <div id="operator-map-list-div">
+                <label for="operator-map-list">Select a map:</label>
+                <select id="operator-map-list">
+                    <option disabled selected value> -- select a map -- </option>
+                    <option value="bank">Bank</option>
+                    <option value="border">Border</option>
+                    <option value="chalet">Chalet</option>
+                    <option value="clubhouse">Clubhouse</option>
+                    <option value="coastline">Coastline</option>
+                    <option value="consulate">Consulate</option>
+                    <option value="kafe">Kafe</option>
+                    <option value="kanal">Kanal</option>
+                    <option value="oregon">Oregon</option>
+                    <option value="outback">Outback</option>
+                    <option value="skyscraper">Skyscraper</option>
+                    <option value="park">Theme Park</option>
+                    <option value="villa">Villa</option>
+                </select>
+            </div>
+            <div id="operator-select-div">
+                <select id="attack-operators" class="operator-list">
+                    <option disabled selected value="NA"> -- select an attack op -- </option>
+                    <option value="none">No Ban</option>
+                    <option value="ace">Ace</option>
+                    <option value="amaru">Amaru</option>
+                    <option value="ash">Ash</option>
+                    <option value="blackbeard">Blackbeard</option>
+                    <option value="blitz">Blitz</option>
+                    <option value="buck">Buck</option>
+                    <option value="capitao">Capitao</option>
+                    <option value="dokkaebi">Dokkaebi</option>
+                    <option value="finka">Finka</option>
+                    <option value="fuze">Fuze</option>
+                    <option value="glaz">Glaz</option>
+                    <option value="gridlock">Gridlock</option>
+                    <option value="hibana">Hibana</option>
+                    <option value="iana">Iana</option>
+                    <option value="iq">IQ</option>
+                    <option value="jackal">Jackal</option>
+                    <option value="kali">Kali</option>
+                    <option value="lion">Lion</option>
+                    <option value="maverick">Maverick</option>
+                    <option value="Montagne">Montagne</option>
+                    <option value="nokk">Nokk</option>
+                    <option value="nomad">Nomad</option>
+                    <option value="sledge">Sledge</option>
+                    <option value="thatcher">Thatcher</option>
+                    <option value="thermite">Thermite</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="ying">Ying</option>
+                    <option value="zero">Zero</option>
+                    <option value="zofia">Zofia</option>
+                </select>
 
+                <select id="defense-operators" class="operator-list">
+                    <option disabled selected value="NA"> -- select a defense op -- </option>
+                    <option value="none">No Ban</option>
+                    <option value="alibi">Alibi</option>
+                    <option value="aruni">Aruni</option>
+                    <option value="bandit">Bandit</option>
+                    <option value="castle">Castle</option>
+                    <option value="caveira">Caveira</option>
+                    <option value="clash">Clash</option>
+                    <option value="doc">Doc</option>
+                    <option value="echo">Echo</option>
+                    <option value="ela">Ela</option>
+                    <option value="frost">Frost</option>
+                    <option value="goyo">Goyo</option>
+                    <option value="jager">Jager</option>
+                    <option value="kaid">Kaid</option>
+                    <option value="kapkan">Kapkan</option>
+                    <option value="lesion">Lesion</option>
+                    <option value="maestro">Maestro</option>
+                    <option value="melusi">Melusi</option>
+                    <option value="mira">Mira</option>
+                    <option value="mozzie">Mozzie</option>
+                    <option value="mute">Mute</option>
+                    <option value="oryx">Oryx</option>
+                    <option value="pulse">Pulse</option>
+                    <option value="rook">Rook</option>
+                    <option value="smoke">Smoke</option>
+                    <option value="tachanka">Tachanka</option>
+                    <option value="valkyrie">Valkyrie</option>
+                    <option value="vigil">Vigil</option>
+                    <option value="wamai">Wamai</option>
+                    <option value="warden">Warden</option>
+                </select>
+
+                <button id="submit-operator-bans">Submit changes</button>
+            </div>
+            <div id="unsaved-changes">
+                <h4>*You have unsaved changes</h4>
+            </div>
+            <div id="operator-display">
+                <!--This will show the two operators selected to be banned on this map-->
+                <img id="attack-operator">
+                <img id="defense-operator">
+            </div>
+            <div id="edit-operators-button">
+                <button id="edit-operator-bans">Edit bans</button>
+            </div>
         </div>
         <div id="site-stats-main">
-
+            
         </div>
     </div>
 </body>
