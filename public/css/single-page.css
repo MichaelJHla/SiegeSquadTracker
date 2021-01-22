@@ -115,7 +115,7 @@ input[type=submit] {
 #sign-in {
     background-color: #222222;
     padding: 0 2vw 2vw 2vw;
-    border-radius: 50px;
+    border-radius: 3vw;
     width: 60%;
     margin: 0 auto;
 }
