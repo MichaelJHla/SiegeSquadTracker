@@ -61,6 +61,22 @@ body {
     background-color: #3D99FF;
 }
 
-#main {
+#sign-in-main {
+    display: none;
+}
+
+#user-settings-main {
+    display: none;
+}
+
+#map-bans-main {
+    display: none;
+}
+
+#operator-bans-main {
+    display: none;
+}
+
+#site-stats-main {
     display: none;
 }
