@@ -113,6 +113,8 @@ input[type=submit] {
 }
 
 #sign-in {
+    display: none;
+
     background-color: #222222;
     padding: 0 2vw 2vw 2vw;
     border-radius: 3vw;
@@ -121,7 +123,38 @@ input[type=submit] {
 }
 
 #create-account {
-    display: none;
+    display: block;
+
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 3vw;
+    width: 60%;
+    margin: 0 auto;
+}
+
+#platform-div {
+    display: flex;
+    justify-content: space-evenly;
+    width: 60%;
+    margin: 0 auto;
+}
+
+#create-account input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#create-account label {
+    color: white;
+    font-size: 3vw;
+    text-align: center;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#create-account input[type=radio]:checked+label {
+    color: #3D99FF;
 }
 
 
