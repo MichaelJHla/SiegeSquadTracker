@@ -8,6 +8,10 @@ body {
     display: flex;
 }
 
+#main {
+    width: 80vw;
+}
+
 /*Sidebad and nav elements*/
 #sidebar {
     width: 20vw;
@@ -16,6 +20,8 @@ body {
     flex-direction: column;
     height: 100vh;
     font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 #sidebar-top {
@@ -62,8 +68,66 @@ body {
 }
 
 #sign-in-main {
+    display: block;
+}
+
+#sign-in-main h2 {
+    color: white;
+    text-align: center;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 5vw;
+    margin-block-end: 0;
+}
+
+#sign-in-main h3 {
+    color: white;
+    text-align: center;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6vw;
+    line-height: 0;
+}
+
+#sign-in-main span {
+    color: #3D99FF;
+    cursor: pointer;
+}
+
+input[type=text], input[type=password], input[type=submit] {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    width: 100%;
+    font-size: 2vw;
+    margin-bottom: .5vw;
+}
+
+input[type=submit] {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    background-color: #3D99FF;
+}
+
+#sign-in {
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 50px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+#create-account {
     display: none;
 }
+
+
+
+
+
 
 #user-settings-main {
     display: none;
