@@ -165,6 +165,8 @@ input[type=submit] {
 }
 
 #join-squad {
+    display: none;
+
     width: 40%;
     margin: 0 auto;
 }
@@ -179,6 +181,59 @@ input[type=submit] {
     margin-block-end: 0;
 }
 
+#user-settings-squad-name {
+    color: white;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 4vw;
+    margin-block-end: 0;
+}
+
+#squad-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#squad-info-content {
+    display: flex;
+}
+
+.squad-info-sub-section {
+    margin: 2vw;
+}
+
+.squad-info-sub-section h3{
+    color: white;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2vw;
+    text-align: center;
+}
+
+#squad-password-div, #members-list {
+    background-color: #222222;
+    border-radius: 2vw;
+    padding: 0 1vw 1vw 1vw;
+}
+
+#squad-info button {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    background-color: #3D99FF;
+    width: 100%;
+    font-size: 1vw;
+}
+
+#squad-info p {
+    color: white;
+    text-align: center;
+}
 
 #map-bans-main {
     display: none;
