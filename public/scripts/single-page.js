@@ -24,7 +24,7 @@ const mapBans = document.querySelector('#map-bans');
 mapBans.addEventListener('click', function() {
     hideAll();
     $('#map-bans-main').show();
-})
+});
 
 function hideAll() {
     $('#sign-in-main').hide();
