@@ -23,19 +23,36 @@ var auth = firebase.auth();
 auth.onAuthStateChanged(user => {
     if (user) {
         console.log("User signed in");
+        //Reveal and hide the proper elements for the user's profile status
         $('#sign-in-elements').hide();
         $('#upper-elements').css('display', 'flex');
         $('#lower-elements').css('display', 'flex');
 
-        userSettings.click();
+        userSettings.click(); //Click the user settings page
     } else {
         console.log("No user signed in");
+        //Reveal and hide the proper elements for the user's profile status
         $('#sign-in-elements').css('display', 'flex');
         $('#upper-elements').hide();
         $('#lower-elements').hide();
 
-        signIn.click();
+        signIn.click(); //Click the sign in page
     }
+});
+
+//Directs the user to the create account form
+const createAccountLink = document.querySelector('#create-account-link');
+createAccountLink.addEventListener('click', function() {
+    $('#sign-in').hide();
+    $('#create-account').show();
+});
+
+//Directs the user to the sign in form
+
+const signInLink = document.querySelector('#sign-in-link');
+signInLink.addEventListener('click', function() {
+    $('#create-account').hide();
+    $('#sign-in').show();
 });
 
 //Once the user clicks on the user settings page
@@ -71,6 +88,8 @@ const signIn = document.querySelector('#sign-in-radio');
 signIn.addEventListener('click', function() {
     hideAll();
     $('#sign-in-main').show();
+    $('#create-account').hide();
+    $('#sign-in').show();
 })
 
 //This function hides all the elements that would appear in the main section of the page,
