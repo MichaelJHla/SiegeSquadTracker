@@ -140,12 +140,11 @@ newUserForm.addEventListener('submit', (e) => {
         database.ref("users/" + cred.user.uid + "/platform").set(platform);
         database.ref("users/" + cred.user.uid + "/username").set(username);
 
-        var i;
         maps = ["bank", "border", "chalet", "clubhouse", "coastline",
                 "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
                 "park", "villa"];
         //Initializes each map in alphabetical order on the map bans page
-        for (i = 0; i < maps.length; i++) {
+        for (var i = 0; i < maps.length; i++) {
             database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
         }
 
