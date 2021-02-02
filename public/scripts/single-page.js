@@ -298,7 +298,7 @@ function displaySquadMembers(squad) {
                 adminButton.click(function() {//This click function asks the user if they would like to promote this user to the admin 
                     if (window.confirm("Would you like to make " + s.val().members[key] + " the new admin?\nDoing so will remove your own admin capabilities.")) {
                         database.ref("squads/" + squad + "/admin").set(key);
-                        checkSquadStatus();
+                        userSettings.click();//Refresh the info on the userSettings page
                     }
                 });
                 buttonsDiv.append(adminButton);//Appends the button to the div which stores the admin buttons
@@ -310,7 +310,7 @@ function displaySquadMembers(squad) {
                 removeButton.click(function() {//This click functions confirms the removal of a user from the squad
                     if (window.confirm("Would you like to remove " + s.val().members[key] + " from the squad?")) {
                         removeFromSquad(key, squad);
-                        checkSquadStatus();
+                        userSettings.click();//Refresh the info on the userSettings page
                     }
                 });
                 buttonsDiv.append(removeButton);
@@ -324,4 +324,16 @@ function displaySquadMembers(squad) {
             }
         });
     });
+}
+
+function removeFromSquad(player, squad) {
+    database.ref("users/" + player + "/squad").remove();
+    database.ref("squads/" + squad + "/members/" + player).remove();
+    database.ref("squads/" + squad + "/map-bans/" + player).remove();
+    database.ref("squads/" + squad).once('value').then(function(snapshot) {
+        if (player == snapshot.val().admin) {
+            database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
+        }
+    });
+    //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
 }
