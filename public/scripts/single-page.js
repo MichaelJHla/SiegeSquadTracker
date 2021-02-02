@@ -1,3 +1,20 @@
+//This map associates each map with its list of 4 sites
+var allSites = 
+    {"bank": ["Executive Lounge and CEO", "Staff Room and Open Area", "Teller's Office and Archives", "Lockers and CCTV"],
+    "border": ["Customs and Supply Room", "Workshop and Ventilation", "Tellers and Bathroom", "Armory Lockers and Archives"],
+    "chalet": ["Master Bedroom and Office", "Bar and Gaming Room", "Dining Room and Kitchen", "Wine Cellar and Snowmobile Garage"],
+    "clubhouse": ["Gym and Bedroom", "CCTV and Cashroom", "Bar and Stock Room", "Church and Arsenal Room"],
+    "coastline": ["Theater and Penthouse", "Hookah Lounge and Billiards Room", "Blue Bar and Sunrise Bar", "Service Entrance and Kitchen"],
+    "consulate": ["Consul Office and Meeting Room", "Lobby and Press Room", "Garage and Cafeteria", "Tellers and Archives"],
+    "kafe": ["Cocktail Lounge and Bar", "Mining Room and Fireplace Hall", "Reading Room and Fireplace Hall", "Kitchen Service and Kitchen Cooking"],
+    "kanal": ["Server Room and Radar Room", "Security Room and Map Room", "Coast Guard Meeting Room and Lounge", "Supply Room and Kayaks"],
+    "oregon": ["Main Dorms Hall and Kids Dorm", "Dining Hall and Kitchen", "Meeting Hall and Kitchen", "Laundry Room and Supply Room"],
+    "outback": ["Games Room and Laundry Room", "Party Room and Office", "Nature Room and Bushranger Office", "Gear Store and Compressor"],
+    "park": ["Office and Initiation Room", "Bunk and Day Care", "Armory and Throne Room", "Lab and Storage"],
+    "skyscraper": ["Tea Room and Karaoke", "Exhibition Room and Office", "Kitchen and BBQ", "Bedroom and Bathroom"],
+    "villa": ["Aviator Room and Games Room", "Trophy Room and Statuary Room", "Living Room and Library", "Dining Room and Kitchen"]
+};
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
@@ -76,6 +93,7 @@ userSettings.addEventListener('click', function() {
         if (s.val().squad) {//If the user is part of a squad, then show the squad info
             $('#join-squad').hide();
             $('#squad-info').show();
+            $('#user-settings-squad-name').text(s.val().squad);
         } else {//If the user is not part of a squad then show the user the screen to join a squad
             $('#join-squad').show();
             $('#squad-info').hide();
@@ -201,10 +219,56 @@ joinSquadForm.addEventListener('submit', (e) => {
                 createNewSquad(squad, squadPassword);//Calls the function to create a new squad
                 localStorage.setItem("squadname", squad);//Sets the squadname into local storage
                 database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
+
+                userSettings.click();//Refresh the info on the userSettings page
             } else {
                 window.alert("New squad not created.");
             }
         }
+        
         userSettings.click();//Refresh the info on the userSettings page
     });
 });
+
+//This function handles the creation of a new squad by assigning the admin to the creator,
+// and then creating all the blank data the squad needs to be added onto later
+function createNewSquad(squad, password) {
+    //Sets the squad password to the proper value
+    database.ref("squads/" + squad + "/password").set(password);
+
+    //sets the admin to the creator of the squad
+    database.ref("squads/" + squad + "/admin").set(auth.currentUser.uid);
+
+    //Add the first member to the squad
+    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s) {
+        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s.val());
+    });
+
+    //This creates all the site data and sets it to 0, and sets all maps to have no ban listed for their operator bans
+    Object.keys(allSites).forEach(function(map) {
+        database.ref("squads/" + squad + "/operator-bans/" + map + "/attacker").set("none");
+        database.ref("squads/" + squad + "/operator-bans/" + map + "/defender").set("none");
+        
+        //The creation and zeroing of all site data
+        for (var i = 0; i < 4; i++) {
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/name").set(allSites[map][i]);
+
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/aloss").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/awin").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dloss").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dwin").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/paloss").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pawin").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdloss").set(0);
+            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdwin").set(0);
+        }
+    });
+    
+    //Move the user's map bans into the squad's map bans sections
+    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
+        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
+        //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
+    });
+
+    userSettings.click();//Refresh the info on the userSettings page
+}
