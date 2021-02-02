@@ -94,6 +94,7 @@ userSettings.addEventListener('click', function() {
             $('#join-squad').hide();
             $('#squad-info').show();
             $('#user-settings-squad-name').text(s.val().squad);
+            displaySquadMembers(s.val().squad);
         } else {//If the user is not part of a squad then show the user the screen to join a squad
             $('#join-squad').show();
             $('#squad-info').hide();
@@ -225,7 +226,7 @@ joinSquadForm.addEventListener('submit', (e) => {
                 window.alert("New squad not created.");
             }
         }
-        
+
         userSettings.click();//Refresh the info on the userSettings page
     });
 });
@@ -271,4 +272,22 @@ function createNewSquad(squad, password) {
     });
 
     userSettings.click();//Refresh the info on the userSettings page
+}
+
+function displaySquadMembers(squad) {
+    $('#members-list').empty();
+    $('#members-list').append('<h3>Members</h3>');
+    database.ref("squads/" + squad).once('value').then(function(s) {
+        var admin = s.val().admin;
+        Object.keys(s.val().members).forEach(function(key) {
+            if (auth.currentUser.uid == admin) {//If the user is the admin add extra to the squad list
+                $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
+                                            "<div class='member-buttons'><button class='icon-button'><i class='fas fa-user-cog'></i></button>" + 
+                                            "<button class='icon-button'><i class='fas fa-user-minus'></i></button></div></div>");
+            } else {//if the user is not the admin, just display the squad list with no extra controls
+                $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
+                                            "<div class='member-buttons'></div></div>");
+            }
+        });
+    });
 }
