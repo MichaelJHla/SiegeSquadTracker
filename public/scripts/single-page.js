@@ -274,16 +274,50 @@ function createNewSquad(squad, password) {
     userSettings.click();//Refresh the info on the userSettings page
 }
 
+//This functions displays a list showing the squad members
 function displaySquadMembers(squad) {
-    $('#members-list').empty();
+    $('#members-list').empty();//Clears the list in case there was a previous viewing of the squad list
     $('#members-list').append('<h3>Members</h3>');
     database.ref("squads/" + squad).once('value').then(function(s) {
         var admin = s.val().admin;
         Object.keys(s.val().members).forEach(function(key) {
             if (auth.currentUser.uid == admin) {//If the user is the admin add extra to the squad list
-                $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
-                                            "<div class='member-buttons'><button class='icon-button'><i class='fas fa-user-cog'></i></button>" + 
-                                            "<button class='icon-button'><i class='fas fa-user-minus'></i></button></div></div>");
+                //This div will represent an entire member of the squad
+                var memberDiv = $('<div></div>');
+                memberDiv.addClass("member");
+                memberDiv.append("<h4>" + s.val().members[key] + "</h4>");//Adds an h4 element with the member name
+
+                //This makes a new div which will store the admin button options 
+                var buttonsDiv = $('<div></div>');
+                buttonsDiv.addClass("member-buttons");
+
+                //The admin button is used to promote a user to the admin of the squad
+                var adminButton = $('<button></button>');
+                adminButton.html("<i class='fas fa-user-cog'></i>");
+                adminButton.addClass("icon-button");
+                adminButton.click(function() {//This click function asks the user if they would like to promote this user to the admin 
+                    if (window.confirm("Would you like to make " + s.val().members[key] + " the new admin?\nDoing so will remove your own admin capabilities.")) {
+                        database.ref("squads/" + squad + "/admin").set(key);
+                        checkSquadStatus();
+                    }
+                });
+                buttonsDiv.append(adminButton);//Appends the button to the div which stores the admin buttons
+
+                //The remove button is used to remove a user from the squad
+                var removeButton = $('<button></button>');
+                removeButton.html("<i class='fas fa-user-minus'></i>");
+                removeButton.addClass("icon-button");
+                removeButton.click(function() {//This click functions confirms the removal of a user from the squad
+                    if (window.confirm("Would you like to remove " + s.val().members[key] + " from the squad?")) {
+                        removeFromSquad(key, squad);
+                        checkSquadStatus();
+                    }
+                });
+                buttonsDiv.append(removeButton);
+
+                //Appends the buttons to the member div then appends the member div to the members list
+                memberDiv.append(buttonsDiv);
+                $('#members-list').append(memberDiv);
             } else {//if the user is not the admin, just display the squad list with no extra controls
                 $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
                                             "<div class='member-buttons'></div></div>");
