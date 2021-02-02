@@ -22,15 +22,23 @@ var auth = firebase.auth();
 //Get the current status of the user's login
 auth.onAuthStateChanged(user => {
     if (user) {
-        console.log("User signed in");
-        //Reveal and hide the proper elements for the user's profile status
-        $('#sign-in-elements').hide();
-        $('#upper-elements').css('display', 'flex');
-        $('#lower-elements').css('display', 'flex');
-        console.log(localStorage.getItem("username"));
-        $('#user-settings-label').html('<i class="fas fa-user"></i> ' + localStorage.getItem("username"));
+        database.ref("users/" + user.uid).once('value').then(function(s) {
+            //Records needed variables to local storage
+            localStorage.setItem('userID', user.uid);
+            localStorage.setItem('squadname', s.val().squad);
+            localStorage.setItem('username', s.val().username);
 
-        userSettings.click(); //Click the user settings page
+            console.log("User signed in");
+            //Reveal and hide the proper elements for the user's profile status
+            $('#sign-in-elements').hide();
+            $('#upper-elements').css('display', 'flex');
+            $('#lower-elements').css('display', 'flex');
+            console.log(localStorage.getItem('username'));
+            $('#user-settings-label').html('<i class="fas fa-user"></i> ' + localStorage.getItem('username'));
+
+            userSettings.click(); //Click the user settings page
+        });
+        
     } else {
         console.log("No user signed in");
         //Reveal and hide the proper elements for the user's profile status
@@ -61,10 +69,17 @@ signInLink.addEventListener('click', function() {
 const userSettings = document.querySelector('#user-settings');
 userSettings.addEventListener('click', function() {
     hideAll();
-    $('#user-settings-main').show();
-    if (localStorage.getItem('squadname')) {//TODO properly recognize if the user is part of a squad
-
-    }
+    $('#user-settings-main').show();//Display the user settings section
+    //Access the database to see if the user is part of a squad
+    database.ref('users/' + auth.currentUser.uid).once('value').then(function(s) {
+        if (s.val().squad) {//If the user is part of a squad, then show the squad info
+            $('#join-squad').hide();
+            $('#squad-info').show();
+        } else {//If the user is not part of a squad then show the user the screen to join a squad
+            $('#join-squad').show();
+            $('#squad-info').hide();
+        }
+    });
 });
 
 //Once the user clicks on the site stats page
@@ -116,14 +131,7 @@ signInForm.addEventListener('submit', (e) => {
     var password = $('#sign-in-password').val();//Records the provided password
 
     //Uses the email and password to log in a user
-    auth.signInWithEmailAndPassword(email, password).then(cred => {
-        database.ref("users/" + cred.user.uid).once('value').then(function(s) {
-            //Records needed variables to local storage
-            localStorage.setItem('userID', cred.user.uid);
-            localStorage.setItem('squadname', s.val().squad);
-            localStorage.setItem('username', s.val().username);
-        });
-    }).catch(function(e) {//Catches if there is an error in the sign-in process
+    auth.signInWithEmailAndPassword(email, password).catch(function(e) {//Catches if there is an error in the sign-in process
         $('#sign-in-password').val('');//Clears the password field in case of an error
         window.alert(e.message);
     });
