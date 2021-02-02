@@ -62,7 +62,7 @@ const userSettings = document.querySelector('#user-settings');
 userSettings.addEventListener('click', function() {
     hideAll();
     $('#user-settings-main').show();
-    if (localStorage.getItem('squadname')) {
+    if (localStorage.getItem('squadname')) {//TODO properly recognize if the user is part of a squad
 
     }
 });
