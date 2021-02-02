@@ -132,9 +132,9 @@ signInForm.addEventListener('submit', (e) => {
     var password = $('#sign-in-password').val();//Records the provided password
 
     //Uses the email and password to log in a user
-    auth.signInWithEmailAndPassword(email, password).catch(function(e) {//Catches if there is an error in the sign-in process
+    auth.signInWithEmailAndPassword(email, password).catch(function(error) {//Catches if there is an error in the sign-in process
         $('#sign-in-password').val('');//Clears the password field in case of an error
-        window.alert(e.message);
+        window.alert(error.message);
     });
 });
 
@@ -163,8 +163,13 @@ newUserForm.addEventListener('submit', (e) => {
         }
 
         //Records the username of the new user into the data of the squad they joined
-    }).catch(function(e) {//Catches if there is an error in the sign-up process
+    }).catch(function(error) {//Catches if there is an error in the sign-up process
         $('#sign-in-password').val('');//Clears the password field in case of an error
-        window.alert(e.message);
+        window.alert(error.message);
     });
+});
+
+var joinSquadForm = document.querySelector('#join-squad-form');
+joinSquadForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 });
