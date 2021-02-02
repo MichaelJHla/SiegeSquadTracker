@@ -27,6 +27,8 @@ auth.onAuthStateChanged(user => {
         $('#sign-in-elements').hide();
         $('#upper-elements').css('display', 'flex');
         $('#lower-elements').css('display', 'flex');
+        console.log(localStorage.getItem("username"));
+        $('#user-settings-label').html('<i class="fas fa-user"></i> ' + localStorage.getItem("username"));
 
         userSettings.click(); //Click the user settings page
     } else {
@@ -60,6 +62,9 @@ const userSettings = document.querySelector('#user-settings');
 userSettings.addEventListener('click', function() {
     hideAll();
     $('#user-settings-main').show();
+    if (localStorage.getItem('squadname')) {
+
+    }
 });
 
 //Once the user clicks on the site stats page
