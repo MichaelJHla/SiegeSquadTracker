@@ -38,8 +38,9 @@ auth.onAuthStateChanged(user => {
 
             userSettings.click(); //Click the user settings page
         });
-        
     } else {
+        localStorage.clear(); //Empties the local storage when no user is signed in
+        
         console.log("No user signed in");
         //Reveal and hide the proper elements for the user's profile status
         $('#sign-in-elements').css('display', 'flex');
