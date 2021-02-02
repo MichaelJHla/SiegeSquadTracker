@@ -123,3 +123,35 @@ signInForm.addEventListener('submit', (e) => {
         window.alert(e.message);
     });
 });
+
+var newUserForm = document.querySelector('#new-user-form');
+newUserForm.addEventListener('submit', (e) => {
+    e.preventDefault();//Prevents the page from refreshing when the form is finished
+
+    var email = $('#create-account-email').val();//Records the provided email
+    var password = $('#create-account-password').val();//Records the provided password
+    //Uses a query selector to get the value of the radio buttons
+    var platform = document.querySelector('input[name="platform"]:checked').value;
+    var username = $('#create-account-username').val();//Records the platform username
+
+    //Sign up the new user
+    auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        //Sets all the provided data into the database
+        database.ref("users/" + cred.user.uid + "/platform").set(platform);
+        database.ref("users/" + cred.user.uid + "/username").set(username);
+
+        var i;
+        maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+                "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
+                "park", "villa"];
+        //Initializes each map in alphabetical order on the map bans page
+        for (i = 0; i < maps.length; i++) {
+            database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
+        }
+
+        //Records the username of the new user into the data of the squad they joined
+    }).catch(function(e) {//Catches if there is an error in the sign-up process
+        $('#sign-in-password').val('');//Clears the password field in case of an error
+        window.alert(e.message);
+    });
+});
