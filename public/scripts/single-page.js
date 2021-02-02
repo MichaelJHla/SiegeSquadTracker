@@ -172,4 +172,39 @@ newUserForm.addEventListener('submit', (e) => {
 var joinSquadForm = document.querySelector('#join-squad-form');
 joinSquadForm.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    database.ref("squads").once('value').then(function(s) {
+        var squad = $('#join-squad-name').val();//The squad name the user provided
+        var squadPassword = $('#join-squad-password').val();//The squad password the user provided
+        var squadList = Object.keys(s.val());//A list of all previous squads
+
+        if (squadList.includes(squad)) {//If the squad alread exists in the database
+            if (squadPassword == s.val()[squad].password) {//If the passwords match
+                if (window.confirm("Would you like to join the squad " + squad + "?")) {
+                    database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
+                    //Places the user into the squad list of the squad they just joined
+                    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
+                        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
+                    });
+
+                    localStorage.setItem("squadname", squad);//Sets the squad name into the local storage
+                    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
+                        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
+                        //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
+                    });
+                }
+            } else {//If the password is incorrect
+                window.alert("This squad already exists and the password is incorrect.");
+            }
+        } else {//If the squad does not exist in the database
+            if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
+                createNewSquad(squad, squadPassword);//Calls the function to create a new squad
+                localStorage.setItem("squadname", squad);//Sets the squadname into local storage
+                database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
+            } else {
+                window.alert("New squad not created.");
+            }
+        }
+        userSettings.click();//Refresh the info on the userSettings page
+    });
 });
