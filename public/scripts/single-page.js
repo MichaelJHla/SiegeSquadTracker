@@ -102,3 +102,23 @@ function hideAll() {
     $('#site-stats-main').hide();
 }
 
+//This form is used to sign in a user who has an account
+var signInForm = document.querySelector('#sign-in-form');
+signInForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    var email = $('#sign-in-email').val();//Records the provided email
+    var password = $('#sign-in-password').val();//Records the provided password
+
+    //Uses the email and password to log in a user
+    auth.signInWithEmailAndPassword(email, password).then(cred => {
+        database.ref("users/" + cred.user.uid).once('value').then(function(s) {
+            localStorage.setItem('userID', cred.user.uid);
+            localStorage.setItem('squadname', s.val().squad);
+            localStorage.setItem('username', s.val().username);
+        });
+    }).catch(function(e) {
+        $('#sign-in-password').val('');//Clears the password field in case of an error
+        window.alert(e.message);
+    })
+});
