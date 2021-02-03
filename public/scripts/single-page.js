@@ -1,5 +1,5 @@
 //This map associates each map with its list of 4 sites
-var allSites = 
+const allSites = 
     {"bank": ["Executive Lounge and CEO", "Staff Room and Open Area", "Teller's Office and Archives", "Lockers and CCTV"],
     "border": ["Customs and Supply Room", "Workshop and Ventilation", "Tellers and Bathroom", "Armory Lockers and Archives"],
     "chalet": ["Master Bedroom and Office", "Bar and Gaming Room", "Dining Room and Kitchen", "Wine Cellar and Snowmobile Garage"],
@@ -15,9 +15,13 @@ var allSites =
     "villa": ["Aviator Room and Games Room", "Trophy Room and Statuary Room", "Living Room and Library", "Dining Room and Kitchen"]
 };
 
+const maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+                "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
+                "park", "villa"];
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-var firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyBPKECiN2v3FGsKWXxjJ_M8gFaSfHIFCs8",
     authDomain: "siegesquadstats.firebaseapp.com",
     databaseURL: "https://siegesquadstats.firebaseio.com",
@@ -143,7 +147,7 @@ function hideAll() {
 }
 
 //This form is used to sign in a user who has an account
-var signInForm = document.querySelector('#sign-in-form');
+const signInForm = document.querySelector('#sign-in-form');
 signInForm.addEventListener('submit', (e) => {
     e.preventDefault();//Prevents the page from refreshing when a form is finished
 
@@ -157,7 +161,7 @@ signInForm.addEventListener('submit', (e) => {
     });
 });
 
-var newUserForm = document.querySelector('#new-user-form');
+const newUserForm = document.querySelector('#new-user-form');
 newUserForm.addEventListener('submit', (e) => {
     e.preventDefault();//Prevents the page from refreshing when the form is finished
 
@@ -173,9 +177,6 @@ newUserForm.addEventListener('submit', (e) => {
         database.ref("users/" + cred.user.uid + "/platform").set(platform);
         database.ref("users/" + cred.user.uid + "/username").set(username);
 
-        maps = ["bank", "border", "chalet", "clubhouse", "coastline",
-                "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
-                "park", "villa"];
         //Initializes each map in alphabetical order on the map bans page
         for (var i = 0; i < maps.length; i++) {
             database.ref("users/" + cred.user.uid + "/map-bans/" + maps[i]).set(i);
@@ -188,7 +189,7 @@ newUserForm.addEventListener('submit', (e) => {
     });
 });
 
-var joinSquadForm = document.querySelector('#join-squad-form');
+const joinSquadForm = document.querySelector('#join-squad-form');
 joinSquadForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -337,3 +338,4 @@ function removeFromSquad(player, squad) {
     });
     //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
 }
+
