@@ -350,3 +350,17 @@ leaveSquadButton.on('click', function() {
         userSettings.click();
     }
 });
+
+//This functions shows and hides the squad password when the view password button is clicked
+const squadPasswordButton = $('#squad-password-button');
+squadPasswordButton.on('click', function() {
+    if ($(this).text() == "Show") {
+        $(this).html("Hide");
+        database.ref("squads/" + localStorage.getItem("squadname") + "/password").once('value').then(function(s) {
+            $('#squad-password').text(s.val());
+        });
+    } else {
+        $('#squad-password').text("**********");
+        $(this).html("Show");
+    }
+});
