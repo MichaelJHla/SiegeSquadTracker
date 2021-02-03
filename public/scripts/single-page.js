@@ -125,6 +125,7 @@ const mapBans = $('#map-bans');
 mapBans.on('click', function() {
     hideAll();
     $('#map-bans-main').show();
+    loadMapBans();
 });
 
 //Once the user clicks the sign-in page
@@ -364,3 +365,77 @@ squadPasswordButton.on('click', function() {
         $(this).html("Show");
     }
 });
+
+/*This section will contain a large amount of code for the map bans section*/
+//Fisher-Yates shuffle algorithm
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
+//Initialize and display all the proper info for the map bans page
+function loadMapBans() {
+    mapBanUserList();
+}
+
+function mapBanUserList() {
+    $('#map-ban-radios-div').empty();
+
+    //The radio button which shows the squad's bans
+    var squadRadio = $('<input type="radio" checked>');
+    squadRadio.attr('name', 'map-ban-radio');
+    squadRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
+    squadRadio.attr('id', 'map-ban-radio-squad-name');//So the 'for' in the next label can be paired with this radio button
+    squadRadio.val(localStorage.getItem("squadname"));//The way the squad is listed in the database
+
+    //The label associated with the radio button for the squad's bans
+    var squadRadioLabel = $('<label></label>');
+    squadRadioLabel.attr('for', 'map-ban-radio-squad-name');//Associates this label with the above radio button
+    squadRadioLabel.attr('id', 'map-ban-label-squad-name');//Sets this label to be a unique id for styling purposes
+    squadRadioLabel.text(localStorage.getItem("squadname"));//Sets the label to display the squad name
+
+    //Append the radio button and the label to the overall div
+    $('#map-ban-radios-div').append(squadRadio);
+    $('#map-ban-radios-div').append(squadRadioLabel);
+
+    //This div will hold the names of the members of the squad
+    var membersListMapBan = $('<div></div>');
+    membersListMapBan.addClass("members-list-map-ban");
+
+    //Gets the list of all the squad members and will display them as radio button labels which can be selected
+    database.ref("squads/" + localStorage.getItem("squadname") + "/members").once('value').then(function(s) {
+        for (var key in s.val()) {//Iterate through all the members of a squad
+            var memberRadio = $('<input type="radio">');
+            memberRadio.attr('name', 'map-ban-radio');//Puts all new radio buttons in the map-ban-radio grouping of radios
+            memberRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
+            memberRadio.attr('id', key);//Sets the id to be the key of the user as to be unique
+            memberRadio.val(key);//Sets the value to be the key of the user as to be unique
+            
+
+            var memberRadioLabel = $('<label></label>');
+            memberRadioLabel.text(s.val()[key]);//Sets the text to be the username of the user
+            memberRadioLabel.attr('for', key);//Associates the 'for'attribute with the id of the radio button
+            memberRadioLabel.addClass('member-radio-label');//Adds the member-radio-label class to the label for styling
+            
+            //Append the radio button and the label to the div
+            membersListMapBan.append(memberRadio);
+            membersListMapBan.append(memberRadioLabel);
+        }
+
+        $('#map-ban-radios-div').append(membersListMapBan);
+
+        var elements = document.getElementsByClassName('map-ban-radio');
+        Array.from(elements).forEach(function(e){
+            e.addEventListener('click', function() {
+                console.log(this.value);
+                //This is where the data for the given member of the squad will be pulled up
+            });
+        });
+    });
+}
