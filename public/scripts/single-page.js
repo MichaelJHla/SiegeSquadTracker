@@ -327,6 +327,8 @@ function displaySquadMembers(squad) {
     });
 }
 
+//This function handles removing a player from a squad. It will properly remove their data from a squad
+// and remove that squad association from their profile
 function removeFromSquad(player, squad) {
     database.ref("users/" + player + "/squad").remove();
     database.ref("squads/" + squad + "/members/" + player).remove();
@@ -339,6 +341,7 @@ function removeFromSquad(player, squad) {
     //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
 }
 
+//This function allows the user to remove themselves from a squad by calling the remove from squad function
 const leaveSquadButton = $('#leave-squad-button');
 leaveSquadButton.on('click', function() {
     if (window.confirm("Would you like to leave " + localStorage.getItem("squadname") + "?")) {
