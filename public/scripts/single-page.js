@@ -73,23 +73,23 @@ auth.onAuthStateChanged(user => {
 });
 
 //Directs the user to the create account form
-const createAccountLink = document.querySelector('#create-account-link');
-createAccountLink.addEventListener('click', function() {
+const createAccountLink = $('#create-account-link');
+createAccountLink.on('click', function() {
     $('#sign-in').hide();
     $('#create-account').show();
 });
 
 //Directs the user to the sign in form
 
-const signInLink = document.querySelector('#sign-in-link');
-signInLink.addEventListener('click', function() {
+const signInLink = $('#sign-in-link');
+signInLink.on('click', function() {
     $('#create-account').hide();
     $('#sign-in').show();
 });
 
 //Once the user clicks on the user settings page
-const userSettings = document.querySelector('#user-settings');
-userSettings.addEventListener('click', function() {
+const userSettings = $('#user-settings');
+userSettings.on('click', function() {
     hideAll();
     $('#user-settings-main').show();//Display the user settings section
     //Access the database to see if the user is part of a squad
@@ -107,29 +107,29 @@ userSettings.addEventListener('click', function() {
 });
 
 //Once the user clicks on the site stats page
-const siteStats = document.querySelector('#site-stats');
-siteStats.addEventListener('click', function() {
+const siteStats = $('#site-stats');
+siteStats.on('click', function() {
     hideAll();
     $('#site-stats-main').show();
 });
 
 //Once the user clicks on the operator bans page
-const operatorBans = document.querySelector('#operator-bans');
-operatorBans.addEventListener('click', function() {
+const operatorBans = $('#operator-bans');
+operatorBans.on('click', function() {
     hideAll();
     $('#operator-bans-main').show();
 });
 
 //Once the user clicks on the map bans page
-const mapBans = document.querySelector('#map-bans');
-mapBans.addEventListener('click', function() {
+const mapBans = $('#map-bans');
+mapBans.on('click', function() {
     hideAll();
     $('#map-bans-main').show();
 });
 
 //Once the user clicks the sign-in page
-const signIn = document.querySelector('#sign-in-radio');
-signIn.addEventListener('click', function() {
+const signIn = $('#sign-in-radio');
+signIn.on('click', function() {
     hideAll();
     $('#sign-in-main').show();
     $('#create-account').hide();
@@ -147,8 +147,8 @@ function hideAll() {
 }
 
 //This form is used to sign in a user who has an account
-const signInForm = document.querySelector('#sign-in-form');
-signInForm.addEventListener('submit', (e) => {
+const signInForm = $('#sign-in-form');
+signInForm.on('submit', (e) => {
     e.preventDefault();//Prevents the page from refreshing when a form is finished
 
     var email = $('#sign-in-email').val();//Records the provided email
@@ -161,14 +161,14 @@ signInForm.addEventListener('submit', (e) => {
     });
 });
 
-const newUserForm = document.querySelector('#new-user-form');
-newUserForm.addEventListener('submit', (e) => {
+const newUserForm = $('#new-user-form');
+newUserForm.on('submit', (e) => {
     e.preventDefault();//Prevents the page from refreshing when the form is finished
 
     var email = $('#create-account-email').val();//Records the provided email
     var password = $('#create-account-password').val();//Records the provided password
     //Uses a query selector to get the value of the radio buttons
-    var platform = document.querySelector('input[name="platform"]:checked').value;
+    var platform = $('input[name="platform"]:checked', '#new-user-form').val();
     var username = $('#create-account-username').val();//Records the platform username
 
     //Sign up the new user
@@ -189,8 +189,8 @@ newUserForm.addEventListener('submit', (e) => {
     });
 });
 
-const joinSquadForm = document.querySelector('#join-squad-form');
-joinSquadForm.addEventListener('submit', (e) => {
+const joinSquadForm = $('#join-squad-form');
+joinSquadForm.on('submit', (e) => {
     e.preventDefault();
 
     database.ref("squads").once('value').then(function(s) {
@@ -339,3 +339,7 @@ function removeFromSquad(player, squad) {
     //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
 }
 
+const leaveSquadButton = $('#leave-squad-button');
+leaveSquadButton.on('click', function() {
+
+});
