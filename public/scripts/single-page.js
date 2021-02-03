@@ -52,7 +52,6 @@ auth.onAuthStateChanged(user => {
             console.log("User signed in");
             //Reveal and hide the proper elements for the user's profile status
             $('#sign-in-elements').hide();
-            $('#upper-elements').css('display', 'flex');
             $('#lower-elements').css('display', 'flex');
             console.log(localStorage.getItem('username'));
             $('#user-settings-label').html('<i class="fas fa-user"></i> ' + localStorage.getItem('username'));
@@ -98,10 +97,12 @@ userSettings.on('click', function() {
             $('#join-squad').hide();
             $('#squad-info').show();
             $('#user-settings-squad-name').text(s.val().squad);
+            $('#upper-elements').css('display', 'flex');
             displaySquadMembers(s.val().squad);
         } else {//If the user is not part of a squad then show the user the screen to join a squad
             $('#join-squad').show();
             $('#squad-info').hide();
+            $('#upper-elements').hide();
         }
     });
 });
