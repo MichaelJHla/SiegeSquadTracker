@@ -272,6 +272,42 @@ input[type=submit] {
 /*Begin the map-bans section of the page*/
 #map-bans-main {
     display: none;
+    text-align: center;
+}
+
+#map-bans-main input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#map-bans-main label {
+    color: white;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+#map-bans-main input[type=radio]:checked+label {
+    color: #3D99FF;
+}
+
+#map-ban-label-squad-name {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 4vw;
+}
+
+.members-list-map-ban {
+    display: flex;
+}
+
+.member-radio-label {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5vw;
 }
 
 /*End of the map bans section*/
