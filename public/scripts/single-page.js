@@ -390,11 +390,11 @@ function mapBanUserList() {
     $('#map-ban-radios-div').empty();
 
     //The radio button which shows the squad's bans
-    var squadRadio = $('<input type="radio" checked>');
+    var squadRadio = $('<input type="radio">');
     squadRadio.attr('name', 'map-ban-radio');
     squadRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
     squadRadio.attr('id', 'map-ban-radio-squad-name');//So the 'for' in the next label can be paired with this radio button
-    squadRadio.val(localStorage.getItem("squadname"));//The way the squad is listed in the database
+    squadRadio.val('squad-bans');//The way the squad is listed in the database
 
     //The label associated with the radio button for the squad's bans
     var squadRadioLabel = $('<label></label>');
@@ -435,9 +435,27 @@ function mapBanUserList() {
         var elements = document.getElementsByClassName('map-ban-radio');
         Array.from(elements).forEach(function(e){
             e.addEventListener('click', function() {
-                console.log(this.value);
-                //This is where the data for the given member of the squad will be pulled up
+                //Gets the map ban list for the given data in the map-bans section of the squad
+                database.ref('squads/' + localStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
+                    $('#ban-list').empty();
+
+                    var mapEntries = Object.entries(s.val());//Breaks down map bans into easy to iterate array
+                    var sortedMaps = [];//Will store the sorted maps
+                    for (var i = 0; i < mapEntries.length; i++) {//Iterate through the database to store maps in sorted array
+                        sortedMaps[mapEntries[i][1]] = mapEntries[i][0];
+                    }
+
+                    //Iterates through the sorted array to display the maps
+                    for (var i = sortedMaps.length - 1; i >= 0; i--) {
+                        //Creates an img and changes the source to the png which holds the current map
+                        var img = $('<img>');
+                        img.attr('src', 'images/maps/' + sortedMaps[i] + ".PNG");
+                        $('#ban-list').append(img);//Appends the image to the list of images
+                    }
+                });
             });
         });
+
+        squadRadio.click();//Sets the default radio button to be the squad radio
     });
 }
