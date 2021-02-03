@@ -382,6 +382,7 @@ function shuffle(a) {
 //Initialize and display all the proper info for the map bans page
 function loadMapBans() {
     mapBanUserList();
+    $('#edit-user-bans-button').html("Edit bans for " + localStorage.getItem("username"));
 }
 
 function mapBanUserList() {
