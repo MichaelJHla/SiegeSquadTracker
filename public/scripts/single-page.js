@@ -341,5 +341,9 @@ function removeFromSquad(player, squad) {
 
 const leaveSquadButton = $('#leave-squad-button');
 leaveSquadButton.on('click', function() {
-
+    if (window.confirm("Would you like to leave " + localStorage.getItem("squadname") + "?")) {
+        removeFromSquad(auth.currentUser.uid, localStorage.getItem("squadname"));
+        localStorage.removeItem("squadname");
+        userSettings.click();
+    }
 });
