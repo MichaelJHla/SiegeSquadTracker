@@ -435,6 +435,7 @@ function mapBanUserList() {
         var elements = document.getElementsByClassName('map-ban-radio');
         Array.from(elements).forEach(function(e){
             e.addEventListener('click', function() {
+                $('#ban-list').hide();//Gives better feedback to the user that the ban list is loading
                 //Gets the map ban list for the given data in the map-bans section of the squad
                 database.ref('squads/' + localStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
                     $('#ban-list').empty();

@@ -319,6 +319,10 @@ input[type=submit] {
     margin: 1%;
 }
 
+#voting {
+    display: none;
+}
+
 #voting button {
     width: 30vw;
     height: 17vw;
