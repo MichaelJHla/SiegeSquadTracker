@@ -117,6 +117,10 @@ siteStats.on('click', function() {
 const operatorBans = $('#operator-bans');
 operatorBans.on('click', function() {
     hideAll();
+    $('#operator-select-div').hide();
+    $('#unsaved-changes').hide();
+    $('#operator-display').hide();
+    $('#edit-operators-button').hide();
     $('#operator-bans-main').show();
 });
 
@@ -622,3 +626,21 @@ function insertionSort2D(arr){
     }
     return arr;
 }
+
+const operatorMapSelect = $('#operator-map-list');
+operatorMapSelect.on('change', function() {
+    //This sets the dropdown back to default values
+    $('#attack-operators').val('NA');
+    $('#defense-operators').val('NA');
+
+    $('#operator-select-div').hide();
+    $('#unsaved-changes').hide();
+    $('#operator-display').show();
+    $('#edit-operators-button').show();
+
+    database.ref("squads/" + localStorage.getItem("squadname") + "/operator-bans/" + $('#operator-map-list').val()).once('value').then(function(s) {
+        //Load and display the data regarding operator bans
+        $('#attack-operator').prop("src", "images/operators/" + s.val().attacker + ".svg");
+        $('#defense-operator').prop("src", "images/operators/" + s.val().defender + ".svg");
+    });
+});
