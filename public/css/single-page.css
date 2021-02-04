@@ -327,6 +327,9 @@ input[type=submit] {
     width: 30vw;
     height: 17vw;
     background-size: cover;
+    border-radius: 9999px;
+    border: 1px solid white;
+    cursor: pointer;
 }
 
 /*End of the map bans section*/
