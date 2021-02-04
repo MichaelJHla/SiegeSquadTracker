@@ -452,17 +452,96 @@ function mapBanUserList() {
                         img.attr('src', 'images/maps/' + sortedMaps[i] + ".PNG");
                         $('#ban-list').append(img);//Appends the image to the list of images
                     }
+
+                    $('#ban-list').show();
+                    $('#edit-user-bans-button').show();
+                    $('#voting').hide();
                 });
                 if (e.id == 'map-ban-radio-squad-name') {
                     $('#map-ban-status').text("Your squad's ban list");
                 } else {
                     database.ref("users/" + e.id + "/username").once('value').then(function(u) {
                         $('#map-ban-status').text(u.val() + "'s ban list");
-                    })
+                    });
                 }
             });
         });
 
         squadRadio.click();//Sets the default radio button to be the squad radio
     });
+}
+
+var votedMaps = [];
+var shuffledMaps = [];
+var m1;
+var m2;
+
+//This button will initialize and prepare the user's ban editing screen
+const editUserBans = $('#edit-user-bans-button');
+editUserBans.on('click', function() {
+    $('#ban-list').hide();
+    $('#edit-user-bans-button').hide();
+    $('#voting').show();
+
+    votedMaps = [];//This will store the maps sorted in the way that the user wants them sorted
+    shuffledMaps = shuffle(maps.slice(0));//By using the slice function, the original array will not be altered
+
+    m1 = shuffledMaps.pop();
+    m2 = shuffledMaps.pop();
+
+    //Updates the images of the voting buttons
+    $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
+    $('#map2').css({"background-image": "url('images/maps/" + m2 + ".PNG')"});
+});
+
+const voteMap1 = $('#map1');
+voteMap1.on('click', function() {
+    vote(1);
+});
+
+const voteMap2 = $('#map2');
+voteMap2.on('click', function() {
+    vote(2);
+});
+
+//This function is used to handle each vote as they are cast for a user's map ban list
+function vote(a) {
+    if (votedMaps.length == 0) { //Handles the first vote
+        if (a == 1) {//If the player prefers the first map listed
+            votedMaps.push(m1);//Pushed the first map on then the second map
+            votedMaps.push(m2);
+        } else {
+            votedMaps.push(m2);//Pushes the second map on then the first map
+            votedMaps.push(m1);
+        }
+        m1 = shuffledMaps.pop();//Pops the next map to be evaluated off the list of maps
+        m2 = votedMaps[0];//Gets the top map on the players list of maps
+    } else {
+        if (a == 1) {//If the most recently evaluated map is preferred
+            votedMaps.splice(votedMaps.indexOf(m2), 0, m1);//Splice the map into the list of sorted maps
+            m1 = shuffledMaps.pop();//Get the next map to be evaluated from the remaining maps
+            m2 = votedMaps[0];//Gets the top map of the players list of maps
+        } else {//A previously sorted map is selected as the preferred map
+            m2 = votedMaps[votedMaps.indexOf(m2) + 1];//Make the next map to be evaluated, the next map in the sorted list
+            if (m2 == undefined) {//If there is no next map 
+                votedMaps.push(m1);//Put the map being evaluated to the end of the array of sorted maps
+                m1 = shuffledMaps.pop();//Get the next map to be evaluated from the remaining maps
+                m2 = votedMaps[0];//Gets the top map of the players list of maps
+            }
+        }
+    }
+
+    if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
+        $('#voting').hide();//Doesn't allow the user to click to many options when voting on maps
+        var i;
+        for (i = 0; i < votedMaps.length; i++) {//Set the maps in the database under the proper username
+            database.ref("users/" + localStorage.getItem("userid") + "/map-bans/" + votedMaps[i]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + localStorage.getItem("userid") + "/" + votedMaps[i]).set(i);
+        }
+        $('#' + localStorage.getItem("userid")).click();//Shows the user their new ban list
+    } else {
+        //Updates the images of the voting buttons
+        $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
+        $('#map2').css({"background-image": "url('images/maps/" + m2 + ".PNG')"});
+    }
 }

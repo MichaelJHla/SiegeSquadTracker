@@ -319,6 +319,12 @@ input[type=submit] {
     margin: 1%;
 }
 
+#voting button {
+    width: 30vw;
+    height: 17vw;
+    background-size: cover;
+}
+
 /*End of the map bans section*/
 
 #operator-bans-main {
