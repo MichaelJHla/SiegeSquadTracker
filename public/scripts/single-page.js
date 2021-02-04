@@ -493,6 +493,14 @@ editUserBans.on('click', function() {
     //Updates the images of the voting buttons
     $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
     $('#map2').css({"background-image": "url('images/maps/" + m2 + ".PNG')"});
+
+    $('#map-ban-status').text("Select which map you would rather play");
+
+    //This unchecks all radio buttons
+    var elements = document.getElementsByClassName('map-ban-radio');
+    Array.from(elements).forEach(function(e) {
+        e.checked = false;
+    });
 });
 
 const voteMap1 = $('#map1');
