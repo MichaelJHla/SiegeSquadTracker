@@ -453,6 +453,13 @@ function mapBanUserList() {
                         $('#ban-list').append(img);//Appends the image to the list of images
                     }
                 });
+                if (e.id == 'map-ban-radio-squad-name') {
+                    $('#map-ban-status').text("Your squad's ban list");
+                } else {
+                    database.ref("users/" + e.id + "/username").once('value').then(function(u) {
+                        $('#map-ban-status').text(u.val() + "'s ban list");
+                    })
+                }
             });
         });
 
