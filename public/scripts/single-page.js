@@ -79,7 +79,6 @@ createAccountLink.on('click', function() {
 });
 
 //Directs the user to the sign in form
-
 const signInLink = $('#sign-in-link');
 signInLink.on('click', function() {
     $('#create-account').hide();
@@ -212,7 +211,7 @@ joinSquadForm.on('submit', (e) => {
                     localStorage.setItem("squadname", squad);//Sets the squad name into the local storage
                     database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
                         database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                        //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
+                        updateSquadBans(localStorage.getItem("squadname"));
                     });
                 }
             } else {//If the password is incorrect
@@ -271,7 +270,7 @@ function createNewSquad(squad, password) {
     //Move the user's map bans into the squad's map bans sections
     database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
         database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
-        //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
+        updateSquadBans(localStorage.getItem("squadname"));
     });
 
     userSettings.click();//Refresh the info on the userSettings page
@@ -340,7 +339,7 @@ function removeFromSquad(player, squad) {
             database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
         }
     });
-    //updateSquadBans(); ONCE THIS IS IMPLEMENTED, UNCOMMENT THIS LINE
+    updateSquadBans(localStorage.getItem("squadname"));
 }
 
 //This function allows the user to remove themselves from a squad by calling the remove from squad function
@@ -435,6 +434,7 @@ function mapBanUserList() {
         var elements = document.getElementsByClassName('map-ban-radio');
         Array.from(elements).forEach(function(e){
             e.addEventListener('click', function() {
+                updateSquadBans(localStorage.getItem("squadname"));
                 $('#ban-list').hide();//Gives better feedback to the user that the ban list is loading
                 //Gets the map ban list for the given data in the map-bans section of the squad
                 database.ref('squads/' + localStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
@@ -553,4 +553,72 @@ function vote(a) {
         $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
         $('#map2').css({"background-image": "url('images/maps/" + m2 + ".PNG')"});
     }
+}
+
+function updateSquadBans(squad) {
+    database.ref("squads/" + squad).once('value').then(function(s) {
+        var members = Object.keys(s.val()["members"]);//Gets the list of members in the squad
+        var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
+            "consulate", "kafe", "kanal", "oregon", "outback", "skyscraper",
+            "park", "villa"];
+        var squadBanArray = { //This array tracks the total popularity of each map
+            bank: 0,
+            border: 0,
+            chalet: 0,
+            clubhouse: 0,
+            coastline: 0,
+            consulate: 0,
+            kafe: 0,
+            kanal: 0,
+            oregon: 0,
+            outback: 0,
+            skyscraper: 0,
+            park: 0,
+            villa: 0
+        };
+
+        for (var i = 0; i < members.length; i++) {//Iterates through each map for each member
+            for (var j = 0; j < maps.length; j++) {
+                squadBanArray[maps[j]] += s.val()["map-bans"][members[i]][maps[j]];
+            }
+        }
+
+        var entries = Object.entries(squadBanArray);//Turn the squad bans into a iterable array
+        entries = insertionSort2D(entries);
+        for (var i = 0; i < entries.length; i++) {
+            database.ref("squads/" + squad + "/map-bans/squad-bans/" + entries[i][0]).set(i);
+        }
+    });
+}
+
+//Swap helper function
+function swap (arr, index1, index2){
+    let temp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = temp;
+}
+
+function insertionSort2D(arr){
+    let beginningIndex = 0;
+    let currentIndex = 1;
+    //while the start of the unsorted portion doesnt not start at the after the end of the array
+    while(currentIndex < arr.length){
+        //while the currentIndex does not reach the end of the sorted section or the array (index of -1)
+        while(currentIndex > 0){
+            //get currentValue(value to be sorted)
+            currentVal = arr[currentIndex][1];
+            //if it is lesser than the last value, swap the two values, otherwise, break out of the loop
+            if(currentVal < arr[currentIndex - 1][1]){
+                swap(arr, currentIndex, currentIndex - 1);
+                currentIndex--;
+            } else{
+                break;
+            }
+        }
+        //add 1 to beginningIndex to account for newly sorted section
+        beginningIndex++;
+        //start sorting from index after beginning
+        currentIndex = beginningIndex + 1;
+    }
+    return arr;
 }
