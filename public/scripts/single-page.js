@@ -391,15 +391,15 @@ function mapBanUserList() {
 
     //The radio button which shows the squad's bans
     var squadRadio = $('<input type="radio">');
-    squadRadio.attr('name', 'map-ban-radio');
+    squadRadio.prop('name', 'map-ban-radio');
     squadRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
-    squadRadio.attr('id', 'map-ban-radio-squad-name');//So the 'for' in the next label can be paired with this radio button
+    squadRadio.prop('id', 'map-ban-radio-squad-name');//So the 'for' in the next label can be paired with this radio button
     squadRadio.val('squad-bans');//The way the squad is listed in the database
 
     //The label associated with the radio button for the squad's bans
     var squadRadioLabel = $('<label></label>');
-    squadRadioLabel.attr('for', 'map-ban-radio-squad-name');//Associates this label with the above radio button
-    squadRadioLabel.attr('id', 'map-ban-label-squad-name');//Sets this label to be a unique id for styling purposes
+    squadRadioLabel.prop('for', 'map-ban-radio-squad-name');//Associates this label with the above radio button
+    squadRadioLabel.prop('id', 'map-ban-label-squad-name');//Sets this label to be a unique id for styling purposes
     squadRadioLabel.text(localStorage.getItem("squadname"));//Sets the label to display the squad name
 
     //Append the radio button and the label to the overall div
@@ -414,15 +414,15 @@ function mapBanUserList() {
     database.ref("squads/" + localStorage.getItem("squadname") + "/members").once('value').then(function(s) {
         for (var key in s.val()) {//Iterate through all the members of a squad
             var memberRadio = $('<input type="radio">');
-            memberRadio.attr('name', 'map-ban-radio');//Puts all new radio buttons in the map-ban-radio grouping of radios
+            memberRadio.prop('name', 'map-ban-radio');//Puts all new radio buttons in the map-ban-radio grouping of radios
             memberRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
-            memberRadio.attr('id', key);//Sets the id to be the key of the user as to be unique
+            memberRadio.prop('id', key);//Sets the id to be the key of the user as to be unique
             memberRadio.val(key);//Sets the value to be the key of the user as to be unique
             
 
             var memberRadioLabel = $('<label></label>');
             memberRadioLabel.text(s.val()[key]);//Sets the text to be the username of the user
-            memberRadioLabel.attr('for', key);//Associates the 'for'attribute with the id of the radio button
+            memberRadioLabel.prop('for', key);//Associates the 'for'propibute with the id of the radio button
             memberRadioLabel.addClass('member-radio-label');//Adds the member-radio-label class to the label for styling
             
             //Append the radio button and the label to the div
@@ -450,7 +450,7 @@ function mapBanUserList() {
                     for (var i = sortedMaps.length - 1; i >= 0; i--) {
                         //Creates an img and changes the source to the png which holds the current map
                         var img = $('<img>');
-                        img.attr('src', 'images/maps/' + sortedMaps[i] + ".PNG");
+                        img.prop('src', 'images/maps/' + sortedMaps[i] + ".PNG");
                         $('#ban-list').append(img);//Appends the image to the list of images
                     }
 
