@@ -125,17 +125,17 @@ operatorBans.on('click', function() {
 const mapBans = $('#map-bans');
 mapBans.on('click', function() {
     hideAll();
-    $('#map-bans-main').show();
     loadMapBans();
+    $('#map-bans-main').show();
 });
 
 //Once the user clicks the sign-in page
 const signIn = $('#sign-in-radio');
 signIn.on('click', function() {
     hideAll();
-    $('#sign-in-main').show();
     $('#create-account').hide();
     $('#sign-in').show();
+    $('#sign-in-main').show();
 })
 
 //This function hides all the elements that would appear in the main section of the page,
