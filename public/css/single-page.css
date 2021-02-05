@@ -170,6 +170,31 @@ input[type=submit] {
     display: none;
 }
 
+#user-info {
+    display: flex;
+    justify-content: center;
+}
+
+#user-info h3 {
+    color: white;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3vw;
+    text-align: center;
+    margin: 0;
+}
+
+#user-info button {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    background-color: #3D99FF;
+    font-size: 1vw;
+}
+
 #join-squad {
     display: block;
 
