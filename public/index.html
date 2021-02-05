@@ -2,69 +2,332 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/index.css">
-    <title>Siege Squad Tracker</title>
+    <link rel="stylesheet" href="https://use.typekit.net/huf3guc.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/single-page.css">
+    <title>Siege Squad Stats</title>
 </head>
 
 <body>
-    <div id="welcome">
-        <h2>Welcome to Siege Squad Stats</h2>
-        <button onclick="logInPage()">Log In</button>
-        <button onclick="signUpPage()">Sign Up</button>
+    <!--The sidebar will be the main method of naivigation for the user through the site.
+    It will contain a top section which says some basic info about the site,
+    a nav-elements section which is broken in two:
+    1. Upper elements contains the main functionality sections of the site
+    2. Lower elements contains the settings of the user and squad-->
+    <div id="sidebar">
+        <div id="sidebar-top">
+            <h1 id="site-name">Siege Squad Stats</h1>
+        </div>
+        <div id="nav-elements">
+            <div id="upper-elements">
+                <input type="radio" id="map-bans" value="map-bans" name="nav-locations" class="nav-radio">
+                <label for="map-bans" class="nav-radio-label"><i class="fas fa-map"></i> Map Bans</label>
+
+                <input type="radio" id="operator-bans" value="operator-bans" name="nav-locations" class="nav-radio">
+                <label for="operator-bans" class="nav-radio-label"><i class="fas fa-user-slash"></i> Op Bans</label>
+
+                <input type="radio" id="site-stats" value="site-stats" name="nav-locations" class="nav-radio">
+                <label for="site-stats" class="nav-radio-label"><i class="fas fa-map-marker-alt"></i> Site Stats</label>
+            </div>
+            <div id="lower-elements">
+                <input type="radio" id="user-settings" value="user-settings" name="nav-locations" class="nav-radio">
+                <label for="user-settings" class="nav-radio-label" id="user-settings-label"><i class="fas fa-user"></i> Username</label>
+            </div>
+            <div id="sign-in-elements">
+                <input type="radio" id="sign-in-radio" value="sign-in-radio" name="nav-locations" class="nav-radio">
+                <label for="sign-in-radio" class="nav-radio-label"><i class="fas fa-user"></i> Sign In</label>
+            </div>
+        </div>
     </div>
+    <!--The main will contain the content of what module the user will be using
+    These different modules are:
+        -Map Bans: Allows the user to create a map bans list of their own, which also alters the map bans of the squad
+        -Operator bans: Allows the user to view and change the operators which a squad likes to ban on a given map
+        -Site stats: Allows the user to enter the results of a given round to view aggregate data regarding a specific site
+        -User settings: Currently the user settings and the squad settings will be hosted in the same page-->
+    <div id="main">
+        <div id="sign-in-main">
+            <div id="sign-in">
+                <h2>Sign In</h2>
+                <h3>New user? <span id="create-account-link">Sign up for free</span></h3>
+                <form id="sign-in-form">
+                    <input type="text" id="sign-in-email" placeholder="Email" class="sign-in-text-input" required>
+                    <input type="password" id="sign-in-password" placeholder="Password" class="sign-in-text-input" required>
+                    <input type="submit" id="sign-in-submit" value="Login">
+                </form>
+            </div>
+            <div id="create-account">
+                <h2>Create an Account</h2>
+                <h3>Already have an account? <span id="sign-in-link">Sign in here</span></h3>
+                <form id="new-user-form">
+                    <div id="platform-div">
+                        <input type="radio" id="xbox" value="xbox" name="platform" class="platform-radio" required>
+                        <label for="xbox" class="platform-radio-label"><i class="fab fa-xbox"></i></label>
 
-    <div id="new-user">
-        <form id="new-user-form">
-            <h2>New User Sign Up</h2>
-            <input type="radio" id="xbox" value="xbox" name="platform" required>
-            <label for="xbox">Xbox</label>
+                        <input type="radio" id="playstation" value="playstation" name="platform" class="platform-radio" required>
+                        <label for="playstation" class="platform-radio-label"><i class="fab fa-playstation"></i></label>
 
-            <input type="radio" id="playstation" value="playstation" name="platform" required>
-            <label for="playstation">PlayStation</label>
+                        <input type="radio" id="pc" value="pc" name="platform" class="platform-radio" required>
+                        <label for="pc" class="platform-radio-label"><i class="fas fa-desktop"></i></label>
+                    </div>
+                    <input type="text" id="create-account-username" placeholder="Platform Username" class="sign-in-text-input" required>
+                    <input type="text" id="create-account-email" placeholder="Email" class="sign-in-text-input" required>
+                    <input type="password" id="create-account-password" placeholder="Password" class="sign-in-text-input" required>
+                    <input type="submit" id="create-account-submit" value="Create account">
+                </form>
+            </div>
+        </div>
+        <div id="user-settings-main">
+            <div id="join-squad">
+                <h2>Create or Join a Squad</h2>
+                <form id="join-squad-form">
+                    <input type="text" id="join-squad-name" placeholder="Squad name" class="join-squad-text-input" required>
+                    <input type="password" id="join-squad-password" placeholder="Squad password" class="join-squad-text-input" required>
+                    <input type="submit" id="join-squad-submit" value="Create or Join Squad">
+                </form>
+            </div>
+            <div id="user-info">
+                <h3 id="user-info-username"></h3>
+                <button id="sign-out-button">Sign out</button>
+            </div>
+            <div id="squad-info">
+                <h2 id="user-settings-squad-name">Squad Name</h2>
+                <div id="squad-info-content">
+                    <div class="squad-info-sub-section">
+                        <div id="members-list">
+                            <h3>Members</h3>
+                        </div>
+                        <button id="leave-squad-button" class="squad-info-button">Leave squad</button>
+                    </div>
+                    <div class="squad-info-sub-section">
+                        <div id="squad-password-div">
+                            <h3>Squad Password</h3>
+                            <p id="squad-password">**********</p>
+                        </div>
+                        <button id="squad-password-button" class="squad-info-button">Show</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="map-bans-main">
+            <div id="map-ban-radios-div">
+                <!--In this div, the squad name will be created as a radio button
+                and then all users in the squad will be displayed as radio buttons too in the #members-list-map-bans div-->
+
+            </div>
             
-            <input type="radio" id="pc" value="pc" name="platform" required>
-            <label for="pc">PC</label>
+            <div id="map-ban-header">
+                <h3 id="map-ban-status"></h3>
+                <button id="edit-user-bans-button">Edit Username's bans</button>
+            </div>
+            <div id="ban-list">
 
-            <br />
+            </div>
+            <div id="voting">
+                <button class="vote-button" id="map1"></button>
+                <button class="vote-button" id="map2"></button>
+            </div>
+        </div>
+        <div id="operator-bans-main">
+            <h2>Operator Bans</h2>
+            <div id="operator-map-list-div">
+                <label for="operator-map-list">Select a map:</label>
+                <select id="operator-map-list" class="dropdown">
+                    <option disabled selected value> -- select a map -- </option>
+                    <option value="bank">Bank</option>
+                    <option value="border">Border</option>
+                    <option value="chalet">Chalet</option>
+                    <option value="clubhouse">Clubhouse</option>
+                    <option value="coastline">Coastline</option>
+                    <option value="consulate">Consulate</option>
+                    <option value="kafe">Kafe</option>
+                    <option value="kanal">Kanal</option>
+                    <option value="oregon">Oregon</option>
+                    <option value="outback">Outback</option>
+                    <option value="skyscraper">Skyscraper</option>
+                    <option value="park">Theme Park</option>
+                    <option value="villa">Villa</option>
+                </select>
+            </div>
+            <div id="operator-select-div">
+                <select id="attack-operators" class="dropdown operator-dropdown">
+                    <option disabled selected value="NA"> -- select an attack op -- </option>
+                    <option value="none">No Ban</option>
+                    <option value="ace">Ace</option>
+                    <option value="amaru">Amaru</option>
+                    <option value="ash">Ash</option>
+                    <option value="blackbeard">Blackbeard</option>
+                    <option value="blitz">Blitz</option>
+                    <option value="buck">Buck</option>
+                    <option value="capitao">Capitao</option>
+                    <option value="dokkaebi">Dokkaebi</option>
+                    <option value="finka">Finka</option>
+                    <option value="fuze">Fuze</option>
+                    <option value="glaz">Glaz</option>
+                    <option value="gridlock">Gridlock</option>
+                    <option value="hibana">Hibana</option>
+                    <option value="iana">Iana</option>
+                    <option value="iq">IQ</option>
+                    <option value="jackal">Jackal</option>
+                    <option value="kali">Kali</option>
+                    <option value="lion">Lion</option>
+                    <option value="maverick">Maverick</option>
+                    <option value="Montagne">Montagne</option>
+                    <option value="nokk">Nokk</option>
+                    <option value="nomad">Nomad</option>
+                    <option value="sledge">Sledge</option>
+                    <option value="thatcher">Thatcher</option>
+                    <option value="thermite">Thermite</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="ying">Ying</option>
+                    <option value="zero">Zero</option>
+                    <option value="zofia">Zofia</option>
+                </select>
 
-            <label for="platform-username">Platform username</label>
-            <input id="platform-username" required>
+                <select id="defense-operators" class="dropdown operator-dropdown">
+                    <option disabled selected value="NA"> -- select a defense op -- </option>
+                    <option value="none">No Ban</option>
+                    <option value="alibi">Alibi</option>
+                    <option value="aruni">Aruni</option>
+                    <option value="bandit">Bandit</option>
+                    <option value="castle">Castle</option>
+                    <option value="caveira">Caveira</option>
+                    <option value="clash">Clash</option>
+                    <option value="doc">Doc</option>
+                    <option value="echo">Echo</option>
+                    <option value="ela">Ela</option>
+                    <option value="frost">Frost</option>
+                    <option value="goyo">Goyo</option>
+                    <option value="jager">Jager</option>
+                    <option value="kaid">Kaid</option>
+                    <option value="kapkan">Kapkan</option>
+                    <option value="lesion">Lesion</option>
+                    <option value="maestro">Maestro</option>
+                    <option value="melusi">Melusi</option>
+                    <option value="mira">Mira</option>
+                    <option value="mozzie">Mozzie</option>
+                    <option value="mute">Mute</option>
+                    <option value="oryx">Oryx</option>
+                    <option value="pulse">Pulse</option>
+                    <option value="rook">Rook</option>
+                    <option value="smoke">Smoke</option>
+                    <option value="tachanka">Tachanka</option>
+                    <option value="valkyrie">Valkyrie</option>
+                    <option value="vigil">Vigil</option>
+                    <option value="wamai">Wamai</option>
+                    <option value="warden">Warden</option>
+                </select>
 
-            <label for="signup-email">Email</label>
-            <input id="signup-email" required>
+                <button id="submit-operator-bans">Submit changes</button>
+            </div>
+            <div id="unsaved-changes">
+                <h4>*You have unsaved changes</h4>
+            </div>
+            <div id="operator-display">
+                <!--This will show the two operators selected to be banned on this map-->
+                <img id="attack-operator">
+                <img id="defense-operator">
+            </div>
+            <div id="edit-operators-button">
+                <button id="edit-operator-bans">Edit bans</button>
+            </div>
+        </div>
+        <div id="site-stats-main">
+            <h2>Site Stat Tracker</h2>
+            <div id="site-stat-map-list-div">
+                <label class="dropdown-label" for="site-stat-map-list">Select a map:</label>
+                <select id="site-stat-map-list" class="dropdown">
+                    <option disabled selected value> -- select a map -- </option>
+                    <option value="bank">Bank</option>
+                    <option value="border">Border</option>
+                    <option value="chalet">Chalet</option>
+                    <option value="clubhouse">Clubhouse</option>
+                    <option value="coastline">Coastline</option>
+                    <option value="consulate">Consulate</option>
+                    <option value="kafe">Kafe</option>
+                    <option value="kanal">Kanal</option>
+                    <option value="oregon">Oregon</option>
+                    <option value="outback">Outback</option>
+                    <option value="skyscraper">Skyscraper</option>
+                    <option value="park">Theme Park</option>
+                    <option value="villa">Villa</option>
+                </select>
+            </div>
+            <div id="site-selection-div">
+                <label class="dropdown-label" for="site-selection">Choose a site:</label>
+                <select id="site-selection" class="dropdown">
+                    <option value="default" disabled selected value> -- select a site -- </option>
+                    <option value="0" id="site0"></option>
+                    <option value="1" id="site1"></option>
+                    <option value="2" id="site2"></option>
+                    <option value="3" id="site3"></option>
+                </select>
+            </div>
+            <div id="site-data-div">
+                <div id="attacking-site-data-div">
+                    <div id="attacking-win-loss-div" class="site-data-section">
+                        <h3 id="attacking-wins"></h3>
+                        <h3 id="attacking-losses"></h3>
+                    </div>
+                    <div id="attacking-planted-div" class="site-data-section">
+                        <h3 id="attacking-planted-wins"></h3>
+                        <h3 id="attacking-planted-losses"></h3>
+                    </div>
+                </div>
+                <div id="defending-site-data-div">
+                    <div id="defending-win-loss-div" class="site-data-section">
+                        <h3 id="defending-wins"></h3>
+                        <h3 id="defending-losses"></h3>
+                    </div>
+                    <div id="defending-planted-div" class="site-data-section">
+                        <h3 id="defending-planted-wins"></h3>
+                        <h3 id="defending-planted-losses"></h3>
+                    </div>
+                </div>
+            </div>
+            <form id="site-stat-form">
+                <div id="role-div" class="site-data-radio">
+                    <input class="site-radio" id="attack" type="radio" value="a" name="role" required>
+                    <label for="attack">Attacking</label>
+                    <input class="site-radio" id="defend" type="radio" value="d" name="role" required>
+                    <label for="defend">Defending</label>
+                </div>
 
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" required>
+                <div id="win-loss-div" class="site-data-radio">
+                    <input class="site-radio" id="win" type="radio" value="win" name="success" required>
+                    <label for="win">Win</label>
+                    <input class="site-radio" id="loss" type="radio" value="loss" name="success" required>
+                    <label for="loss">Loss</label>
+                </div>
 
-            <input type="submit" value="Sign Up" id="signup-button">
-        </form>
+                <div id="planted-div" class="site-data-radio">
+                    <input class="site-radio" id="yes" type="radio" value="yes" name="planted" required>
+                    <label for="yes">Planted</label>
+                    <input class="site-radio" id="no" type="radio" value="no" name="planted" required>
+                    <label for="no">Not planted</label>
+                </div>
+
+                <div id="submit-div">
+                    <input type="submit" id="submit-site-stat" value="Submit">
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div id="sign-in">
-        <form id="sign-in-form">
-            <h2>Sign In</h2>
-            <label for="login-email">Email</label>
-            <input id="login-email" required>
-
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" required>
-
-            <input type="submit" value="Log in" id="login-button">
-        </form>
-    </div>
-
-    <!--All scripts below here-->
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <!-- Database CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
     <!-- Authentication CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
-    <!--Configuration information for firebase-->
-    <script src="scripts/firebaseConfig.js"></script>
-    <!--jQuery import-->
     <script src="scripts/jquery.js"></script>
-
-    <script src="scripts/index.js"></script>
+    <script src="scripts/globalVars.js"></script>
+    <script src="scripts/firebaseConfig.js"></script>
+    <script src="scripts/single-page.js"></script>
+    <script src="scripts/mapBans.js"></script>
+    <script src="scripts/operatorBans.js"></script>
+    <script src="scripts/signIn.js"></script>
+    <script src="scripts/siteStats.js"></script>
+    <script src="scripts/userSettings.js"></script>
 </body>
 </html>
