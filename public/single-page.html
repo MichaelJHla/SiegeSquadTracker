@@ -231,7 +231,7 @@
         <div id="site-stats-main">
             <h2>Site Stat Tracker</h2>
             <div id="site-stat-map-list-div">
-                <label for="site-stat-map-list">Select a map:</label>
+                <label class="dropdown-label" for="site-stat-map-list">Select a map:</label>
                 <select id="site-stat-map-list" class="dropdown">
                     <option disabled selected value> -- select a map -- </option>
                     <option value="bank">Bank</option>
@@ -250,7 +250,7 @@
                 </select>
             </div>
             <div id="site-selection-div">
-                <label for="site-selection">Choose a site:</label>
+                <label class="dropdown-label" for="site-selection">Choose a site:</label>
                 <select id="site-selection" class="dropdown">
                     <option value="default" disabled selected value> -- select a site -- </option>
                     <option value="0" id="site0"></option>
@@ -261,23 +261,23 @@
             </div>
             <div id="site-data-div">
                 <div id="attacking-site-data-div">
-                    <div id="attacking-win-loss-div">
-                        <h3 id="attacking-wins" class="site-data-section"></h3>
-                        <h3 id="attacking-losses" class="site-data-section"></h3>
+                    <div id="attacking-win-loss-div" class="site-data-section">
+                        <h3 id="attacking-wins"></h3>
+                        <h3 id="attacking-losses"></h3>
                     </div>
-                    <div id="attacking-planted-div">
-                        <h3 id="attacking-planted-wins" class="site-data-section"></h3>
-                        <h3 id="attacking-planted-losses" class="site-data-section"></h3>
+                    <div id="attacking-planted-div" class="site-data-section">
+                        <h3 id="attacking-planted-wins"></h3>
+                        <h3 id="attacking-planted-losses"></h3>
                     </div>
                 </div>
                 <div id="defending-site-data-div">
-                    <div id="defending-win-loss-div">
-                        <h3 id="defending-wins" class="site-data-section"></h3>
-                        <h3 id="defending-losses" class="site-data-section"></h3>
+                    <div id="defending-win-loss-div" class="site-data-section">
+                        <h3 id="defending-wins"></h3>
+                        <h3 id="defending-losses"></h3>
                     </div>
-                    <div id="defending-planted-div">
-                        <h3 id="defending-planted-wins" class="site-data-section"></h3>
-                        <h3 id="defending-planted-losses" class="site-data-section"></h3>
+                    <div id="defending-planted-div" class="site-data-section">
+                        <h3 id="defending-planted-wins"></h3>
+                        <h3 id="defending-planted-losses"></h3>
                     </div>
                 </div>
             </div>

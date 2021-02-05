@@ -384,7 +384,7 @@ input[type=submit] {
     margin: 0;
 }
 
-#operator-bans-main .dropdown {
+.dropdown {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 2vw;
     color: white;
@@ -416,4 +416,42 @@ input[type=submit] {
 
 #site-stats-main {
     display: none;
+    text-align: center;
+}
+
+#site-stats-main h2 {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 6vw;
+    color: white;
+    margin: 0;
+}
+
+.dropdown-label {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 3vw;
+    color: white;
+}
+
+#site-data-div {
+    display: flex;
+    justify-content: center;
+}
+
+.site-data-section {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 1.5vw;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    background-color: #222222;
+    margin: 1vw;
+    padding: 1vw;
+    border-radius: 2vw;
+    text-align: left;
+}
+
+.site-data-section h3 {
+    margin: 0;
 }
