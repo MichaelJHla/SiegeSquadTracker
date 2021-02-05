@@ -184,10 +184,10 @@ function vote(a) {
         $('#voting').hide();//Doesn't allow the user to click to many options when voting on maps
         var i;
         for (i = 0; i < votedMaps.length; i++) {//Set the maps in the database under the proper username
-            database.ref("users/" + localStorage.getItem("userid") + "/map-bans/" + votedMaps[i]).set(i);
-            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + localStorage.getItem("userid") + "/" + votedMaps[i]).set(i);
+            database.ref("users/" + auth.currentUser.uid + "/map-bans/" + votedMaps[i]).set(i);
+            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid + "/" + votedMaps[i]).set(i);
         }
-        $('#' + localStorage.getItem("userid")).click();//Shows the user their new ban list
+        $('#' + auth.currentUser.uid).click();//Shows the user their new ban list
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
