@@ -751,14 +751,14 @@ siteStatForm.on('submit', (e) => {
 
     var site = $('#site-selection').val();
     database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site).once('value').then(function(s) {
-        var role = document.querySelector('input[name="role"]:checked').value;
-        var winStatus = document.querySelector('input[name="success"]:checked').value;
-        var plantStatus = document.querySelector('input[name="planted"]:checked').value;
+        var role = document.querySelector('input[name="role"]:checked');
+        var winStatus = document.querySelector('input[name="success"]:checked');
+        var plantStatus = document.querySelector('input[name="planted"]:checked');
 
-        var roundStatus = role + winStatus;
+        var roundStatus = role.value + winStatus.value;
         database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/" + roundStatus).set(s.val()[roundStatus] + 1);
 
-        if (plantStatus == "yes") {
+        if (plantStatus.value == "yes") {
             database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/p" + roundStatus).set(s.val()["p" + roundStatus] + 1);
         }
 
@@ -772,5 +772,7 @@ siteStatForm.on('submit', (e) => {
         loadSiteData($('#site-stat-map-list').val(), site);
 
         $('#submit-div').hide();
+
+        window.alert($('label[for="' + role.id + '"]').text() + " " + $('label[for="' + winStatus.id + '"]').text() + " submitted");
     });
 });
