@@ -117,6 +117,8 @@ function displaySquadMembers(squad) {
         var admin = s.val().admin;
         Object.keys(s.val().members).forEach(function(key) {
             if (auth.currentUser.uid == admin) {//If the user is the admin add extra to the squad list
+                $('#change-squad-password-button').show();
+
                 //This div will represent an entire member of the squad
                 var memberDiv = $('<div></div>');
                 memberDiv.addClass("member");
@@ -156,6 +158,7 @@ function displaySquadMembers(squad) {
             } else {//if the user is not the admin, just display the squad list with no extra controls
                 $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
                                             "<div class='member-buttons'></div></div>");
+                $('#change-squad-password-button').hide();
             }
         });
     });
@@ -203,4 +206,27 @@ squadPasswordButton.on('click', function() {
 const signOutButton = $('#sign-out-button');
 signOutButton.on('click', function() {
     auth.signOut();
+});
+
+const changeSquadPasswordButton = $('#change-squad-password-button');
+changeSquadPasswordButton.on('click', function() {
+    $('#change-squad-password-form').show();
+    $('#squad-password-div').hide();
+    $('#squad-password-button').hide();
+    $('#change-squad-password-button').hide();
+});
+
+const changeSquadPasswordForm = $('#change-squad-password-form');
+changeSquadPasswordForm.on('submit', (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Change squad password?")) {
+        database.ref("squads/" + localStorage.getItem("squadname") + "/password").set($('#new-squad-password').val());
+    }
+
+    $('#new-squad-password').val('');
+    $('#change-squad-password-form').hide();
+    $('#squad-password-div').show();
+    $('#squad-password-button').show();
+    $('#change-squad-password-button').show();
 });
