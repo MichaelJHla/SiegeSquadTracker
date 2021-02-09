@@ -6,7 +6,6 @@ userSettings.on('click', function() {
     //Access the database to see if the user is part of a squad
     database.ref('users/' + auth.currentUser.uid).once('value').then(function(s) {
         $('#user-info-username').text("Signed in as " + s.val().username);
-        console.log(auth.currentUser);
         $('#user-info-email').text(auth.currentUser.email);
 
         if (s.val().squad) {//If the user is part of a squad, then show the squad info
