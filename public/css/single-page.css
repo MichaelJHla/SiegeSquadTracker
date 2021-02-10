@@ -12,6 +12,10 @@ body {
     width: 80vw;
 }
 
+input[type=submit] {
+    -webkit-appearance: none;
+}
+
 /*Sidebad and nav elements*/
 #sidebar {
     width: 20vw;
@@ -103,7 +107,7 @@ body {
     cursor: pointer;
 }
 
-input[type=text], input[type=password], input[type=submit] {
+input[type=text], input[type=password] {
     font-family: "Arial Narrow", Arial, sans-serif;
     width: 100%;
     font-size: 2vw;
@@ -111,12 +115,15 @@ input[type=text], input[type=password], input[type=submit] {
 }
 
 input[type=submit] {
+    background-color: #3D99FF;
     font-family: Arial, sans-serif;
     color: white;
     padding: 10px;
     border-radius: 99px;
     border: none;
-    background-color: #3D99FF;
+    width: 100%;
+    font-size: 2vw;
+    margin-bottom: .5vw;
 }
 
 #sign-in {
