@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>425029470216-clga9rf7g5734s1gd0sauu1ktko32cqj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.425029470216-clga9rf7g5734s1gd0sauu1ktko32cqj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAbnvDjGXa-ARt9T1kZMCt_qzYKxN_qb2Y</string>
+	<key>GCM_SENDER_ID</key>
+	<string>425029470216</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>hlastala.Siege-Squad-Stats</string>
+	<key>PROJECT_ID</key>
+	<string>siegesquadstats</string>
+	<key>STORAGE_BUCKET</key>
+	<string>siegesquadstats.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:425029470216:ios:f13b5da86e1e77cbfa69bd</string>
+	<key>DATABASE_URL</key>
+	<string>https://siegesquadstats.firebaseio.com</string>
+</dict>
+</plist>
