@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var curSquad = Squad()
+    @ObservedObject var curSquad = Squad("Goop Gang")
             
     var body: some View {
         NavigationView {
-            Text(curSquad.val ?? "NO DATA")
+            Text(curSquad.admin ?? "NO DATA")
         }
         .onAppear() {
             curSquad.fetchData()
