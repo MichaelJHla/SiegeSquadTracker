@@ -559,7 +559,7 @@ input[type=submit] {
 
     #sidebar label {
         padding: 2vh;
-        font-size: 4vh;
+        font-size: 3vh;
     }
 
     #nav-elements {
@@ -580,5 +580,179 @@ input[type=submit] {
     #sign-in-elements {
         flex-direction: row;
         align-items: center;
+    }
+
+    #sign-in-main h2 {
+        font-size: 8vw;
+    }
+    
+    #sign-in-main h3 {
+        font-size: 5vw;
+    }
+    input[type=text], input[type=password] {
+        font-size: 5vw;
+    }
+    
+    input[type=submit] {
+        font-size: 5vw;
+    }
+    
+    #sign-in {
+        width: 80%;
+    }
+    
+    #create-account {
+        width: 80%;
+    }
+    #create-account label {
+        font-size: 6vw;
+    }
+
+    #user-settings-main {
+        display: none;
+    }
+    
+    #user-info {
+        display: flex;
+        justify-content: center;
+    }
+    
+    #user-info h3 {
+        font-size: 6vw;
+    }
+    
+    #user-info button {
+        font-size: 3vw;
+    }
+    
+    #join-squad {
+        width: 80%;
+    }
+    
+    #join-squad h2 {
+        font-size: 8vw;
+    }
+    
+    #user-settings-squad-name {
+        margin-top: 0;
+        font-size: 8vw;
+    }
+    
+    .squad-info-sub-section h3 {
+        font-size: 6vw;
+    }
+    
+    #squad-info .squad-info-button {
+        font-size: 3vw;
+    }
+    
+    #change-squad-password-form {
+        display: none;
+    }
+    
+    .member {
+        margin-bottom: 1vw;
+        height: 5vw;
+    }
+    
+    .member h4 {
+        font-size: 3vw;
+    }
+    
+    .icon-button {
+        font-size: 3vw; /* Set a font size */
+    }
+
+
+    
+    #map-ban-label-squad-name {
+        font-size: 8vw;
+    }
+    
+    .member-radio-label {
+        font-size: 5vw;
+    }
+    
+    #map-ban-header {
+        width: 80%;
+    }
+    
+    #map-ban-header button {
+        font-size: 3vw;
+    }
+    
+    #map-ban-status {
+        font-size: 4vw;
+    }
+    
+    #ban-list img {
+        width: 31%;
+        margin: 1%;
+    }
+    
+    #voting {
+        display: none;
+    }
+    
+    #voting button {
+        width: 60vw;
+        height: 34vw;
+        background-size: cover;
+        border-radius: 9999px;
+        border: 1px solid white;
+        cursor: pointer;
+    }
+
+
+    
+    #operator-bans-main h2 {
+        font-size: 8vw;
+    }
+    
+    .dropdown {
+        font-size: 4vw;
+    }
+    
+    #operator-bans-main label {
+        font-size: 5vw;
+    }
+    
+    #operator-bans-main img {
+        height: 40vw;
+    }
+    
+    #operator-bans-main button {
+        font-size: 4vw;
+        padding: 1vw;
+    }
+
+
+
+    
+    #site-stats-main h2 {
+        font-size: 8vw;
+    }
+    
+    .dropdown-label {
+        font-size: 4vw;
+    }
+    
+    .site-data-section {
+        font-size: 3vw;
+        margin: 1vw;
+        padding: 1vw;
+        border-radius: 2vw;
+    }
+    
+    #site-stat-form label {
+        font-size: 4vw;
+    
+        padding: 1vw;
+        width: 20vw;
+    }
+    
+    #submit-div {
+        width: 20vw;
+        margin: 0 auto;
     }
 }
