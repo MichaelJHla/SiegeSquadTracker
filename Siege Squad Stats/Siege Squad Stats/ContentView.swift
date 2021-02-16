@@ -12,7 +12,13 @@ struct ContentView: View {
             
     var body: some View {
         NavigationView {
-            Text(curSquad.admin ?? "NO DATA")
+            VStack {
+                Text("Squad data")
+                    .font(.headline)
+                Text("Squad name: " + curSquad.squadName)
+                Text(curSquad.admin ?? "NO ADMIN")
+                Text(curSquad.password ?? "NO PASSWORD")
+            }
         }
         .onAppear() {
             curSquad.fetchData()
