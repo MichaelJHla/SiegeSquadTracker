@@ -528,3 +528,57 @@ input[type=submit] {
     width: 20vw;
     margin: 0 auto;
 }
+
+@media only screen
+  and (max-device-width: 1366px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    body {
+        display: block;    
+    }
+
+    #site-name {
+        display: none;
+    }
+
+    #main {
+        width: 100%;
+    }
+
+    #sidebar {
+        flex-direction: row;
+        width: 100%;
+        height: 10vh;
+        position: fixed;
+        bottom: 0;
+        justify-content: center;
+    }
+
+    #sidebar span {
+        display: none;
+    }
+
+    #sidebar label {
+        padding: 2vh;
+        font-size: 4vh;
+    }
+
+    #nav-elements {
+        flex-direction: row;
+        height: auto;
+    }
+
+    #upper-elements {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #lower-elements {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #sign-in-elements {
+        flex-direction: row;
+        align-items: center;
+    }
+}
