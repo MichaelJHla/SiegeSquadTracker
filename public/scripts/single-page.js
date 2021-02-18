@@ -41,3 +41,11 @@ function hideAll() {
     $('#operator-bans-main').hide();
     $('#site-stats-main').hide();
 }
+
+function changePassword(email) {
+    auth.sendPasswordResetEmail(email).then(function () {
+        window.alert("Password reset email has been sent to " + email);
+    }).catch(function(e) {
+        window.alert(e);
+    });
+}

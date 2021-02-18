@@ -237,3 +237,8 @@ changeSquadPasswordForm.on('submit', (e) => {
     $('#squad-password-button').show();
     $('#change-squad-password-button').show();
 });
+
+const changePasswordButton = $('#change-password-button');
+changePasswordButton.on('click', function() {
+    changePassword(auth.currentUser.email);
+});

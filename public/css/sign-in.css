@@ -67,6 +67,16 @@ input[type=submit] {
     margin: 0 auto;
 }
 
+#forgot-password {
+    display: none;
+
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 3vw;
+    width: 60%;
+    margin: 0 auto;
+}
+
 #platform-div {
     display: flex;
     justify-content: space-evenly;

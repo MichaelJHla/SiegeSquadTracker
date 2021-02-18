@@ -58,6 +58,7 @@
             <div id="sign-in">
                 <h2>Sign In</h2>
                 <h3>New user? <span id="create-account-link">Sign up for free</span></h3>
+                <h3><span id="forgot-password-link">Forgot your password?</span></h3>
                 <form id="sign-in-form">
                     <input type="text" id="sign-in-email" placeholder="Email" class="sign-in-text-input" required>
                     <input type="password" id="sign-in-password" placeholder="Password" class="sign-in-text-input" required>
@@ -82,6 +83,13 @@
                     <input type="text" id="create-account-email" placeholder="Email" class="sign-in-text-input" required>
                     <input type="password" id="create-account-password" placeholder="Password" class="sign-in-text-input" required>
                     <input type="submit" id="create-account-submit" value="Create account" class="sign-in-button">
+                </form>
+            </div>
+            <div id="forgot-password">
+                <h2>Forgot Password</h2>
+                <form id="forgot-password-form">
+                    <input type="text" id="forgot-password-email" placeholder="Email" class="sign-in-text-input" required>
+                    <input type="submit" id="forgot-password-submit" value="Send password reset" class="sign-in-button">
                 </form>
             </div>
         </div>
@@ -120,6 +128,7 @@
             <div id="user-info">
                 <h3 id="user-info-username"></h3>
                 <button id="sign-out-button">Sign out</button>
+                <button id="change-password-button">Change password</button>
             </div>
         </div>
         <div id="map-bans-main">
