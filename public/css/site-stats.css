@@ -1,0 +1,77 @@
+#site-stats-main {
+    display: none;
+    text-align: center;
+}
+
+#site-stats-main h2 {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 6vw;
+    color: white;
+    margin: 0;
+}
+
+.dropdown-label {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 3vw;
+    color: white;
+}
+
+#site-data-div {
+    display: flex;
+    justify-content: center;
+}
+
+.site-data-section {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 1.5vw;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    background-color: #222222;
+    margin: 1vw;
+    padding: 1vw;
+    border-radius: 2vw;
+    text-align: left;
+}
+
+.site-data-section h3 {
+    margin: 0;
+}
+
+#site-stats-main input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#site-stat-form label {
+    display: inline-block;
+
+    font-family: "Arial Narrow", Arial, sans-serif;
+    font-size: 2vw;
+    color: white;
+
+    padding: .5vw;
+    width: 10vw;
+
+    background-color: #707070;
+    text-align: center;
+    cursor: pointer;
+
+    border-radius: 99px;
+
+    margin-bottom: .8vw;
+    margin-left: .2vw;
+    margin-right: .2vw;
+}
+
+#site-stat-form input[type=radio]:checked+label {
+    background-color: #3D99FF;
+}
+
+#submit-div {
+    width: 20vw;
+    margin: 0 auto;
+}
