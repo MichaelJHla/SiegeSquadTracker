@@ -3,6 +3,10 @@ const userSettings = $('#user-settings');
 userSettings.on('click', function() {
     hideAll();
     $('#user-settings-main').show();//Display the user settings section
+    $('#change-squad-password-form').hide();
+    $('#squad-password-div').show();
+    $('#squad-password-button').show();
+    $('#change-squad-password-button').show();
     //Access the database to see if the user is part of a squad
     database.ref('users/' + auth.currentUser.uid).once('value').then(function(s) {
         $('#user-info-username').text("Signed in as " + s.val().username);
