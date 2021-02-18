@@ -32,22 +32,26 @@ joinSquadForm.on('submit', (e) => {
         var squadList = Object.keys(s.val());//A list of all previous squads
 
         if (squadList.includes(squad)) {//If the squad alread exists in the database
-            if (squadPassword == s.val()[squad].password) {//If the passwords match
-                if (window.confirm("Would you like to join the squad " + squad + "?")) {
-                    database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
-                    //Places the user into the squad list of the squad they just joined
-                    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
-                        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
-                    });
+            if (Object.keys(s.val()[squad].members).length < 5) {
+                if (squadPassword == s.val()[squad].password) {//If the passwords match
+                    if (window.confirm("Would you like to join the squad " + squad + "?")) {
+                        database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
+                        //Places the user into the squad list of the squad they just joined
+                        database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
+                            database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
+                        });
 
-                    sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
-                    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
-                        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                        updateSquadBans(sessionStorage.getItem("squadname"));
-                    });
+                        sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
+                        database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
+                            database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
+                            updateSquadBans(sessionStorage.getItem("squadname"));
+                        });
+                    }
+                } else {//If the password is incorrect
+                    window.alert("This squad already exists and the password is incorrect.");
                 }
-            } else {//If the password is incorrect
-                window.alert("This squad already exists and the password is incorrect.");
+            } else {
+                window.alert("This squad is full. The current max squad size is 5.")
             }
         } else {//If the squad does not exist in the database
             if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
