@@ -17,6 +17,8 @@ siteStatMapList.on('change', function() {
     $('#site2').text(allSites[map][2]);
     $('#site3').text(allSites[map][3]);
 
+    $('#site-selection').val('default');
+
     $('#site-data-div').hide();
     $('#site-stat-form').hide();
     $('#site-selection-div').show();
