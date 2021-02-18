@@ -126,11 +126,12 @@ editUserBans.on('click', function() {
     $('#edit-user-bans-button').hide();
     $('#voting').show();
 
-    votedMaps = [];//This will store the maps sorted in the way that the user wants them sorted
-    shuffledMaps = shuffle(maps.slice(0));//By using the slice function, the original array will not be altered
+    if (votedMaps.length == 0) {
+        shuffledMaps = shuffle(maps.slice(0));//By using the slice function, the original array will not be altered
 
-    m1 = shuffledMaps.pop();
-    m2 = shuffledMaps.pop();
+        m1 = shuffledMaps.pop();
+        m2 = shuffledMaps.pop();
+    }
 
     //Updates the images of the voting buttons
     $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
@@ -190,6 +191,7 @@ function vote(a) {
             database.ref("squads/" + sessionStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid + "/" + votedMaps[i]).set(i);
         }
         $('#' + auth.currentUser.uid).click();//Shows the user their new ban list
+        votedMaps = [];
     } else {
         //Updates the images of the voting buttons
         $('#map1').css({"background-image": "url('images/maps/" + m1 + ".PNG')"});
