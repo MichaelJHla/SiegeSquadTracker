@@ -22,7 +22,7 @@ function shuffle(a) {
 //Initialize and display all the proper info for the map bans page
 function loadMapBans() {
     mapBanUserList();
-    $('#edit-user-bans-button').html("Edit bans for " + localStorage.getItem("username"));
+    $('#edit-user-bans-button').html("Edit bans for " + sessionStorage.getItem("username"));
 }
 
 function mapBanUserList() {
@@ -39,7 +39,7 @@ function mapBanUserList() {
     var squadRadioLabel = $('<label></label>');
     squadRadioLabel.prop('for', 'map-ban-radio-squad-name');//Associates this label with the above radio button
     squadRadioLabel.prop('id', 'map-ban-label-squad-name');//Sets this label to be a unique id for styling purposes
-    squadRadioLabel.text(localStorage.getItem("squadname"));//Sets the label to display the squad name
+    squadRadioLabel.text(sessionStorage.getItem("squadname"));//Sets the label to display the squad name
 
     //Append the radio button and the label to the overall div
     $('#map-ban-radios-div').append(squadRadio);
@@ -50,23 +50,25 @@ function mapBanUserList() {
     membersListMapBan.addClass("members-list-map-ban");
 
     //Gets the list of all the squad members and will display them as radio button labels which can be selected
-    database.ref("squads/" + localStorage.getItem("squadname") + "/members").once('value').then(function(s) {
+    database.ref("squads/" + sessionStorage.getItem("squadname") + "/members").once('value').then(function(s) {
         for (var key in s.val()) {//Iterate through all the members of a squad
             var memberRadio = $('<input type="radio">');
             memberRadio.prop('name', 'map-ban-radio');//Puts all new radio buttons in the map-ban-radio grouping of radios
             memberRadio.addClass('map-ban-radio');//Used for styling and adding an event listener
             memberRadio.prop('id', key);//Sets the id to be the key of the user as to be unique
             memberRadio.val(key);//Sets the value to be the key of the user as to be unique
-            
 
             var memberRadioLabel = $('<label></label>');
             memberRadioLabel.text(s.val()[key]);//Sets the text to be the username of the user
             memberRadioLabel.prop('for', key);//Associates the 'for'propibute with the id of the radio button
             memberRadioLabel.addClass('member-radio-label');//Adds the member-radio-label class to the label for styling
+
+            var memberRadioDiv = $('<div></div>');
+            memberRadioDiv.append(memberRadio);
+            memberRadioDiv.append(memberRadioLabel);
             
             //Append the radio button and the label to the div
-            membersListMapBan.append(memberRadio);
-            membersListMapBan.append(memberRadioLabel);
+            membersListMapBan.append(memberRadioDiv);
         }
 
         $('#map-ban-radios-div').append(membersListMapBan);
@@ -74,10 +76,10 @@ function mapBanUserList() {
         var elements = document.getElementsByClassName('map-ban-radio');
         Array.from(elements).forEach(function(e){
             e.addEventListener('click', function() {
-                updateSquadBans(localStorage.getItem("squadname"));
+                updateSquadBans(sessionStorage.getItem("squadname"));
                 $('#ban-list').hide();//Gives better feedback to the user that the ban list is loading
                 //Gets the map ban list for the given data in the map-bans section of the squad
-                database.ref('squads/' + localStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
+                database.ref('squads/' + sessionStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
                     $('#ban-list').empty();
 
                     var mapEntries = Object.entries(s.val());//Breaks down map bans into easy to iterate array
@@ -185,7 +187,7 @@ function vote(a) {
         var i;
         for (i = 0; i < votedMaps.length; i++) {//Set the maps in the database under the proper username
             database.ref("users/" + auth.currentUser.uid + "/map-bans/" + votedMaps[i]).set(i);
-            database.ref("squads/" + localStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid + "/" + votedMaps[i]).set(i);
+            database.ref("squads/" + sessionStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid + "/" + votedMaps[i]).set(i);
         }
         $('#' + auth.currentUser.uid).click();//Shows the user their new ban list
     } else {

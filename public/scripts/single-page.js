@@ -3,19 +3,19 @@ auth.onAuthStateChanged(user => {
     if (user) {
         database.ref("users/" + user.uid).once('value').then(function(s) {
             //Records needed variables to local storage
-            localStorage.setItem('userID', user.uid);
-            localStorage.setItem('squadname', s.val().squad);
-            localStorage.setItem('username', s.val().username);
+            sessionStorage.setItem('userID', user.uid);
+            sessionStorage.setItem('squadname', s.val().squad);
+            sessionStorage.setItem('username', s.val().username);
 
             //Reveal and hide the proper elements for the user's profile status
             $('#sign-in-elements').hide();
             $('#lower-elements').css('display', 'flex');
-            $('#user-settings-label').html('<i class="fas fa-user"></i> ' + localStorage.getItem('username'));
+            $('#user-settings-label').html('<i class="fas fa-user"></i> ' + sessionStorage.getItem('username'));
 
             userSettings.click(); //Click the user settings page
         });
     } else {
-        localStorage.clear(); //Empties the local storage when no user is signed in
+        sessionStorage.clear(); //Empties the local storage when no user is signed in
         
         //Reveal and hide the proper elements for the user's profile status
         $('#sign-in-elements').css('display', 'flex');

@@ -40,10 +40,10 @@ joinSquadForm.on('submit', (e) => {
                         database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
                     });
 
-                    localStorage.setItem("squadname", squad);//Sets the squad name into the local storage
+                    sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
                     database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
                         database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                        updateSquadBans(localStorage.getItem("squadname"));
+                        updateSquadBans(sessionStorage.getItem("squadname"));
                     });
                 }
             } else {//If the password is incorrect
@@ -52,7 +52,7 @@ joinSquadForm.on('submit', (e) => {
         } else {//If the squad does not exist in the database
             if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
                 createNewSquad(squad, squadPassword);//Calls the function to create a new squad
-                localStorage.setItem("squadname", squad);//Sets the squadname into local storage
+                sessionStorage.setItem("squadname", squad);//Sets the squadname into local storage
                 database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
 
                 userSettings.click();//Refresh the info on the userSettings page
@@ -102,7 +102,7 @@ function createNewSquad(squad, password) {
     //Move the user's map bans into the squad's map bans sections
     database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
         database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
-        updateSquadBans(localStorage.getItem("squadname"));
+        updateSquadBans(sessionStorage.getItem("squadname"));
     });
 
     userSettings.click();//Refresh the info on the userSettings page
@@ -174,15 +174,15 @@ function removeFromSquad(player, squad) {
             database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
         }
     });
-    updateSquadBans(localStorage.getItem("squadname"));
+    updateSquadBans(sessionStorage.getItem("squadname"));
 }
 
 //This function allows the user to remove themselves from a squad by calling the remove from squad function
 const leaveSquadButton = $('#leave-squad-button');
 leaveSquadButton.on('click', function() {
-    if (window.confirm("Would you like to leave " + localStorage.getItem("squadname") + "?")) {
-        removeFromSquad(auth.currentUser.uid, localStorage.getItem("squadname"));
-        localStorage.removeItem("squadname");
+    if (window.confirm("Would you like to leave " + sessionStorage.getItem("squadname") + "?")) {
+        removeFromSquad(auth.currentUser.uid, sessionStorage.getItem("squadname"));
+        sessionStorage.removeItem("squadname");
         userSettings.click();
     }
 });
@@ -192,7 +192,7 @@ const squadPasswordButton = $('#squad-password-button');
 squadPasswordButton.on('click', function() {
     if ($(this).text() == "Show") {
         $(this).html("Hide");
-        database.ref("squads/" + localStorage.getItem("squadname") + "/password").once('value').then(function(s) {
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/password").once('value').then(function(s) {
             $('#squad-password').text(s.val());
         });
     } else {
@@ -220,7 +220,7 @@ changeSquadPasswordForm.on('submit', (e) => {
     e.preventDefault();
 
     if (window.confirm("Change squad password?")) {
-        database.ref("squads/" + localStorage.getItem("squadname") + "/password").set($('#new-squad-password').val());
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/password").set($('#new-squad-password').val());
     }
 
     $('#new-squad-password').val('');
