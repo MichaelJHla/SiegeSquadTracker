@@ -28,6 +28,13 @@ input[type=submit] {
     font-style: normal;
 }
 
+#site-name {
+    font-size: 4vw;
+    background-color: #707070;
+    padding: 1vw;
+    margin: 0;
+}
+
 #sidebar-top {
     color: white;
     text-align: center;
@@ -190,6 +197,10 @@ input[type=submit] {
     font-size: 3vw;
     text-align: center;
     margin: 0;
+}
+
+#sign-out-button {
+    margin-left: 1vw;
 }
 
 #user-info button {
