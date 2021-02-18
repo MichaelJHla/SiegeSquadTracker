@@ -7,12 +7,18 @@ auth.onAuthStateChanged(user => {
             sessionStorage.setItem('squadname', s.val().squad);
             sessionStorage.setItem('username', s.val().username);
 
+            user.updateProfile({
+                displayName: s.val().username
+            });
+
             //Reveal and hide the proper elements for the user's profile status
             $('#sign-in-elements').hide();
             $('#lower-elements').css('display', 'flex');
             $('#user-settings-label').html('<i class="fas fa-user"></i> ' + sessionStorage.getItem('username'));
 
             userSettings.click(); //Click the user settings page
+
+            console.log(user.displayName);
         });
     } else {
         sessionStorage.clear(); //Empties the local storage when no user is signed in
