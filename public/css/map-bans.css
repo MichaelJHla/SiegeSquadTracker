@@ -1,0 +1,102 @@
+/*Begin the map-bans section of the page*/
+#map-bans-main {
+    display: none;
+    text-align: center;
+}
+
+#map-bans-main input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#map-bans-main label {
+    color: white;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+#map-bans-main label:hover {
+    text-decoration: underline;
+}
+
+#map-bans-main input[type=radio]:checked+label {
+    color: #3D99FF;
+}
+
+#map-ban-label-squad-name {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 4vw;
+}
+
+.members-list-map-ban {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.member-radio-label {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5vw;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+#map-ban-header {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+    margin: 0 auto;
+}
+
+#map-ban-header button {
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    background-color: #3D99FF;
+    font-size: 2vw;
+}
+
+#map-ban-status {
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3.25vw;
+    color: white;
+
+    background-color: #222222;
+
+    width: fit-content;
+    border-radius: 1.25vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+    margin: 2vw;
+}
+
+#ban-list img {
+    width: 18%;
+    margin: 1%;
+}
+
+#voting {
+    display: none;
+}
+
+#voting button {
+    width: 30vw;
+    height: 17vw;
+    background-size: cover;
+    border-radius: 9999px;
+    border: 1px solid white;
+    cursor: pointer;
+}

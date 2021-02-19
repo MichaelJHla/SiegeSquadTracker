@@ -1,0 +1,106 @@
+/*The sign in page which contains sign-in and create account*/
+#sign-in-main {
+    display: none;
+}
+
+#sign-in-main h2 {
+    color: white;
+    text-align: center;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 5vw;
+    margin-block-end: 0;
+}
+
+#sign-in-main h3 {
+    color: white;
+    text-align: center;
+    font-family: franklin-gothic-urw-comp, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.6vw;
+    line-height: 0;
+}
+
+#sign-in-main span {
+    color: #3D99FF;
+    cursor: pointer;
+}
+
+input[type=text], input[type=password] {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    width: 95%;
+    font-size: 2vw;
+    margin-bottom: .5vw;
+}
+
+input[type=submit] {
+    background-color: #3D99FF;
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    width: 100%;
+    font-size: 2vw;
+    margin-bottom: .5vw;
+}
+
+#sign-in {
+    display: block;
+
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 3vw;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#create-account {
+    display: none;
+
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 3vw;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#forgot-password {
+    display: none;
+
+    background-color: #222222;
+    padding: 0 2vw 2vw 2vw;
+    border-radius: 3vw;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#platform-div {
+    display: flex;
+    justify-content: space-evenly;
+    width: 60%;
+    margin: 0 auto;
+}
+
+#create-account input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#create-account label {
+    color: white;
+    font-size: 3vw;
+    text-align: center;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#create-account input[type=radio]:checked+label {
+    color: #3D99FF;
+}

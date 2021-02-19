@@ -21,7 +21,7 @@ operatorMapSelect.on('change', function() {
     $('#operator-display').show();
     $('#edit-operators-button').show();
 
-    database.ref("squads/" + localStorage.getItem("squadname") + "/operator-bans/" + this.value).once('value').then(function(s) {
+    database.ref("squads/" + sessionStorage.getItem("squadname") + "/operator-bans/" + this.value).once('value').then(function(s) {
         //Load and display the data regarding operator bans
         $('#attack-operator').prop("src", "images/operators/" + s.val().attacker + ".svg");
         $('#defense-operator').prop("src", "images/operators/" + s.val().defender + ".svg");
@@ -57,7 +57,7 @@ submitOperatorBans.on('click', function() {
     var dOp = $('#defense-operators').val();
     var aOp = $('#attack-operators').val();
 
-    var reference = "squads/" + localStorage.getItem("squadname") + "/operator-bans/" + map + "/";
+    var reference = "squads/" + sessionStorage.getItem("squadname") + "/operator-bans/" + map + "/";
 
     //Only update the ban if the dropdown menu has been changed, otherwise leave the operator the same
     if (aOp != null){ database.ref(reference + "attacker").set(aOp); }

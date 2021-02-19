@@ -3,10 +3,13 @@ const userSettings = $('#user-settings');
 userSettings.on('click', function() {
     hideAll();
     $('#user-settings-main').show();//Display the user settings section
+    $('#change-squad-password-form').hide();
+    $('#squad-password-div').show();
+    $('#squad-password-button').show();
+    $('#change-squad-password-button').show();
     //Access the database to see if the user is part of a squad
     database.ref('users/' + auth.currentUser.uid).once('value').then(function(s) {
         $('#user-info-username').text("Signed in as " + s.val().username);
-        console.log(auth.currentUser);
         $('#user-info-email').text(auth.currentUser.email);
 
         if (s.val().squad) {//If the user is part of a squad, then show the squad info
@@ -33,27 +36,31 @@ joinSquadForm.on('submit', (e) => {
         var squadList = Object.keys(s.val());//A list of all previous squads
 
         if (squadList.includes(squad)) {//If the squad alread exists in the database
-            if (squadPassword == s.val()[squad].password) {//If the passwords match
-                if (window.confirm("Would you like to join the squad " + squad + "?")) {
-                    database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
-                    //Places the user into the squad list of the squad they just joined
-                    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
-                        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
-                    });
+            if (Object.keys(s.val()[squad].members).length < 5) {
+                if (squadPassword == s.val()[squad].password) {//If the passwords match
+                    if (window.confirm("Would you like to join the squad " + squad + "?")) {
+                        database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
+                        //Places the user into the squad list of the squad they just joined
+                        database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
+                            database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
+                        });
 
-                    localStorage.setItem("squadname", squad);//Sets the squad name into the local storage
-                    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
-                        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                        updateSquadBans(localStorage.getItem("squadname"));
-                    });
+                        sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
+                        database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
+                            database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
+                            updateSquadBans(sessionStorage.getItem("squadname"));
+                        });
+                    }
+                } else {//If the password is incorrect
+                    window.alert("This squad already exists and the password is incorrect.");
                 }
-            } else {//If the password is incorrect
-                window.alert("This squad already exists and the password is incorrect.");
+            } else {
+                window.alert("This squad is full. The current max squad size is 5.")
             }
         } else {//If the squad does not exist in the database
             if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
                 createNewSquad(squad, squadPassword);//Calls the function to create a new squad
-                localStorage.setItem("squadname", squad);//Sets the squadname into local storage
+                sessionStorage.setItem("squadname", squad);//Sets the squadname into local storage
                 database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
 
                 userSettings.click();//Refresh the info on the userSettings page
@@ -103,7 +110,7 @@ function createNewSquad(squad, password) {
     //Move the user's map bans into the squad's map bans sections
     database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
         database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
-        updateSquadBans(localStorage.getItem("squadname"));
+        updateSquadBans(sessionStorage.getItem("squadname"));
     });
 
     userSettings.click();//Refresh the info on the userSettings page
@@ -117,6 +124,8 @@ function displaySquadMembers(squad) {
         var admin = s.val().admin;
         Object.keys(s.val().members).forEach(function(key) {
             if (auth.currentUser.uid == admin) {//If the user is the admin add extra to the squad list
+                $('#change-squad-password-button').show();
+
                 //This div will represent an entire member of the squad
                 var memberDiv = $('<div></div>');
                 memberDiv.addClass("member");
@@ -156,6 +165,7 @@ function displaySquadMembers(squad) {
             } else {//if the user is not the admin, just display the squad list with no extra controls
                 $('#members-list').append("<div class='member'><h4>" + s.val().members[key] + "</h4>" + 
                                             "<div class='member-buttons'></div></div>");
+                $('#change-squad-password-button').hide();
             }
         });
     });
@@ -172,15 +182,15 @@ function removeFromSquad(player, squad) {
             database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
         }
     });
-    updateSquadBans(localStorage.getItem("squadname"));
+    updateSquadBans(sessionStorage.getItem("squadname"));
 }
 
 //This function allows the user to remove themselves from a squad by calling the remove from squad function
 const leaveSquadButton = $('#leave-squad-button');
 leaveSquadButton.on('click', function() {
-    if (window.confirm("Would you like to leave " + localStorage.getItem("squadname") + "?")) {
-        removeFromSquad(auth.currentUser.uid, localStorage.getItem("squadname"));
-        localStorage.removeItem("squadname");
+    if (window.confirm("Would you like to leave " + sessionStorage.getItem("squadname") + "?")) {
+        removeFromSquad(auth.currentUser.uid, sessionStorage.getItem("squadname"));
+        sessionStorage.removeItem("squadname");
         userSettings.click();
     }
 });
@@ -190,7 +200,7 @@ const squadPasswordButton = $('#squad-password-button');
 squadPasswordButton.on('click', function() {
     if ($(this).text() == "Show") {
         $(this).html("Hide");
-        database.ref("squads/" + localStorage.getItem("squadname") + "/password").once('value').then(function(s) {
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/password").once('value').then(function(s) {
             $('#squad-password').text(s.val());
         });
     } else {
@@ -203,4 +213,32 @@ squadPasswordButton.on('click', function() {
 const signOutButton = $('#sign-out-button');
 signOutButton.on('click', function() {
     auth.signOut();
+});
+
+const changeSquadPasswordButton = $('#change-squad-password-button');
+changeSquadPasswordButton.on('click', function() {
+    $('#change-squad-password-form').show();
+    $('#squad-password-div').hide();
+    $('#squad-password-button').hide();
+    $('#change-squad-password-button').hide();
+});
+
+const changeSquadPasswordForm = $('#change-squad-password-form');
+changeSquadPasswordForm.on('submit', (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Change squad password?")) {
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/password").set($('#new-squad-password').val());
+    }
+
+    $('#new-squad-password').val('');
+    $('#change-squad-password-form').hide();
+    $('#squad-password-div').show();
+    $('#squad-password-button').show();
+    $('#change-squad-password-button').show();
+});
+
+const changePasswordButton = $('#change-password-button');
+changePasswordButton.on('click', function() {
+    changePassword(auth.currentUser.email);
 });

@@ -1,0 +1,17 @@
+/*Header and global elements*/
+html, body{
+    margin: 0;
+    background-color: #333740;
+}
+
+body {
+    display: flex;
+}
+
+#main {
+    width: 80vw;
+}
+
+input[type=submit] {
+    -webkit-appearance: none;
+}

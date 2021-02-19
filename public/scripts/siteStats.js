@@ -17,6 +17,8 @@ siteStatMapList.on('change', function() {
     $('#site2').text(allSites[map][2]);
     $('#site3').text(allSites[map][3]);
 
+    $('#site-selection').val('default');
+
     $('#site-data-div').hide();
     $('#site-stat-form').hide();
     $('#site-selection-div').show();
@@ -40,7 +42,7 @@ siteSelection.on('change', function() {
 });
 
 function loadSiteData(map, site) {
-    database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + map + "/site" + site).once('value').then(function(s) {
+    database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + map + "/site" + site).once('value').then(function(s) {
         $('#attacking-wins').text("Attacking wins: " + s.val().awin);
         $('#attacking-losses').text("Attacking losses: " + s.val().aloss);
 
@@ -72,16 +74,16 @@ siteStatForm.on('submit', (e) => {
     e.preventDefault();
 
     var site = $('#site-selection').val();
-    database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site).once('value').then(function(s) {
+    database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site).once('value').then(function(s) {
         var role = document.querySelector('input[name="role"]:checked');
         var winStatus = document.querySelector('input[name="success"]:checked');
         var plantStatus = document.querySelector('input[name="planted"]:checked');
 
         var roundStatus = role.value + winStatus.value;
-        database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/" + roundStatus).set(s.val()[roundStatus] + 1);
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/" + roundStatus).set(s.val()[roundStatus] + 1);
 
         if (plantStatus.value == "yes") {
-            database.ref("squads/" + localStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/p" + roundStatus).set(s.val()["p" + roundStatus] + 1);
+            database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/p" + roundStatus).set(s.val()["p" + roundStatus] + 1);
         }
 
         $('#attack').prop('checked', false);

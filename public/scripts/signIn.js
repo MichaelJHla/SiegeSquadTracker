@@ -21,6 +21,12 @@ signInLink.on('click', function() {
     $('#sign-in').show();
 });
 
+const forgotPasswordLink = $('#forgot-password-link');
+forgotPasswordLink.on('click', function () {
+    $('#sign-in').hide();
+    $('#forgot-password').show();
+});
+
 //This form is used to sign in a user who has an account
 const signInForm = $('#sign-in-form');
 signInForm.on('submit', (e) => {
@@ -62,4 +68,13 @@ newUserForm.on('submit', (e) => {
         $('#sign-in-password').val('');//Clears the password field in case of an error
         window.alert(error.message);
     });
+});
+
+const forgotPasswordForm = $('#forgot-password-form');
+forgotPasswordForm.on('submit', (e) => {
+    e.preventDefault();
+
+    changePassword($('#forgot-password-email').val());
+    $('#sign-in').show();
+    $('#forgot-password').hide();
 });
