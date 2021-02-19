@@ -76,44 +76,15 @@ joinSquadForm.on('submit', (e) => {
 //This function handles the creation of a new squad by assigning the admin to the creator,
 // and then creating all the blank data the squad needs to be added onto later
 function createNewSquad(squad, password) {
-    //Sets the squad password to the proper value
-    database.ref("squads/" + squad + "/password").set(password);
-
-    //sets the admin to the creator of the squad
-    database.ref("squads/" + squad + "/admin").set(auth.currentUser.uid);
-
-    //Add the first member to the squad
-    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s) {
-        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s.val());
-    });
-
-    //This creates all the site data and sets it to 0, and sets all maps to have no ban listed for their operator bans
-    Object.keys(allSites).forEach(function(map) {
-        database.ref("squads/" + squad + "/operator-bans/" + map + "/attacker").set("none");
-        database.ref("squads/" + squad + "/operator-bans/" + map + "/defender").set("none");
-        
-        //The creation and zeroing of all site data
-        for (var i = 0; i < 4; i++) {
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/name").set(allSites[map][i]);
-
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/aloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/awin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dwin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/paloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pawin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdwin").set(0);
-        }
-    });
-    
-    //Move the user's map bans into the squad's map bans sections
-    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
-        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
+    const newSquad = firebase.functions().httpsCallable('createNewSquad');
+    newSquad({
+        'squad': squad,
+        'password': password,
+        'sites': allSites
+    }).then(function() {
         updateSquadBans(sessionStorage.getItem("squadname"));
+        userSettings.click();//Refresh the info on the userSettings page
     });
-
-    userSettings.click();//Refresh the info on the userSettings page
 }
 
 //This functions displays a list showing the squad members
