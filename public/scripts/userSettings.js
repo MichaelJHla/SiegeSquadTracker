@@ -35,7 +35,17 @@ joinSquadForm.on('submit', (e) => {
         var squadPassword = $('#join-squad-password').val();//The squad password the user provided
         var squadList = Object.keys(s.val());//A list of all previous squads
 
-        if (squadList.includes(squad)) {//If the squad alread exists in the database
+        const joinSquad = firebase.functions().httpsCallable('joinSquad');
+        joinSquad({
+            'squad': squad,
+            'password': squadPassword
+        }).then(function() {
+            window.alert("Squad succesfully joined. Please be patient while you are added to the squad.");
+        }).catch((e) => {
+            window.alert(e.message);
+        });
+
+        /*if (squadList.includes(squad)) {//If the squad alread exists in the database
             if (Object.keys(s.val()[squad].members).length < 5) {
                 if (squadPassword == s.val()[squad].password) {//If the passwords match
                     if (window.confirm("Would you like to join the squad " + squad + "?")) {
@@ -67,7 +77,7 @@ joinSquadForm.on('submit', (e) => {
             } else {
                 window.alert("New squad not created.");
             }
-        }
+        }*/
 
         userSettings.click();//Refresh the info on the userSettings page
     });
