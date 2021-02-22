@@ -76,7 +76,6 @@ function mapBanUserList() {
         var elements = document.getElementsByClassName('map-ban-radio');
         Array.from(elements).forEach(function(e){
             e.addEventListener('click', function() {
-                updateSquadBans(sessionStorage.getItem("squadname"));
                 $('#ban-list').hide();//Gives better feedback to the user that the ban list is loading
                 //Gets the map ban list for the given data in the map-bans section of the squad
                 database.ref('squads/' + sessionStorage.getItem("squadname") + '/map-bans/' + this.value).once('value').then(function(s) {
@@ -185,11 +184,21 @@ function vote(a) {
 
     if (m1 == undefined) {//If there is no more maps left in the list that need to be evaluated
         $('#voting').hide();//Doesn't allow the user to click to many options when voting on maps
-        var i;
-        for (i = 0; i < votedMaps.length; i++) {//Set the maps in the database under the proper username
+        var updatedBans = {};
+        for (var i = 0; i < votedMaps.length; i++) {//Set the maps in the database under the proper username
+            updatedBans[votedMaps[i]] = i;
+
             database.ref("users/" + auth.currentUser.uid + "/map-bans/" + votedMaps[i]).set(i);
             database.ref("squads/" + sessionStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid + "/" + votedMaps[i]).set(i);
         }
+
+        database.ref("users/" + auth.currentUser.uid + "/map-bans").set(updatedBans);
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/map-bans/" + auth.currentUser.uid).set(updatedBans).then(function() {
+            //Creates a randomized key which will trigger a cloud function to refresh the squad bans
+            var d = new Date();
+            database.ref("squads/" + sessionStorage.getItem("squadname") + "/trigger").set(d.getTime() + Math.random(1000));
+        });
+
         $('#' + auth.currentUser.uid).click();//Shows the user their new ban list
         votedMaps = [];
     } else {
@@ -199,7 +208,7 @@ function vote(a) {
     }
 }
 
-function updateSquadBans(squad) {
+/*function updateSquadBans(squad) {
     database.ref("squads/" + squad).once('value').then(function(s) {
         var members = Object.keys(s.val()["members"]);//Gets the list of members in the squad
         var maps = ["bank", "border", "chalet", "clubhouse", "coastline",
@@ -265,4 +274,4 @@ function insertionSort2D(arr){
         currentIndex = beginningIndex + 1;
     }
     return arr;
-}
+}*/
