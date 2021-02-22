@@ -106,3 +106,53 @@ exports.joinSquad = functions.https.onCall((data, context) => {
     throw new functions.https.HttpsError("unauthenticated");
   }
 });
+
+exports.updateBans = functions.database.ref("squads/{squad}/trigger")
+    .onWrite((snap, context) => {
+      return admin.database().ref().once("value").then(function(s) {
+        const squad = context.params.squad;
+        const maps = Object.keys(s.val()["maps"]);
+        const squadBanObject = {};
+
+        const squadLoc = s.val()["squads"][squad];
+
+        const members = Object.keys(squadLoc["members"]);
+
+        for (let i = 0; i < maps.length; i++) {
+          squadBanObject[maps[i]] = 0;
+        }
+
+        for (let i = 0; i < members.length; i++) {
+          for (let j = 0; j < maps.length; j++) {
+            const curMap = squadLoc["map-bans"][members[i]][maps[j]];
+            squadBanObject[maps[j]] += curMap;
+          }
+        }
+
+        const entries = Object.entries(squadBanObject);
+
+        let begI = 0;
+        let curI = 1;
+
+        while (curI < entries.length) {
+          while (curI > 0) {
+            const curVal = entries[curI][1];
+            if (curVal < entries[curI - 1][1]) {
+              const temp = entries[curI];
+              entries[curI] = entries[curI - 1];
+              entries[curI - 1] = temp;
+              curI--;
+            } else {
+              break;
+            }
+          }
+          begI++;
+          curI = begI + 1;
+        }
+
+        for (let i = 0; i < entries.length; i++) {
+          const path = "squads/" + squad + "/map-bans/squad-bans/";
+          admin.database().ref(path + entries[i][0]).set(i);
+        }
+      });
+    });
