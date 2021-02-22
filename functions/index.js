@@ -9,47 +9,51 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
     const password = data.password;
     const userID = context.auth.uid;
     const sites = data.sites;
+    return admin.database().ref("squads").once("value").then(function(s) {
+      // Verifies that no squads will be overwritten
+      if (!Object.keys(s.val()).includes(squad)) {
+        // Used to shorten the path to the squad in the database
+        const squadPath = "squads/" + squad;
 
-    // Used to shorten the path to the squad in the database
-    const squadPath = "squads/" + squad;
+        // Sets the admin and password in the database for the new squad
+        admin.database().ref(squadPath + "/password").set(password);
+        admin.database().ref(squadPath + "/admin").set(userID);
 
-    // Sets the admin and password in the database for the new squad
-    admin.database().ref(squadPath + "/password").set(password);
-    admin.database().ref(squadPath + "/admin").set(userID);
+        // Sets all the blank site data for the new squad
+        Object.keys(sites).forEach((map) => {
+          const opBanPath = squadPath + "/operator-bans/" + map;
 
-    // Sets all the blank site data for the new squad
-    Object.keys(sites).forEach((map) => {
-      const opBanPath = squadPath + "/operator-bans/" + map;
+          admin.database().ref(opBanPath + "/attacker").set("none");
+          admin.database().ref(opBanPath + "/defender").set("none");
 
-      admin.database().ref(opBanPath + "/attacker").set("none");
-      admin.database().ref(opBanPath + "/defender").set("none");
+          for (let i = 0; i < 4; i++) {
+            const sitePath = squadPath + "/site-data/" + map + "/site" + i;
 
-      for (let i = 0; i < 4; i++) {
-        const sitePath = squadPath + "/site-data/" + map + "/site" + i;
+            admin.database().ref(sitePath + "/name").set(sites[map][i]);
 
-        admin.database().ref(sitePath + "/name").set(sites[map][i]);
+            admin.database().ref(sitePath + "/aloss").set(0);
+            admin.database().ref(sitePath + "/awin").set(0);
+            admin.database().ref(sitePath + "/dloss").set(0);
+            admin.database().ref(sitePath + "/dwin").set(0);
+            admin.database().ref(sitePath + "/paloss").set(0);
+            admin.database().ref(sitePath + "/pawin").set(0);
+            admin.database().ref(sitePath + "/pdloss").set(0);
+            admin.database().ref(sitePath + "/pdwin").set(0);
+          }
+        });
 
-        admin.database().ref(sitePath + "/aloss").set(0);
-        admin.database().ref(sitePath + "/awin").set(0);
-        admin.database().ref(sitePath + "/dloss").set(0);
-        admin.database().ref(sitePath + "/dwin").set(0);
-        admin.database().ref(sitePath + "/paloss").set(0);
-        admin.database().ref(sitePath + "/pawin").set(0);
-        admin.database().ref(sitePath + "/pdloss").set(0);
-        admin.database().ref(sitePath + "/pdwin").set(0);
+        // Used to shorten the path to the user in the database
+        const userPath = "users/" + userID;
+
+        // Reads user info and writes it to the new squad
+        admin.database().ref(userPath + "/squad").set(squad);
+        return admin.database().ref(userPath).once("value").then(function(u) {
+          const memberPath = squadPath + "/members/" + userID;
+          const mapPath = squadPath + "/map-bans/" + userID;
+          admin.database().ref(memberPath).set(u.val()["username"]);
+          admin.database().ref(mapPath).set(u.val()["map-bans"]);
+        });
       }
-    });
-
-    // Used to shorten the path to the user in the database
-    const userPath = "users/" + userID;
-
-    // Reads user info and writes it to the new squad
-    admin.database().ref(userPath + "/squad").set(squad);
-    return admin.database().ref(userPath).once("value").then(function(s) {
-      const memberPath = squadPath + "/members/" + userID;
-      const mapPath = squadPath + "/map-bans/" + userID;
-      admin.database().ref(memberPath).set(s.val()["username"]);
-      admin.database().ref(mapPath).set(s.val()["map-bans"]);
     });
   } else {
     throw new functions.https.HttpsError("unauthenticated");
