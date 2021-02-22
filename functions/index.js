@@ -10,11 +10,14 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
     const userID = context.auth.uid;
     const sites = data.sites;
 
+    // Used to shorten the path to the squad in the database
     const squadPath = "squads/" + squad;
 
+    // Sets the admin and password in the database for the new squad
     admin.database().ref(squadPath + "/password").set(password);
     admin.database().ref(squadPath + "/admin").set(userID);
 
+    // Sets all the blank site data for the new squad
     Object.keys(sites).forEach((map) => {
       const opBanPath = squadPath + "/operator-bans/" + map;
 
@@ -37,7 +40,10 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
       }
     });
 
+    // Used to shorten the path to the user in the database
     const userPath = "users/" + userID;
+
+    // Reads user info and writes it to the new squad
     admin.database().ref(userPath + "/squad").set(squad);
     return admin.database().ref(userPath).once("value").then(function(s) {
       const memberPath = squadPath + "/members/" + userID;
@@ -58,23 +64,30 @@ exports.joinSquad = functions.https.onCall((data, context) => {
       const password = data.password;
       const userID = context.auth.uid;
 
+      // If the squad name does not exist in the database
       if (!Object.keys(s.val()).includes(squadName)) {
         return 1;
       }
 
       const squad = s.val()[squadName];
+      // If the password does not match the name of the squad
       if (squad["password"] != password) {
         return 2;
       }
 
+      // If the squad has reached the max squad size
       if (Object.keys(squad["members"]).length >= 5) {
         return 3;
       }
 
+      // Used to shorten the path to a database point
       const squadPath = "squads/" + squadName;
-
       const userPath = "users/" + userID;
+
+      // Sets the squad name in the user's profile in the database
       admin.database().ref(userPath + "/squad").set(squadName);
+
+      // Reads user info and writes it into the squad they just joined
       admin.database().ref(userPath).once("value").then(function(u) {
         const memberPath = squadPath + "/members/" + userID;
         const mapPath = squadPath + "/map-bans/" + userID;
@@ -82,6 +95,7 @@ exports.joinSquad = functions.https.onCall((data, context) => {
         admin.database().ref(mapPath).set(u.val()["map-bans"]);
       });
 
+      // Exit code for the user being added to the squad
       return 0;
     });
   } else {
