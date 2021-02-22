@@ -38,47 +38,22 @@ joinSquadForm.on('submit', (e) => {
         'squad': squad,
         'password': squadPassword
     }).then(function(result) {
-        updateSquadBans(sessionStorage.getItem("squadname"));
-        userSettings.click();//Refresh the info on the userSettings page
-        console.log(result.data);
-        userSettings.click();//Refresh the info on the userSettings page
-    });
+        const exitCode = result.data;
 
-        /*if (squadList.includes(squad)) {//If the squad alread exists in the database
-            if (Object.keys(s.val()[squad].members).length < 5) {
-                if (squadPassword == s.val()[squad].password) {//If the passwords match
-                    if (window.confirm("Would you like to join the squad " + squad + "?")) {
-                        database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
-                        //Places the user into the squad list of the squad they just joined
-                        database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
-                            database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
-                        });
-
-                        sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
-                        database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
-                            database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                            updateSquadBans(sessionStorage.getItem("squadname"));
-                        });
-                    }
-                } else {//If the password is incorrect
-                    window.alert("This squad already exists and the password is incorrect.");
-                }
-            } else {
-                window.alert("This squad is full. The current max squad size is 5.")
+        if (exitCode == 0) {//The squad has been joined
+            sessionStorage.setItem("squadname", squad);
+            updateSquadBans(squad);
+            userSettings.click();
+        } else if (exitCode == 1) {//The squad does not exist
+            if(window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
+                createNewSquad(squad, squadPassword);
             }
-        } else {//If the squad does not exist in the database
-            if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
-                createNewSquad(squad, squadPassword);//Calls the function to create a new squad
-                sessionStorage.setItem("squadname", squad);//Sets the squadname into local storage
-                database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
-
-                userSettings.click();//Refresh the info on the userSettings page
-            } else {
-                window.alert("New squad not created.");
-            }
-        }*/
-
-        
+        } else if (exitCode == 2) {//The password is incorrect
+            window.alert("This squad already exists and the password is incorrect");
+        } else if (exitCode == 3) {//The squad is at max capacity
+            window.alert("This squad is full. The current max squad size is 5.");
+        }
+    });        
 });
 
 //This function handles the creation of a new squad by assigning the admin to the creator,
@@ -90,7 +65,8 @@ function createNewSquad(squad, password) {
         'password': password,
         'sites': allSites
     }).then(function() {
-        updateSquadBans(sessionStorage.getItem("squadname"));
+        sessionStorage.setItem("squadname", squad);
+        updateSquadBans(squad);
         userSettings.click();//Refresh the info on the userSettings page
     });
 }
