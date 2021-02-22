@@ -38,6 +38,7 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
     });
 
     const userPath = "users/" + userID;
+    admin.database().ref(userPath + "/squad").set(squad);
     return admin.database().ref(userPath).once("value").then(function(s) {
       const memberPath = squadPath + "/members/" + userID;
       const mapPath = squadPath + "/map-bans/" + userID;
@@ -49,50 +50,41 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
   }
 });
 
-// This function allows the user to join a squad. Once a user joins the squad,
-// they are more free to interact with the squad
+// This function joins a squad in the database
 exports.joinSquad = functions.https.onCall((data, context) => {
-  if (context.auth) {
-    const squadName = data.squad;
-    const password = data.password;
-    const userID = context.auth.uid;
+  if (context.auth) { // Evaluates to true if a user is authenticated
+    return admin.database().ref("squads").once("value").then(function(s) {
+      const squadName = data.squad;
+      const password = data.password;
+      const userID = context.auth.uid;
 
-    admin.database().ref("squads").once("value").then(function(s) {
-      if (Object.keys(s.val()).includes(squadName)) {
-        const squad = s.val()[squadName];
-
-        if (squad["password"] == password) {
-          if (Object.keys(squad["members"].length < 5)) {
-            // The operations for joining a squad
-            const uPath = "users/" + userID;
-            const squadPath = "squads/" + squadName;
-
-            admin.database().ref(uPath + "/squad").set(squadName);
-
-            return admin.database().ref(uPath).once("value").then(function(s) {
-              const memberPath = squadPath + "/members/" + userID;
-              const mapPath = squadPath + "/map-bans/" + userID;
-              admin.database().ref(memberPath).set(s.val()["username"]);
-              admin.database().ref(mapPath).set(s.val()["map-bans"]);
-            });
-          } else { // Squad is full
-            throw new functions.https.HttpsError(
-                "out-of-range",
-                "This squad is already at the max size"
-            );
-          }
-        } else { // Incorrect password
-          throw new functions.https.HttpsError(
-              "invalid-argument",
-              "This squad exists and the password is incorrect"
-          );
-        }
-      } else { // Squad does not exist
-        throw new functions.https.HttpsError(
-            "not-found",
-            "this squad does not exist"
-        );
+      if (!Object.keys(s.val()).includes(squadName)) {
+        return 1;
       }
+
+      const squad = s.val()[squadName];
+      if (squad["password"] != password) {
+        return 2;
+      }
+
+      if (Object.keys(squad["members"]).length >= 5) {
+        return 3;
+      }
+
+      const squadPath = "squads/" + squadName;
+
+      const userPath = "users/" + userID;
+      admin.database().ref(userPath + "/squad").set(squadName);
+      admin.database().ref(userPath).once("value").then(function(u) {
+        const memberPath = squadPath + "/members/" + userID;
+        const mapPath = squadPath + "/map-bans/" + userID;
+        admin.database().ref(memberPath).set(u.val()["username"]);
+        admin.database().ref(mapPath).set(u.val()["map-bans"]);
+      });
+
+      return 0;
     });
+  } else {
+    throw new functions.https.HttpsError("unauthenticated");
   }
 });
