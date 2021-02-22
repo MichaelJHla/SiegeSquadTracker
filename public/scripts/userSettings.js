@@ -30,20 +30,19 @@ const joinSquadForm = $('#join-squad-form');
 joinSquadForm.on('submit', (e) => {
     e.preventDefault();
 
-    database.ref("squads").once('value').then(function(s) {
-        var squad = $('#join-squad-name').val();//The squad name the user provided
-        var squadPassword = $('#join-squad-password').val();//The squad password the user provided
-        var squadList = Object.keys(s.val());//A list of all previous squads
+    var squad = $('#join-squad-name').val();//The squad name the user provided
+    var squadPassword = $('#join-squad-password').val();//The squad password the user provided
 
-        const joinSquad = firebase.functions().httpsCallable('joinSquad');
-        joinSquad({
-            'squad': squad,
-            'password': squadPassword
-        }).then(function() {
-            window.alert("Squad succesfully joined. Please be patient while you are added to the squad.");
-        }).catch((e) => {
-            window.alert(e.message);
-        });
+    const joinSquad = firebase.functions().httpsCallable('joinSquad');
+    joinSquad({
+        'squad': squad,
+        'password': squadPassword
+    }).then(function(result) {
+        updateSquadBans(sessionStorage.getItem("squadname"));
+        userSettings.click();//Refresh the info on the userSettings page
+        console.log(result.data);
+        userSettings.click();//Refresh the info on the userSettings page
+    });
 
         /*if (squadList.includes(squad)) {//If the squad alread exists in the database
             if (Object.keys(s.val()[squad].members).length < 5) {
@@ -79,8 +78,7 @@ joinSquadForm.on('submit', (e) => {
             }
         }*/
 
-        userSettings.click();//Refresh the info on the userSettings page
-    });
+        
 });
 
 //This function handles the creation of a new squad by assigning the admin to the creator,
