@@ -42,7 +42,6 @@ joinSquadForm.on('submit', (e) => {
 
         if (exitCode == 0) {//The squad has been joined
             sessionStorage.setItem("squadname", squad);
-            updateSquadBans(squad);
             userSettings.click();
         } else if (exitCode == 1) {//The squad does not exist
             if(window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
@@ -66,7 +65,6 @@ function createNewSquad(squad, password) {
         'sites': allSites
     }).then(function() {
         sessionStorage.setItem("squadname", squad);
-        updateSquadBans(squad);
         userSettings.click();//Refresh the info on the userSettings page
     });
 }
@@ -129,15 +127,13 @@ function displaySquadMembers(squad) {
 //This function handles removing a player from a squad. It will properly remove their data from a squad
 // and remove that squad association from their profile
 function removeFromSquad(player, squad) {
-    database.ref("users/" + player + "/squad").remove();
-    database.ref("squads/" + squad + "/members/" + player).remove();
-    database.ref("squads/" + squad + "/map-bans/" + player).remove();
-    database.ref("squads/" + squad).once('value').then(function(snapshot) {
-        if (player == snapshot.val().admin) {
-            database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
-        }
-    });
-    updateSquadBans(sessionStorage.getItem("squadname"));
+    const remove = firebase.functions().httpsCallable('removeFromSquad');
+    remove({
+        'squad': squad,
+        'player': player
+    }).then(function() {
+        userSettings.click();
+    }); 
 }
 
 //This function allows the user to remove themselves from a squad by calling the remove from squad function
