@@ -2,6 +2,7 @@
 var allSites;
 var maps;
 
+//This assigns the global variables based on the maps in the database
 database.ref("maps").once("value").then(function(m) {
     allSites = m.val();
     maps = Object.keys(m.val());
