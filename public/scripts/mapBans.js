@@ -79,7 +79,7 @@ function mapBanUserList() {
                 updateSquadBans(sessionStorage.getItem("squadname"));
                 $('#ban-list').hide();//Gives better feedback to the user that the ban list is loading
                 //Gets the map ban list for the given data in the map-bans section of the squad
-                database.ref('squads/' + sessionStorage.getItem("squadname") + "/map-bans/" + this.value).once('value').then(function(s) {
+                database.ref('squads/' + sessionStorage.getItem("squadname") + '/map-bans/' + this.value).once('value').then(function(s) {
                     $('#ban-list').empty();
 
                     var mapEntries = Object.entries(s.val());//Breaks down map bans into easy to iterate array
@@ -103,7 +103,7 @@ function mapBanUserList() {
                 if (e.id == 'map-ban-radio-squad-name') {
                     $('#map-ban-status').text("Your squad's ban list");
                 } else {
-                    database.ref("users/" + e.id + "/username").once('value').then(function(u) {
+                    database.ref("squads/" + sessionStorage.getItem("squadname") + "/members/" + e.id).once('value').then(function(u) {
                         $('#map-ban-status').text(u.val() + "'s ban list");
                     });
                 }
