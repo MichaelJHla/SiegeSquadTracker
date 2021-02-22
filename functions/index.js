@@ -107,6 +107,27 @@ exports.joinSquad = functions.https.onCall((data, context) => {
   }
 });
 
+exports.removeFromSquad = functions.https.onCall((data, context) => {
+  const player = data.player;
+  const squad = data.squad;
+
+  admin.database().ref("squads/" + squad + "/map-bans/" + player).remove();
+  admin.database().ref("squads/" + squad + "/members/" + player).remove();
+
+  const d = new Date();
+  const tPath = "squads/" + squad + "/trigger";
+  admin.database().ref(tPath).set(d.getTime() + Math.random(1000));
+
+  admin.database().ref("users/" + player + "/squad").remove();
+
+  return admin.database().ref("squads/"+squad).once("value").then(function(s) {
+    if (player == s.val().admin) {
+      const aPath = "squads/" + squad + "/admin";
+      admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
+    }
+  });
+});
+
 exports.updateBans = functions.database.ref("squads/{squad}/trigger")
     .onWrite((snap, context) => {
       return admin.database().ref().once("value").then(function(s) {
