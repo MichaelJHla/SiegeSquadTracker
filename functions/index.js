@@ -117,24 +117,26 @@ exports.joinSquad = functions.https.onCall((data, context) => {
 });
 
 exports.removeFromSquad = functions.https.onCall((data, context) => {
+  const userID = context.auth.uid;
   const player = data.player;
   const squad = data.squad;
-
-  admin.database().ref("squads/" + squad + "/map-bans/" + player).remove();
-  admin.database().ref("squads/" + squad + "/members/" + player).remove();
-
-  const d = new Date();
-  const tPath = "squads/" + squad + "/trigger";
-  admin.database().ref(tPath).set(d.getTime() + Math.random(1000));
-
-  admin.database().ref("users/" + player + "/squad").remove();
-
   return admin.database().ref("squads/"+squad).once("value").then(function(s) {
-    if (!s.val().members) {
-      admin.database().ref("squads/" + squad).remove();
-    } else if (player == s.val().admin) {
-      const aPath = "squads/" + squad + "/admin";
-      admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
+    if (Object.keys(s.val()["members"]).includes(userID)) {
+      admin.database().ref("squads/" + squad + "/map-bans/" + player).remove();
+      admin.database().ref("squads/" + squad + "/members/" + player).remove();
+
+      const d = new Date();
+      const tPath = "squads/" + squad + "/trigger";
+      admin.database().ref(tPath).set(d.getTime() + Math.random(1000));
+
+      admin.database().ref("users/" + player + "/squad").remove();
+
+      if (!s.val().members) {
+        admin.database().ref("squads/" + squad).remove();
+      } else if (player == s.val().admin) {
+        const aPath = "squads/" + squad + "/admin";
+        admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
+      }
     }
   });
 });
