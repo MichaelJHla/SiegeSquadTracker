@@ -43,16 +43,18 @@ joinSquadForm.on('submit', (e) => {
 
         if (exitCode == 0) {//The squad has been joined
             sessionStorage.setItem("squadname", squad);
+            userSettings.click();
         } else if (exitCode == 1) {//The squad does not exist
             if(window.confirm("The squad " + squad + " does not exist. Would you like to create a new squad with this name?")) {
                 createNewSquad(squad, squadPassword);
             }
         } else if (exitCode == 2) {//The password is incorrect
             window.alert("This squad already exists and the password is incorrect");
+            userSettings.click();
         } else if (exitCode == 3) {//The squad is at max capacity
             window.alert("This squad is full. The current max squad size is 5.");
+            userSettings.click();
         }
-        userSettings.click();
     });
     
     $('#join-squad').hide();
