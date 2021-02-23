@@ -3,6 +3,12 @@
     display: none;
 }
 
+#loading {
+    color: white;
+    text-align: center;
+    display: none;
+}
+
 #user-info {
     display: flex;
     justify-content: center;

@@ -2,6 +2,7 @@
 const userSettings = $('#user-settings');
 userSettings.on('click', function() {
     hideAll();
+    $('#loading').hide();
     $('#user-settings-main').show();//Display the user settings section
     $('#change-squad-password-form').hide();
     $('#squad-password-div').show();
@@ -42,7 +43,6 @@ joinSquadForm.on('submit', (e) => {
 
         if (exitCode == 0) {//The squad has been joined
             sessionStorage.setItem("squadname", squad);
-            userSettings.click();
         } else if (exitCode == 1) {//The squad does not exist
             if(window.confirm("The squad " + squad + " does not exist. Would you like to create a new squad with this name?")) {
                 createNewSquad(squad, squadPassword);
@@ -52,7 +52,11 @@ joinSquadForm.on('submit', (e) => {
         } else if (exitCode == 3) {//The squad is at max capacity
             window.alert("This squad is full. The current max squad size is 5.");
         }
-    });        
+        userSettings.click();
+    });
+    
+    $('#join-squad').hide();
+    $('#loading').show();
 });
 
 //This function handles the creation of a new squad by assigning the admin to the creator,
@@ -142,7 +146,8 @@ leaveSquadButton.on('click', function() {
     if (window.confirm("Would you like to leave " + sessionStorage.getItem("squadname") + "?")) {
         removeFromSquad(auth.currentUser.uid, sessionStorage.getItem("squadname"));
         sessionStorage.removeItem("squadname");
-        userSettings.click();
+        $('#loading').show();
+        $('#squad-info').hide();
     }
 });
 
