@@ -6,6 +6,14 @@
         display: block;    
     }
 
+    #version {
+        position: fixed;
+        right: 0;
+        top: 0;
+        margin: 0;
+        color: gray;
+    }
+
     #site-name {
         display: none;
     }
