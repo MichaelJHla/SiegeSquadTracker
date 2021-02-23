@@ -44,7 +44,7 @@ joinSquadForm.on('submit', (e) => {
             sessionStorage.setItem("squadname", squad);
             userSettings.click();
         } else if (exitCode == 1) {//The squad does not exist
-            if(window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
+            if(window.confirm("The squad " + squad + " does not exist. Would you like to create a new squad with this name?")) {
                 createNewSquad(squad, squadPassword);
             }
         } else if (exitCode == 2) {//The password is incorrect
