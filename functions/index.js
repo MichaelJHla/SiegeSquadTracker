@@ -52,6 +52,10 @@ exports.createNewSquad = functions.https.onCall((data, context) => {
           const mapPath = squadPath + "/map-bans/" + userID;
           admin.database().ref(memberPath).set(u.val()["username"]);
           admin.database().ref(mapPath).set(u.val()["map-bans"]);
+
+          const d = new Date();
+          const tPath = "squads/" + squad + "/trigger";
+          admin.database().ref(tPath).set(d.getTime() + Math.random(1000));
         });
       }
     });
@@ -97,6 +101,11 @@ exports.joinSquad = functions.https.onCall((data, context) => {
         const mapPath = squadPath + "/map-bans/" + userID;
         admin.database().ref(memberPath).set(u.val()["username"]);
         admin.database().ref(mapPath).set(u.val()["map-bans"]);
+
+        const d = new Date();
+        const tPath = "squads/" + squadName + "/trigger";
+        console.log(tPath);
+        admin.database().ref(tPath).set(d.getTime() + Math.random(1000));
       });
 
       // Exit code for the user being added to the squad
