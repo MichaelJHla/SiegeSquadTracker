@@ -6,6 +6,7 @@ siteStats.on('click', function() {
     $('#site-selection-div').hide();
     $('#site-stat-form').hide();
     $('#site-stats-main').show();
+    $('#site-stat-map-list').val('none');
 });
 
 const siteStatMapList = $('#site-stat-map-list');

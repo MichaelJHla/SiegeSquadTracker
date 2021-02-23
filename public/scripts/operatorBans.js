@@ -8,6 +8,7 @@ operatorBans.on('click', function() {
     $('#operator-display').hide();
     $('#edit-operators-button').hide();
     $('#operator-bans-main').show();
+    $('#operator-map-list').val('none');
 });
 
 const operatorMapSelect = $('#operator-map-list');
