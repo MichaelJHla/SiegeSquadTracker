@@ -130,7 +130,9 @@ exports.removeFromSquad = functions.https.onCall((data, context) => {
   admin.database().ref("users/" + player + "/squad").remove();
 
   return admin.database().ref("squads/"+squad).once("value").then(function(s) {
-    if (player == s.val().admin) {
+    if (!s.val().members) {
+      admin.database().ref("squads/" + squad).remove();
+    } else if (player == s.val().admin) {
       const aPath = "squads/" + squad + "/admin";
       admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
     }
