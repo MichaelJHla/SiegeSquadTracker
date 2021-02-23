@@ -131,9 +131,7 @@ exports.removeFromSquad = functions.https.onCall((data, context) => {
 
       admin.database().ref("users/" + player + "/squad").remove();
 
-      if (!s.val().members) {
-        admin.database().ref("squads/" + squad).remove();
-      } else if (player == s.val().admin) {
+      if (player == s.val().admin) {
         const aPath = "squads/" + squad + "/admin";
         admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
       }
@@ -189,4 +187,9 @@ exports.updateBans = functions.database.ref("squads/{squad}/trigger")
           admin.database().ref(path + entries[i][0]).set(i);
         }
       });
+    });
+
+exports.deleteSquad = functions.database.ref("squads/{squad}/members")
+    .onDelete((snap, context) => {
+      return admin.database().ref("squads/" + context.params.squad).remove();
     });
