@@ -67,14 +67,19 @@ joinSquadForm.on('submit', (e) => {
 // and then creating all the blank data the squad needs to be added onto later
 function createNewSquad(squad, password) {
     const newSquad = firebase.functions().httpsCallable('createNewSquad');
-    newSquad({
-        'squad': squad,
-        'password': password,
-        'sites': allSites
-    }).then(function() {
-        sessionStorage.setItem("squadname", squad);
+    if (verify(squad) != null) {// Only allow squad creation if there is no special characters
+        newSquad({
+            'squad': squad,
+            'password': password,
+            'sites': allSites
+        }).then(function() {
+            sessionStorage.setItem("squadname", squad);
+            userSettings.click();//Refresh the info on the userSettings page
+        });
+    } else {
+        window.alert("New squads cannot contain special characters in their names.");
         userSettings.click();//Refresh the info on the userSettings page
-    });
+    }
 }
 
 //This functions displays a list showing the squad members
@@ -183,6 +188,7 @@ changeSquadPasswordButton.on('click', function() {
     $('#change-squad-password-button').hide();
 });
 
+//This is the form that is used to change the password for the squad
 const changeSquadPasswordForm = $('#change-squad-password-form');
 changeSquadPasswordForm.on('submit', (e) => {
     e.preventDefault();
@@ -198,7 +204,13 @@ changeSquadPasswordForm.on('submit', (e) => {
     $('#change-squad-password-button').show();
 });
 
+//This functions calls a function which sends the user an email to change their password
 const changePasswordButton = $('#change-password-button');
 changePasswordButton.on('click', function() {
     changePassword(auth.currentUser.email);
 });
+
+//This verifies that the string contains only numbers, letters, and spaces
+function verify(str) {
+    return str.match(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/);
+}
