@@ -188,6 +188,7 @@ changeSquadPasswordButton.on('click', function() {
     $('#change-squad-password-button').hide();
 });
 
+//This is the form that is used to change the password for the squad
 const changeSquadPasswordForm = $('#change-squad-password-form');
 changeSquadPasswordForm.on('submit', (e) => {
     e.preventDefault();
