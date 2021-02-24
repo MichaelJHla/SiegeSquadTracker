@@ -17,8 +17,6 @@ auth.onAuthStateChanged(user => {
             $('#user-settings-label').html('<i class="fas fa-user"></i> ' + sessionStorage.getItem('username'));
 
             userSettings.click(); //Click the user settings page
-
-            console.log(user.displayName);
         });
     } else {
         sessionStorage.clear(); //Empties the local storage when no user is signed in

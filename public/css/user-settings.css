@@ -3,6 +3,27 @@
     display: none;
 }
 
+#loading {
+    color: white;
+    text-align: center;
+    display: none;
+}
+
+#app-info {
+    text-align: center;
+}
+
+#app-info a{
+    text-decoration: none;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 1vw; 
+}
+
+#app-info a:hover {
+    text-decoration: underline;
+}
+
 #user-info {
     display: flex;
     justify-content: center;

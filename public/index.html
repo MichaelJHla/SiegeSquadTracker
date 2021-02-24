@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    <h6 id="version">v1.0</h6>
     <!--The sidebar will be the main method of naivigation for the user through the site.
     It will contain a top section which says some basic info about the site,
     a nav-elements section which is broken in two:
@@ -130,6 +131,13 @@
                 <button id="sign-out-button">Sign out</button>
                 <button id="change-password-button">Change password</button>
             </div>
+            <div id="loading">
+                <h1>LOADING...</h1>
+            </div>
+            <div id="app-info">
+                <h4><a href="https://discord.gg/PBT7d76Zfw">Report bugs or make suggestions on the Discord.</a></h4>
+                <h4><a href="https://github.com/MichaelJHla/SiegeSquadTracker">The project repository can be accessed here.</a></h4>
+            </div>
         </div>
         <div id="map-bans-main">
             <div id="map-ban-radios-div">
@@ -155,7 +163,7 @@
             <div id="operator-map-list-div">
                 <label for="operator-map-list">Select a map:</label>
                 <select id="operator-map-list" class="dropdown">
-                    <option disabled selected value> -- select a map -- </option>
+                    <option disabled selected value="none"> -- select a map -- </option>
                     <option value="bank">Bank</option>
                     <option value="border">Border</option>
                     <option value="chalet">Chalet</option>
@@ -194,7 +202,7 @@
                     <option value="kali">Kali</option>
                     <option value="lion">Lion</option>
                     <option value="maverick">Maverick</option>
-                    <option value="Montagne">Montagne</option>
+                    <option value="montagne">Montagne</option>
                     <option value="nokk">Nokk</option>
                     <option value="nomad">Nomad</option>
                     <option value="sledge">Sledge</option>
@@ -259,7 +267,7 @@
             <div id="site-stat-map-list-div">
                 <label class="dropdown-label" for="site-stat-map-list">Select a map:</label>
                 <select id="site-stat-map-list" class="dropdown">
-                    <option disabled selected value> -- select a map -- </option>
+                    <option disabled selected value="none"> -- select a map -- </option>
                     <option value="bank">Bank</option>
                     <option value="border">Border</option>
                     <option value="chalet">Chalet</option>
@@ -342,9 +350,12 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
     <!-- Authentication CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <!--Cloud functions CDN-->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-functions.js"></script>
+
     <script src="scripts/jquery.js"></script>
-    <script src="scripts/globalVars.js"></script>
     <script src="scripts/firebaseConfig.js"></script>
+    <script src="scripts/globalVars.js"></script>
     <script src="scripts/single-page.js"></script>
     <script src="scripts/mapBans.js"></script>
     <script src="scripts/operatorBans.js"></script>

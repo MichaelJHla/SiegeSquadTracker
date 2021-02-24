@@ -41,3 +41,7 @@
     border: none;
     padding: 0.5vw;
 }
+
+#unsaved-changes {
+    color: white;
+}

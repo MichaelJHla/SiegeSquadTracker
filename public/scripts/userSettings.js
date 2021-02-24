@@ -2,6 +2,7 @@
 const userSettings = $('#user-settings');
 userSettings.on('click', function() {
     hideAll();
+    $('#loading').hide();
     $('#user-settings-main').show();//Display the user settings section
     $('#change-squad-password-form').hide();
     $('#squad-password-div').show();
@@ -30,90 +31,50 @@ const joinSquadForm = $('#join-squad-form');
 joinSquadForm.on('submit', (e) => {
     e.preventDefault();
 
-    database.ref("squads").once('value').then(function(s) {
-        var squad = $('#join-squad-name').val();//The squad name the user provided
-        var squadPassword = $('#join-squad-password').val();//The squad password the user provided
-        var squadList = Object.keys(s.val());//A list of all previous squads
+    var squad = $('#join-squad-name').val();//The squad name the user provided
+    var squadPassword = $('#join-squad-password').val();//The squad password the user provided
 
-        if (squadList.includes(squad)) {//If the squad alread exists in the database
-            if (Object.keys(s.val()[squad].members).length < 5) {
-                if (squadPassword == s.val()[squad].password) {//If the passwords match
-                    if (window.confirm("Would you like to join the squad " + squad + "?")) {
-                        database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);//Sets the user's squad
-                        //Places the user into the squad list of the squad they just joined
-                        database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s_username) {
-                            database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s_username.val());
-                        });
+    const joinSquad = firebase.functions().httpsCallable('joinSquad');
+    joinSquad({
+        'squad': squad,
+        'password': squadPassword
+    }).then(function(result) {
+        const exitCode = result.data;
 
-                        sessionStorage.setItem("squadname", squad);//Sets the squad name into the local storage
-                        database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s_maps) {
-                            database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s_maps.val());
-                            updateSquadBans(sessionStorage.getItem("squadname"));
-                        });
-                    }
-                } else {//If the password is incorrect
-                    window.alert("This squad already exists and the password is incorrect.");
-                }
+        if (exitCode == 0) {//The squad has been joined
+            sessionStorage.setItem("squadname", squad);
+            userSettings.click();
+        } else if (exitCode == 1) {//The squad does not exist
+            if(window.confirm("The squad " + squad + " does not exist. Would you like to create a new squad with this name?")) {
+                createNewSquad(squad, squadPassword);
             } else {
-                window.alert("This squad is full. The current max squad size is 5.")
+                userSettings.click();
             }
-        } else {//If the squad does not exist in the database
-            if (window.confirm("The squad " + squad + " does no exist. Would you like to create a new squad with this name?")) {
-                createNewSquad(squad, squadPassword);//Calls the function to create a new squad
-                sessionStorage.setItem("squadname", squad);//Sets the squadname into local storage
-                database.ref("users/" + auth.currentUser.uid + "/squad").set(squad);
-
-                userSettings.click();//Refresh the info on the userSettings page
-            } else {
-                window.alert("New squad not created.");
-            }
+        } else if (exitCode == 2) {//The password is incorrect
+            window.alert("This squad already exists and the password is incorrect");
+            userSettings.click();
+        } else if (exitCode == 3) {//The squad is at max capacity
+            window.alert("This squad is full. The current max squad size is 5.");
+            userSettings.click();
         }
-
-        userSettings.click();//Refresh the info on the userSettings page
     });
+    
+    $('#join-squad').hide();
+    $('#loading').show();
 });
 
 //This function handles the creation of a new squad by assigning the admin to the creator,
 // and then creating all the blank data the squad needs to be added onto later
 function createNewSquad(squad, password) {
-    //Sets the squad password to the proper value
-    database.ref("squads/" + squad + "/password").set(password);
-
-    //sets the admin to the creator of the squad
-    database.ref("squads/" + squad + "/admin").set(auth.currentUser.uid);
-
-    //Add the first member to the squad
-    database.ref("users/" + auth.currentUser.uid + "/username").once('value').then(function(s) {
-        database.ref("squads/" + squad + "/members/" + auth.currentUser.uid).set(s.val());
+    const newSquad = firebase.functions().httpsCallable('createNewSquad');
+    newSquad({
+        'squad': squad,
+        'password': password,
+        'sites': allSites
+    }).then(function() {
+        sessionStorage.setItem("squadname", squad);
+        userSettings.click();//Refresh the info on the userSettings page
     });
-
-    //This creates all the site data and sets it to 0, and sets all maps to have no ban listed for their operator bans
-    Object.keys(allSites).forEach(function(map) {
-        database.ref("squads/" + squad + "/operator-bans/" + map + "/attacker").set("none");
-        database.ref("squads/" + squad + "/operator-bans/" + map + "/defender").set("none");
-        
-        //The creation and zeroing of all site data
-        for (var i = 0; i < 4; i++) {
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/name").set(allSites[map][i]);
-
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/aloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/awin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/dwin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/paloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pawin").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdloss").set(0);
-            database.ref("squads/" + squad + "/site-data/" + map + "/site" + i + "/pdwin").set(0);
-        }
-    });
-    
-    //Move the user's map bans into the squad's map bans sections
-    database.ref("users/" + auth.currentUser.uid + "/map-bans").once('value').then(function(s) {
-        database.ref("squads/" + squad + "/map-bans/" + auth.currentUser.uid).set(s.val());
-        updateSquadBans(sessionStorage.getItem("squadname"));
-    });
-
-    userSettings.click();//Refresh the info on the userSettings page
 }
 
 //This functions displays a list showing the squad members
@@ -174,15 +135,13 @@ function displaySquadMembers(squad) {
 //This function handles removing a player from a squad. It will properly remove their data from a squad
 // and remove that squad association from their profile
 function removeFromSquad(player, squad) {
-    database.ref("users/" + player + "/squad").remove();
-    database.ref("squads/" + squad + "/members/" + player).remove();
-    database.ref("squads/" + squad + "/map-bans/" + player).remove();
-    database.ref("squads/" + squad).once('value').then(function(snapshot) {
-        if (player == snapshot.val().admin) {
-            database.ref("squads/" + squad + "/admin").set(Object.keys(snapshot.val()["members"])[0]);
-        }
-    });
-    updateSquadBans(sessionStorage.getItem("squadname"));
+    const remove = firebase.functions().httpsCallable('removeFromSquad');
+    remove({
+        'squad': squad,
+        'player': player
+    }).then(function() {
+        userSettings.click();
+    }); 
 }
 
 //This function allows the user to remove themselves from a squad by calling the remove from squad function
@@ -191,7 +150,8 @@ leaveSquadButton.on('click', function() {
     if (window.confirm("Would you like to leave " + sessionStorage.getItem("squadname") + "?")) {
         removeFromSquad(auth.currentUser.uid, sessionStorage.getItem("squadname"));
         sessionStorage.removeItem("squadname");
-        userSettings.click();
+        $('#loading').show();
+        $('#squad-info').hide();
     }
 });
 
