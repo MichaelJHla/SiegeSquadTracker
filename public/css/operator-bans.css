@@ -45,3 +45,9 @@
 #unsaved-changes {
     color: white;
 }
+
+textarea {
+    resize: none;
+    width: 30vw;
+    height: 10vw;
+}

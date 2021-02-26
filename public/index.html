@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <h6 id="version">v1.0.1</h6>
+    <h6 id="version">v1.0.2</h6>
     <!--The sidebar will be the main method of naivigation for the user through the site.
     It will contain a top section which says some basic info about the site,
     a nav-elements section which is broken in two:
@@ -260,6 +260,12 @@
             </div>
             <div id="edit-operators-button">
                 <button id="edit-operator-bans">Edit bans</button>
+            </div>
+            <div id="notes-display">
+                <!--This will display the notes a squad wrote about a specific ban-->
+                <h3>Notes:</h3>
+                <textarea id="notes" placeholder="A place to write some notes about these bans." maxlength="500"></textarea>
+                <h5>Characters remaining: <span id="chars-left">500</span></h5>
             </div>
         </div>
         <div id="site-stats-main">
