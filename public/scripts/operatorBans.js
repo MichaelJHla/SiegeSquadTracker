@@ -9,6 +9,7 @@ operatorBans.on('click', function() {
     $('#edit-operators-button').hide();
     $('#operator-bans-main').show();
     $('#operator-map-list').val('none');
+    $('#notes-display').hide();
 });
 
 const operatorMapSelect = $('#operator-map-list');
@@ -21,11 +22,19 @@ operatorMapSelect.on('change', function() {
     $('#unsaved-changes').hide();
     $('#operator-display').show();
     $('#edit-operators-button').show();
+    $('#notes-display').show();
 
     database.ref("squads/" + sessionStorage.getItem("squadname") + "/operator-bans/" + this.value).once('value').then(function(s) {
         //Load and display the data regarding operator bans
         $('#attack-operator').prop("src", "images/operators/" + s.val().attacker + ".svg");
         $('#defense-operator').prop("src", "images/operators/" + s.val().defender + ".svg");
+
+        //Display the notes for the site, if the database contains the notes
+        if (Object.keys(s.val()).includes("notes")) {
+            $('#notes').val(s.val().notes);
+        } else {
+            $('#notes').val('');
+        }
     });
 });
 
@@ -68,4 +77,14 @@ submitOperatorBans.on('click', function() {
     $('#unsaved-changes').hide();
     $('#operator-display').show();
     $('#edit-operators-button').show();
+});
+
+const notes = $('#notes');
+notes.keyup(function() {
+    $('#chars-left').text(200-$('#notes').val().length);
+});
+
+notes.change(function() {
+    var reference = "squads/" + sessionStorage.getItem("squadname") + "/operator-bans/" + $('#operator-map-list').val() + "/";
+    database.ref(reference + "notes").set($('#notes').val());
 });
