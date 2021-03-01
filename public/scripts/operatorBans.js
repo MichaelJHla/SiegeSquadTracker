@@ -32,8 +32,10 @@ operatorMapSelect.on('change', function() {
         //Display the notes for the site, if the database contains the notes
         if (Object.keys(s.val()).includes("notes")) {
             $('#notes').val(s.val().notes);
+            $('#chars-left').text(200-$('#notes').val().length);
         } else {
             $('#notes').val('');
+            $('#chars-left').text("200");
         }
     });
 });
