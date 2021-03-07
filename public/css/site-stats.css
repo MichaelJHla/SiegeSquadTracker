@@ -75,3 +75,15 @@
     width: 20vw;
     margin: 0 auto;
 }
+
+#remove-site-stat {
+    background-color: #3D99FF;
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 10px;
+    border-radius: 99px;
+    border: none;
+    width: 100%;
+    font-size: 2vw;
+    margin-bottom: .5vw;
+}
