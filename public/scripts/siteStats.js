@@ -101,3 +101,44 @@ siteStatForm.on('submit', (e) => {
         window.alert($('label[for="' + role.id + '"]').text() + " " + $('label[for="' + winStatus.id + '"]').text() + " submitted");
     });
 });
+
+const removeSiteStat = $("#remove-site-stat");
+removeSiteStat.on('click', function() {
+    var site = $('#site-selection').val();
+    database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site).once('value').then(function(s) {
+        var role = document.querySelector('input[name="role"]:checked');
+        var winStatus = document.querySelector('input[name="success"]:checked');
+        var plantStatus = document.querySelector('input[name="planted"]:checked');
+
+        var roundStatus = role.value + winStatus.value;
+
+        if (plantStatus.value == "yes" && s.val()["p" + roundStatus] > 0) {
+            database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/p" + roundStatus).set(s.val()["p" + roundStatus] - 1);
+        } else if (plantStatus.value == "yes") {
+            window.alert("This stat can't be reduced further than it is.");
+            loadSiteData($('#site-stat-map-list').val(), site);
+            return;
+        }
+
+        if (s.val()[roundStatus] > 0) {
+            database.ref("squads/" + sessionStorage.getItem("squadname") + "/site-data/" + $('#site-stat-map-list').val() + "/site" + site + "/" + roundStatus).set(s.val()[roundStatus] - 1);
+        } else {
+            window.alert("This stat can't be reduced further than it is.");
+            loadSiteData($('#site-stat-map-list').val(), site);
+            return;
+        }
+
+        $('#attack').prop('checked', false);
+        $('#defend').prop('checked', false);
+        $('#win').prop('checked', false);
+        $('#loss').prop('checked', false);
+        $('#yes').prop('checked', false);
+        $('#no').prop('checked', false);
+
+        loadSiteData($('#site-stat-map-list').val(), site);
+
+        $('#submit-div').hide();
+
+        window.alert($('label[for="' + role.id + '"]').text() + " " + $('label[for="' + winStatus.id + '"]').text() + " removed");
+    });
+});
