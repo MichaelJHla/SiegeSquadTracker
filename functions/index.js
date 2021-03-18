@@ -133,7 +133,12 @@ exports.removeFromSquad = functions.https.onCall((data, context) => {
 
       if (player == s.val().admin) {
         const aPath = "squads/" + squad + "/admin";
-        admin.database().ref(aPath).set(Object.keys(s.val()["members"])[0]);
+        const curP = Object.keys(s.val()["members"])[0];
+        if (curP != player) {
+          admin.database().ref(aPath).set(curP);
+        } else {
+          admin.database().ref(aPath).set(Object.keys(s.val()["members"])[1]);
+        }
       }
     }
   });
@@ -141,6 +146,7 @@ exports.removeFromSquad = functions.https.onCall((data, context) => {
 
 exports.updateBans = functions.database.ref("squads/{squad}/trigger")
     .onWrite((snap, context) => {
+      console.log(context.params.squad);
       return admin.database().ref().once("value").then(function(s) {
         const squad = context.params.squad;
         const maps = Object.keys(s.val()["maps"]);
