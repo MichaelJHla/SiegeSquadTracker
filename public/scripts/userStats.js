@@ -2,6 +2,9 @@
 const userStats = $('#user-stats');
 userStats.on('click', function() {
     hideAll();
+
+    $('#user-stat-list').empty();
+    $('#user-stat-list').append($('<option disabled selected value="none"> -- select a member -- </option>'));
     
     $('#user-stats-main').show();
     $('#user-stat-list-loading').show(); //Displays a loading message
