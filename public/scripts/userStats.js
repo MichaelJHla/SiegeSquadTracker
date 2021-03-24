@@ -4,6 +4,7 @@ userStats.on('click', function() {
     hideAll();
 
     $('#user-stat-list').empty();
+    //The default option for the member list
     $('#user-stat-list').append($('<option disabled selected value="none"> -- select a member -- </option>'));
     
     $('#user-stats-main').show();
@@ -26,3 +27,7 @@ userStats.on('click', function() {
     });
 });
 
+const userStatList = $('#user-stat-list');
+userStatList.on('change', function() {
+    $('#user-stat-div').show();
+});
