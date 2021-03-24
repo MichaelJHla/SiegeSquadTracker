@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/all.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/user-stats.css">
     <link rel="stylesheet" href="css/site-stats.css">
     <link rel="stylesheet" href="css/operator-bans.css">
     <link rel="stylesheet" href="css/map-bans.css">
@@ -358,6 +359,20 @@
                     <input type="button" id="remove-site-stat" value="Remove">
                 </div>
             </form>
+        </div>
+        <div id="user-stats-main">
+            <h2>User Stats</h2>
+            <label id="user-stat-list-loading" class="dropdown-label">Loading...</label>
+
+            <label class="dropdown-label" for="user-stat-list">Select a squad member:</label>
+            <select id="user-stat-list" class="dropdown">
+                <option disabled selected value="none"> -- select a member -- </option>
+                <!--Dynamically populated with the users in the squad-->
+            </select>
+
+            <div id="user-stat-div">
+                <h3 id="user-stat-label">Stats for (loading)</h3>
+            </div>
         </div>
     </div>
 

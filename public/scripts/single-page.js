@@ -38,6 +38,7 @@ function hideAll() {
     $('#map-bans-main').hide();
     $('#operator-bans-main').hide();
     $('#site-stats-main').hide();
+    $('#user-stats-main').hide();
 }
 
 function changePassword(email) {
