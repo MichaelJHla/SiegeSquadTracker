@@ -227,7 +227,9 @@ changeUsernameForm.on('submit', (e) => {
 
     if (window.confirm("Change username to " + $('#new-username').val() + "?")) {
         database.ref("squads/" + sessionStorage.getItem("squadname") + "/members/" + auth.currentUser.uid).set($('#new-username').val());
-        database.ref("users/" + auth.currentUser.uid + "/username").set($('#new-username').val());
+        database.ref("users/" + auth.currentUser.uid + "/username").set($('#new-username').val()).then(function() {
+            location.reload();
+        });
     }
 
     $('#user-info-username').show();
