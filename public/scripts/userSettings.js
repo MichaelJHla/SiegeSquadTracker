@@ -5,6 +5,7 @@ userSettings.on('click', function() {
     $('#loading').hide();
     $('#user-settings-main').show();//Display the user settings section
     $('#change-squad-password-form').hide();
+    $('#change-username-form').hide();
     $('#squad-password-div').show();
     $('#squad-password-button').show();
     $('#change-squad-password-button').show();
@@ -208,6 +209,34 @@ changeSquadPasswordForm.on('submit', (e) => {
 const changePasswordButton = $('#change-password-button');
 changePasswordButton.on('click', function() {
     changePassword(auth.currentUser.email);
+});
+
+const changeUsernameButton = $('#change-username');
+changeUsernameButton.on('click', function() {
+    $('#user-info-username').hide();
+    $('#change-username').hide();
+    $('#sign-out-button').hide();
+    $('#change-password-button').hide();
+
+    $('#change-username-form').show();
+});
+
+const changeUsernameForm = $('#change-username-form');
+changeUsernameForm.on('submit', (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Change username to " + $('#new-username').val() + "?")) {
+        database.ref("squads/" + sessionStorage.getItem("squadname") + "/members/" + auth.currentUser.uid).set($('#new-username').val());
+        database.ref("users/" + auth.currentUser.uid + "/username").set($('#new-username').val());
+    }
+
+    $('#user-info-username').show();
+    $('#change-username').show();
+    $('#sign-out-button').show();
+    $('#change-password-button').show();
+
+    $('#change-username-form').hide();
+    $('#new-username').val('');
 });
 
 //This verifies that the string contains only numbers, letters, and spaces
